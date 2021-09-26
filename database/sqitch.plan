@@ -1,0 +1,21 @@
+%syntax-version=1.0.0
+%project=geekspeak
+%uri=https://github.com/sqitchers/sqitch-intro/
+
+stdlib 2021-09-26T00:13:35Z Miles Elam <miles@geekspeak.org> # Database standard library
+stdlib_audit_ddl [stdlib] 2021-09-26T00:19:57Z Miles Elam <miles@geekspeak.org> # Database DDL auditing
+stdlib_common_id [stdlib] 2021-09-26T00:38:33Z Miles Elam <miles@geekspeak.org> # Shared ID generation
+stdlib_config_system_versioning [stdlib] 2021-09-26T01:00:12Z Miles Elam <miles@geekspeak.org> # App configuration and syatem versioning
+stdlib_country [stdlib_config_system_versioning] 2021-09-26T03:27:03Z Miles Elam <miles@geekspeak.org> # ISO-3166 countries and patterns for postal codes & phone numbers
+stdlib_currency [stdlib_config_system_versioning] 2021-09-26T03:36:47Z Miles Elam <miles@geekspeak.org> # ISO-4217 currencies
+stdlib_internet [stdlib] 2021-09-26T03:44:18Z Miles Elam <miles@geekspeak.org> # Email, domain_name, fqdn, and tcp/ip port
+stdlib_semver [stdlib] 2021-09-26T04:02:21Z Miles Elam <miles@geekspeak.org> # Semantic versioning
+stdlib_lint [stdlib] 2021-09-26T04:10:16Z Miles Elam <miles@geekspeak.org> # Database linter
+stdlib_aws [stdlib_internet] 2021-09-26T04:26:39Z Miles Elam <miles@geekspeak.org> # AWS value types
+stdlib_full_text_search [stdlib] 2021-09-26T16:04:43Z Miles Elam <miles@geekspeak.org> # GeekSpeak full text search
+geekspeak_role [stdlib] 2021-09-26T16:25:52Z Miles Elam <miles@geekspeak.org> # Postgres roles for GeekSpeak
+geekspeak_account [geekspeak_role stdlib_internet stdlib_full_text_search] 2021-09-26T16:27:46Z Miles Elam <miles@geekspeak.org> # GeekSpeak account management
+geekspeak_link [geekspeak_role stdlib_internet stdlib_full_text_search] 2021-09-26T20:04:40Z Miles Elam <miles@geekspeak.org> # External links
+geekspeak_episode [geekspeak_link stdlib_config_system_versioning] 2021-09-26T20:22:43Z Miles Elam <miles@geekspeak.org> # GeekSpeak episode
+geekspeak_participant [geekspeak_account geekspeak_episode] 2021-09-26T21:03:34Z Miles Elam <miles@geekspeak.org> # GeekSpeak episode participants
+geekspeak_episode_asset [geekspeak_episode] 2021-09-26T21:17:24Z Miles Elam <miles@geekspeak.org> # GeekSpeak episode assets like images and other media

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "config": {
+        "class": {
+            "bit_status": {
+                "tags": {
+                    "omit": "read,update,create,delete,all,many"
+                }
+            },
+            "episode_role": {
+                "tags": {
+                    "omit": "read,update,create,delete,all,many"
+                }
+            },
+            "episode_status": {
+                "tags": {
+                    "omit": "read,update,create,delete,all,many"
+                }
+            }
+        },
+        "procedure": {
+            "weighted_tsvector": {
+                "tags": {
+                    "omit": "execute"
+                }
+            }
+        }
+    }
+}
