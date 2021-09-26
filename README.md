@@ -9,15 +9,17 @@
 % sudo curl -L https://git.io/JJKCn -o /usr/local/bin/sqitch && sudo chmod +x /usr/local/bin/sqitch
 ```
 
-## GraphQL
+## Infrastructure
+
+### AWS
+
+[AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) implementation to deploy/update the Geek Speak AWS stack.
+
+### GraphQL
 
 [Postgraphile](https://www.graphile.org/postgraphile/) implementation that makes an existing database schema available through GraphQL.
 
 This implementation allows for running as a server or deployed as an AWS Lambda behind API Gateway.
-
-## Infrastructure
-
-[AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) implementation to deploy/update the Geek Speak AWS stack.
 
 ## UI
 
