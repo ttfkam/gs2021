@@ -6,14 +6,14 @@ BEGIN;
 SET ROLE geekspeak_admin
        ;
 
-DROP TRIGGER fts_update ON account;
-
 DROP FUNCTION admin_or_same_account(uuid)
             , is_admin()
             , fts(account)
+      CASCADE
             ;
 
-DROP TABLE account
+DROP TABLE
+ IF EXISTS account
          , account_email
          , __account__
          , __account_email__

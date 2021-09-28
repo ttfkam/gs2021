@@ -6,10 +6,8 @@ BEGIN;
 SET ROLE geekspeak_admin
        ;
 
-DROP TRIGGER fts_update ON link
-           ;
-
 DROP FUNCTION fts(link)
+      CASCADE
             ;
 
 DROP TABLE link

@@ -6,13 +6,12 @@ BEGIN;
 SET ROLE geekspeak_admin
        ;
 
-DROP TRIGGER fts_update ON episode_asset
-           ;
-
 DROP FUNCTION fts(episode_asset)
+      CASCADE
             ;
 
-DROP TABLE episode_asset
+DROP TABLE
+ IF EXISTS episode_asset
          , __episode_asset__
    CASCADE
          ;
