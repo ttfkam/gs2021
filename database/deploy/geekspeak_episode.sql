@@ -15,7 +15,7 @@ CREATE TABLE episode (
                   DEFAULT gen_random_uuid()
 ,           title text UNIQUE
 ,           promo text
-,        abstract text
+,         summary text
 ,          status text NOT NULL
                   REFERENCES episode_status
                           ON UPDATE CASCADE
@@ -27,7 +27,6 @@ CREATE TABLE episode (
 ,         publish timestamptz
 ,         created timestamptz NOT NULL
                   DEFAULT CURRENT_TIMESTAMP
-,            LIKE stdlib.FTS INCLUDING INDEXES
 ) INHERITS (stdlib.FTS, stdlib.SYSTEM_VERSIONED); COMMENT ON TABLE episode IS
 'Episodes of GeekSpeak';
 COMMENT ON COLUMN episode.promo     IS 'Episode promotional text';
@@ -43,6 +42,10 @@ CREATE INDEX episode_airdate_idx
 CREATE INDEX episode_publish_idx
           ON episode
        USING BTREE (publish)
+           ;
+CREATE INDEX _stdlib_fts_idx
+          ON link
+       USING GIN (_stdlib_fts)
            ;
 
 CREATE TABLE IF NOT EXISTS geek_bit_status ( name text PRIMARY KEY );
@@ -67,7 +70,6 @@ CREATE TABLE IF NOT EXISTS geek_bit (
 ,            body text
 ,         created timestamptz NOT NULL
                   DEFAULT CURRENT_TIMESTAMP
-,            LIKE stdlib.FTS INCLUDING INDEXES
 ,          UNIQUE ( episode_id
                   , link_id
                   )
@@ -75,7 +77,11 @@ CREATE TABLE IF NOT EXISTS geek_bit (
 'Geek bits';
 COMMENT ON COLUMN geek_bit.offset_ms IS 'Time offset where the geek_bit exists in the episode';
 COMMENT ON COLUMN geek_bit.body      IS 'Bit content';
-COMMENT ON COLUMN geek_bit.metadata  IS 'Bit metadata such as OpenGraph data';
+
+CREATE INDEX episode_stdlib_fts_idx
+          ON episode
+       USING GIN (_stdlib_fts)
+           ;
 
 CREATE FUNCTION fts(rec episode)
         RETURNS tsvector LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$

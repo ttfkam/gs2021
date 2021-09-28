@@ -7,25 +7,21 @@ BEGIN;
 SET search_path = stdlib;
 
 CREATE TABLE FTS (
-    id uuid
-, _fts tsvector
+           id uuid
+, _stdlib_fts tsvector
 );
-CREATE INDEX _fts_idx
-          ON FTS
-       USING GIN (_fts)
-           ;
 
 CREATE FUNCTION search( IN  p_query tsquery
                       , OUT id      uuid
                       , OUT relinfo regclass
-                      , OUT float4  rank
+                      , OUT rank    float4
                       )
-        RETURNS SET OF RECORD LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
+        RETURNS SETOF RECORD LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
   SELECT id
        , tableoid::regclass
-       , ts_rank_cd(_fts, q) rank
+       , ts_rank_cd(_stdlib_fts, p_query) rank
     FROM FTS
-   WHERE p_query @@ _fts
+   WHERE p_query @@ _stdlib_fts
    ORDER BY rank DESC
        ;
 $$;
@@ -33,9 +29,9 @@ $$;
 CREATE FUNCTION search( IN  p_query text
                       , OUT id      uuid
                       , OUT relinfo regclass
-                      , OUT float4  rank
+                      , OUT rank    float4
                       )
-        RETURNS SET OF RECORD LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
+        RETURNS SETOF RECORD LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
   SELECT id
        , relinfo
        , rank
@@ -53,13 +49,13 @@ CREATE FUNCTION fts(FTS)
         RETURNS tsvector LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
   SELECT NULL::tsvector
        ;
-$$; COMMENT ON fts(FTS) IS
+$$; COMMENT ON FUNCTION fts(FTS) IS
 'Placeholder for full text search vector creation';
 
 CREATE FUNCTION fts_trigger()
         RETURNS trigger LANGUAGE plpgsql AS $$
   BEGIN
-    NEW._fts := fts(NEW);
+    NEW._stdlib_fts := fts(NEW);
     return NEW;
   END
 $$;

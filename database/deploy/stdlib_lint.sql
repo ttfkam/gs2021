@@ -12,6 +12,14 @@ CREATE TABLE reserved_word (
 , reason text
 );
 
+CREATE FUNCTION is_reserved(p_word text)
+        RETURNS bool LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
+  SELECT count(rw.word) > 0
+    FROM reserved_word rw
+   WHERE word = lower(p_word)
+       ;
+$$;
+
 INSERT INTO reserved_word (word)
      VALUES ( 'abs' )
           , ( 'acos' )

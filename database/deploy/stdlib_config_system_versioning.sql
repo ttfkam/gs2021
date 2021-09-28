@@ -247,7 +247,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
       '-- Creating history table
        CREATE TABLE IF NOT EXISTS %1$I.%3$I AS
              SELECT x.*
-                  , NULL::__system_versioned AS _system
+                  , NULL::stdlib.__system_versioned AS _system
                FROM %1$I.%2$I AS x
             WITH NO DATA
                   ;
@@ -267,7 +267,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
            ;
 
        ALTER TABLE IF EXISTS %1$I.%2$I
-               ADD COLUMN IF NOT EXISTS _system __system_versioned NOT NULL,
+               ADD COLUMN IF NOT EXISTS _system stdlib.__system_versioned NOT NULL,
            INHERIT %1$I.%3$I
                  ;
        -- Prevent the system versioned column from being altered through GraphQL
@@ -292,26 +292,26 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
        E''Auto-generated\nPoint in time accessor for %1$I.%2$I'';
 
        CREATE FUNCTION last_modified(rec %1$I.%2$I)
-               RETURNS timestamptz LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
+               RETURNS timestamptz LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $system_versioned$
          SELECT lower((rec._system).system_time);
-       $$;
+       $system_versioned$;
 
        CREATE FUNCTION last_modified_by(rec %1$I.%2$I)
-               RETURNS text LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
+               RETURNS text LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $system_versioned$
          SELECT (rec._system).username;
-       $$;
+       $system_versioned$;
 
-       DROP TRIGGER IF EXISTS system_versioned_insert_trigger      ON %1$I.%2$I;
-       DROP TRIGGER IF EXISTS system_versioned_update_trigger      ON %1$I.%2$I;
-       DROP TRIGGER IF EXISTS system_versioned_update_to_history   ON %1$I.%2$I;
-       DROP TRIGGER IF EXISTS system_versioned_delete_to_history   ON %1$I.%2$I;
-       DROP TRIGGER IF EXISTS system_versioned_truncate_to_history ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_insert_trigger      ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_update_trigger      ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_update_to_history   ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_delete_to_history   ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_truncate_to_history ON %1$I.%2$I;
 
        CREATE TRIGGER system_versioned_insert_trigger
                BEFORE INSERT
                    ON %1$I.%2$I
              FOR EACH ROW
-              EXECUTE PROCEDURE system_versioned_insert()
+              EXECUTE PROCEDURE stdlib.system_versioned_insert()
                     ; COMMENT ON TRIGGER system_versioned_insert_trigger ON %1$I.%2$I IS
        E''Auto-generated\nEnsures system versioned data is automatically generated, not user-supplied'';
 
@@ -319,7 +319,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
                BEFORE UPDATE
                    ON %1$I.%2$I
              FOR EACH ROW
-              EXECUTE PROCEDURE system_versioned_update()
+              EXECUTE PROCEDURE stdlib.system_versioned_update()
                     ; COMMENT ON TRIGGER system_versioned_update_trigger ON %1$I.%2$I IS
        E''Auto-generated\nMake sure system versioned data is updated in the live table'';
 
@@ -327,7 +327,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
                 AFTER UPDATE
                    ON %1$I.%2$I
              FOR EACH ROW
-              EXECUTE PROCEDURE system_versioned_update_to_history()
+              EXECUTE PROCEDURE stdlib.system_versioned_update_to_history()
                     ; COMMENT ON TRIGGER system_versioned_update_to_history ON %1$I.%2$I IS
        E''Auto-generated\nAdd entry pre-update to the history and make sure system versioned data is coherent'';
 
@@ -335,7 +335,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
                 AFTER DELETE
                    ON %1$I.%2$I
              FOR EACH ROW
-              EXECUTE PROCEDURE system_versioned_delete_to_history()
+              EXECUTE PROCEDURE stdlib.system_versioned_delete_to_history()
                     ; COMMENT ON TRIGGER system_versioned_delete_to_history ON %1$I.%2$I IS
        E''Auto-generated\nAdd deleted entry to the history and make sure system versioned data is coherent'';
 
@@ -343,7 +343,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
                BEFORE TRUNCATE
                    ON %1$I.%2$I
              FOR EACH STATEMENT
-              EXECUTE PROCEDURE system_versioned_truncate_to_history()
+              EXECUTE PROCEDURE stdlib.system_versioned_truncate_to_history()
                     ; COMMENT ON TRIGGER system_versioned_truncate_to_history ON %1$I.%2$I IS
        E''Auto-generated\nAdd truncated entries to the history and make sure system versioned data is coherent'';
     ', p_schema_name, p_table_name, history_name);
@@ -387,8 +387,8 @@ CREATE FUNCTION deny_invalid_system_versioned_create()
       SELECT d.object_identity
         FROM pg_event_trigger_ddl_commands() AS d
         JOIN pg_class    AS c     ON (d.objid = c.oid          AND NOT c.relhassubclass)
-        JOIN pg_inherits AS tem   ON (d.objid = tem.inhrelid   AND tem.inhparent   = 'SYSTEM_VERSIONED'::regclass)
-        JOIN pg_inherits AS notem ON (d.objid = notem.inhrelid AND notem.inhparent = 'NOT_SYSTEM_VERSIONED'::regclass)
+        JOIN pg_inherits AS tem   ON (d.objid = tem.inhrelid   AND tem.inhparent   = 'stdlib.SYSTEM_VERSIONED'::regclass)
+        JOIN pg_inherits AS notem ON (d.objid = notem.inhrelid AND notem.inhparent = 'stdlib.NOT_SYSTEM_VERSIONED'::regclass)
     LOOP
       RAISE EXCEPTION 'Table % cannot inherit from both SYSTEM_VERSIONED and NOT_SYSTEM_VERSIONED'
                     , r.object_identity
@@ -403,7 +403,7 @@ CREATE FUNCTION default_system_versioned_create()
   DECLARE
     r record;
   BEGIN
-    IF NOT get_config( 'system versioned tables by default', false ) THEN
+    IF NOT stdlib.get_config( 'system versioned tables by default', false ) THEN
       RETURN;
     END IF;
 
@@ -417,13 +417,13 @@ CREATE FUNCTION default_system_versioned_create()
                   AND c.relkind = 'r'
                   AND NOT c.relhassubclass
                 )
-        LEFT JOIN pg_inherits                AS temporal
-             ON ( d.objid = temporal.inhrelid
-                  AND temporal.inhparent = 'SYSTEM_VERSIONED'::regclass
+        LEFT JOIN pg_inherits                AS tem
+             ON ( d.objid = tem.inhrelid
+                  AND tem.inhparent = 'stdlib.SYSTEM_VERSIONED'::regclass
                 )
         LEFT JOIN pg_inherits                AS notem
              ON ( d.objid = notem.inhrelid
-                  AND notem.inhparent = 'NOT_SYSTEM_VERSIONED'::regclass
+                  AND notem.inhparent = 'stdlib.NOT_SYSTEM_VERSIONED'::regclass
                 )
        -- Don't ever apply this to internal tables (prefixed with underscore(s))
        WHERE c.relname !~ '^__'
@@ -435,7 +435,7 @@ CREATE FUNCTION default_system_versioned_create()
                , r.schema_name
                , r.table_name
                ;
-      EXECUTE format( 'ALTER TABLE %1$I.%2$I INHERIT SYSTEM_VERSIONED;'
+      EXECUTE format( 'ALTER TABLE %1$I.%2$I INHERIT stdlib.SYSTEM_VERSIONED;'
                     , r.schema_name
                     , r.table_name
                     );
@@ -459,7 +459,7 @@ CREATE FUNCTION create_system_versioned_history()
              ON (d.objid = c.oid)
         JOIN pg_inherits                     AS i
              ON ( d.objid = i.inhrelid
-                  AND i.inhparent = 'system_versioned'::regclass
+                  AND i.inhparent = 'stdlib.system_versioned'::regclass
                 )
         LEFT JOIN pg_class                   AS history
              ON ( c.relnamespace = history.relnamespace
@@ -474,7 +474,7 @@ CREATE FUNCTION create_system_versioned_history()
                , r.schema_name
                , r.table_name
                ;
-      PERFORM init_system_versioned_history( r.schema_name, r.table_name );
+      PERFORM stdlib.init_system_versioned_history( r.schema_name, r.table_name );
     END LOOP;
   END;
 $$; COMMENT ON FUNCTION create_system_versioned_history() IS
@@ -503,7 +503,7 @@ CREATE FUNCTION alter_system_versioned_history()
                 )
         LEFT JOIN pg_inherits                AS inh
              ON ( d.objid = inh.inhrelid
-                  AND inh.inhparent = to_regclass('SYSTEM_VERSIONED')
+                  AND inh.inhparent = to_regclass('stdlib.SYSTEM_VERSIONED')
                 )
         LEFT JOIN pg_class                   AS history
              ON ( history.relnamespace = r.schema
@@ -624,7 +624,7 @@ CREATE FUNCTION disable_system_versioned_history()
                 )
         LEFT JOIN pg_inherits AS i
              ON ( d.objid = i.inhrelid
-                  AND i.inhparent = 'SYSTEM_VERSIONED'::regclass
+                  AND i.inhparent = 'stdlib.SYSTEM_VERSIONED'::regclass
                 )
       -- Don't ever apply this to internal tables (prefixed with underscore(s))
       WHERE c.relname !~ '^_'
@@ -774,7 +774,7 @@ INSERT INTO config ( option_name
 CREATE FUNCTION get_config(p_name text)
         RETURNS text LANGUAGE sql STABLE PARALLEL SAFE AS $$
   SELECT c.option_value
-    FROM config AS c
+    FROM stdlib.config c
    WHERE c.option_name = p_name
        ;
 $$; COMMENT ON FUNCTION get_config(text) IS
@@ -784,28 +784,29 @@ of get_config(...) that take a default value.';
 
 CREATE FUNCTION get_config(p_name text, p_default text)
         RETURNS text LANGUAGE sql STABLE PARALLEL SAFE AS $$
-  SELECT coalesce( get_config( p_name ), p_default )
+  SELECT coalesce( stdlib.get_config( p_name ), p_default )
        ;
 $$; COMMENT ON FUNCTION get_config(text, text) IS
 '@ignore-lint FUNCTION_IMMUTABLE calls config(text)';
 
 CREATE FUNCTION get_config(p_name text, p_default int8)
         RETURNS int8 LANGUAGE sql STABLE PARALLEL SAFE AS $$
-  SELECT coalesce( get_config( p_name )::int8, p_default )
+  SELECT coalesce( stdlib.get_config( p_name )::int8, p_default )
        ;
 $$; COMMENT ON FUNCTION get_config(text, int8) IS
 '@ignore-lint FUNCTION_IMMUTABLE calls config(text)';
 
 CREATE FUNCTION get_config(p_name text, p_default float8)
         RETURNS float8 LANGUAGE sql STABLE PARALLEL SAFE AS $$
-  SELECT coalesce( get_config( p_name )::float8, p_default )
+  SELECT coalesce( stdlib.get_config( p_name )::float8, p_default )
        ;
 $$; COMMENT ON FUNCTION get_config(text, float8) IS
 '@ignore-lint FUNCTION_IMMUTABLE calls config(text)';
 
-CREATE FUNCTION get_config(p_name text, p_default bool)
+DROP FUNCTION get_config(text, bool);
+CREATE FUNCTION stdlib.get_config(p_name text, p_default bool)
         RETURNS bool LANGUAGE sql STABLE PARALLEL SAFE AS $$
-  SELECT coalesce( get_config( p_name )::bool, p_default )
+  SELECT coalesce( stdlib.get_config( p_name )::bool, p_default )
        ;
 $$; COMMENT ON FUNCTION get_config(text, bool) IS
 '@ignore-lint FUNCTION_IMMUTABLE calls config(text)';
@@ -838,11 +839,11 @@ CREATE FUNCTION set_config( p_name        text
                                      , p_write_roles name[] = '{}'
                                      )
         RETURNS int8 LANGUAGE sql VOLATILE PARALLEL UNSAFE AS $$
-  SELECT set_config( p_name
-                   , p_value::text
-                   , p_read_roles
-                   , p_write_roles
-                   )::int8
+  SELECT stdlib.set_config( p_name
+                          , p_value::text
+                          , p_read_roles
+                          , p_write_roles
+                          )::int8
        ;
 $$; COMMENT ON FUNCTION set_config(text, int8, name[], name[]) IS
 '@ignore-lint FUNCTION_IMMUTABLE calls set_config(text, text, name[], name[])
@@ -854,11 +855,11 @@ CREATE FUNCTION set_config( p_name        text
                                      , p_write_roles name[] = '{}'
                                      )
         RETURNS float8 LANGUAGE sql VOLATILE PARALLEL UNSAFE AS $$
-  SELECT set_config( p_name
-                   , p_value::text
-                   , p_read_roles
-                   , p_write_roles
-                   )::float8
+  SELECT stdlib.set_config( p_name
+                          , p_value::text
+                          , p_read_roles
+                          , p_write_roles
+                          )::float8
        ;
 $$; COMMENT ON FUNCTION set_config(text, float8, name[], name[]) IS
 '@ignore-lint FUNCTION_IMMUTABLE calls set_config(text, text, name[], name[])
@@ -870,11 +871,11 @@ CREATE FUNCTION set_config( p_name        text
                                      , p_write_roles name[] = '{}'
                                      )
         RETURNS bool LANGUAGE sql VOLATILE PARALLEL UNSAFE AS $$
-  SELECT set_config( p_name
-                   , p_value::text
-                   , p_read_roles
-                   , p_write_roles
-                   )::bool
+  SELECT stdlib.set_config( p_name
+                          , p_value::text
+                          , p_read_roles
+                          , p_write_roles
+                          )::bool
        ;
 $$; COMMENT ON FUNCTION set_config(text, bool, name[], name[]) IS
 '@ignore-lint FUNCTION_IMMUTABLE calls set_config(text, text, name[], name[])

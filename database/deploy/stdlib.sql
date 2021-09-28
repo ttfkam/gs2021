@@ -44,7 +44,7 @@ CREATE FUNCTION current_app_user()
         RETURNS text LANGUAGE sql STABLE PARALLEL SAFE AS $$
   SELECT coalesce(
            nullif( current_setting('jwt.claims.user', true), '')
-                 , concat('%', CURRENT_USER, '%')
+                 , concat('%', SESSION_USER, '%')
                  )
        ;
 $$; COMMENT ON FUNCTION current_app_user() IS

@@ -3,7 +3,7 @@
 
 BEGIN;
 
-DO $$ BEGIN IF not_exists('role', 'geekspeak_admin') THEN
+DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_admin') THEN
 
   CREATE ROLE geekspeak_admin
               CREATEROLE
@@ -14,14 +14,14 @@ DO $$ BEGIN IF not_exists('role', 'geekspeak_admin') THEN
             ;
 END IF; END; $$ LANGUAGE plpgsql;
 
-DO $$ BEGIN IF not_exists('role', 'geekspeak_app') THEN
+DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_app') THEN
 
   CREATE ROLE geekspeak_app
               LOGIN
             ;
 END IF; END; $$ LANGUAGE plpgsql;
 
-DO $$ BEGIN IF not_exists('role', 'geekspeak_analysis') THEN
+DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_analysis') THEN
 
   CREATE ROLE geekspeak_analysis
               LOGIN

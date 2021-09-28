@@ -2,6 +2,6 @@
 
 BEGIN;
 
--- XXX Add DDLs here.
+-- We don't remove roles
 
 COMMIT;

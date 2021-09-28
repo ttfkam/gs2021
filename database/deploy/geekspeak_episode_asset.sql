@@ -18,11 +18,15 @@ CREATE TABLE episode_asset (
 ,      media_type text NOT NULL
 ,        metadata jsonb
 ,         created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
-,            LIKE stdlib.FTS INCLUDING INDEXES
 ) INHERITS (stdlib.FTS, stdlib.SYSTEM_VERSIONED); COMMENT ON TABLE episode_asset IS
 'External files associated with an episode like images and other media';
 COMMENT ON COLUMN episode_asset.filename IS 'Human-readable file name';
 COMMENT ON COLUMN episode_asset.metadata IS 'Asset metadata such as found in EXIF data or ID3v2';
+
+CREATE INDEX episode_asset_stdlib_fts_idx
+          ON episode_asset
+       USING GIN (_stdlib_fts)
+           ;
 
 CREATE FUNCTION fts(rec episode_asset)
         RETURNS tsvector LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$

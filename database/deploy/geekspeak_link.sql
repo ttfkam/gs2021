@@ -19,11 +19,15 @@ CREATE TABLE link (
 ,        metadata jsonb
 ,         created timestamptz NOT NULL
                   DEFAULT CURRENT_TIMESTAMP
-,            LIKE stdlib.FTS INCLUDING INDEXES
 ) INHERITS (stdlib.FTS); COMMENT ON TABLE link IS
 'External links';
 COMMENT ON COLUMN link.scrape   IS 'Scraped text from the link for full text search';
 COMMENT ON COLUMN link.metadata IS 'Link metadata such as OpenGraph data';
+
+CREATE INDEX link_stdlib_fts_idx
+          ON link
+       USING GIN (_stdlib_fts)
+           ;
 
 CREATE FUNCTION fts(rec link)
         RETURNS tsvector LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$

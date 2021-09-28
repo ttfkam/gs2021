@@ -37,18 +37,16 @@ DROP FUNCTION current_system_versioned()
             , set_config(text, int8, name[], name[])
             , set_config(text, float8, name[], name[])
             , set_config(text, bool, name[], name[])
+      CASCADE
             ;
 
 DROP TABLE NOT_SYSTEM_VERSIONED
          , SYSTEM_VERSIONED
          , __system_versioned
          , config
+         , __config__
+   CASCADE
          ;
-
-DROP POLICY public_access ON config
-          , admin_access ON config
-          , get_config(p_name text)
-          ;
 
 RESET search_path;
 

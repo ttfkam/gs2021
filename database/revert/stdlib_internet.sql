@@ -5,16 +5,7 @@ BEGIN;
 -- Make sure everything we drop here is from the stdlib namespace
 SET search_path = stdlib;
 
-DROP DOMAIN media_type
-          , domain_name
-          , fqdn
-          , tcpip_port
-          , email
-          , uri
-          ;
-
-DROP FUNCTION
-    IF EXISTS jsonb_media_type_parameters(text)
+DROP FUNCTION jsonb_media_type_parameters(text)
             , media_type(text)
             , domain_name_expanded(text)
             , is_tcpip_port(int4)
@@ -23,7 +14,16 @@ DROP FUNCTION
             , uri_decode(text, text)
             , query_string_to_jsonb(text)
             , uri_expanded(varchar)
+      CASCADE
             ;
+
+DROP DOMAIN media_type
+          , domain_name
+          , fqdn
+          , tcpip_port
+          , email
+          , uri
+          ;
 
 RESET search_path;
 

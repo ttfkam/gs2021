@@ -15,8 +15,10 @@ DROP FUNCTION fts(episode)
             ;
 
 DROP TABLE episode
-         , episode_status
          , geek_bit
+         , __episode__
+         , __geek_bit__
+         , episode_status
          , geek_bit_status
    CASCADE
          ;

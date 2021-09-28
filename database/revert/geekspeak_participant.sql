@@ -8,6 +8,7 @@ SET ROLE geekspeak_admin
 
 DROP TABLE episode_role
          , participant
+         , __participant__
    CASCADE
          ;
 

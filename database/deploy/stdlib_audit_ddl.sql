@@ -24,9 +24,9 @@ CREATE TABLE ddl_info (
 ,   address_names text[]
 ,    address_args text[]
 ,  transaction_id int8 NOT NULL
-,                 DEFAULT txid_current()
+                  DEFAULT txid_current()
 ,        inserted timestamptz NOT NULL
-,                 DEFAULT clock_timestamp()
+                  DEFAULT clock_timestamp()
 -- No need to be system versioned since it's basically just a structured log
 ); COMMENT ON TABLE ddl_info IS
 '@ignore-lint RELATION_PRIMARY_KEY DDL debug logging table.
@@ -35,23 +35,23 @@ Columns map to event trigger metadata: https://www.postgresql.org/docs/current/f
 CREATE FUNCTION ddl_drop_log()
         RETURNS EVENT_TRIGGER LANGUAGE plpgsql AS $$
   BEGIN
-    INSERT INTO ddl_info ( app_user
-                         , role_name
-                         , session_role
-                         , classid
-                         , objid
-                         , objsubid
-                         , original
-                         , normal
-                         , is_temporary
-                         , object_type
-                         , schema_name
-                         , object_name
-                         , object_identity
-                         , address_names
-                         , address_args
-                         )
-         SELECT current_app_user()
+    INSERT INTO stdlib.ddl_info ( app_user
+                                , role_name
+                                , session_role
+                                , classid
+                                , objid
+                                , objsubid
+                                , original
+                                , normal
+                                , is_temporary
+                                , object_type
+                                , schema_name
+                                , object_name
+                                , object_identity
+                                , address_names
+                                , address_args
+                                )
+         SELECT stdlib.current_app_user()
               , CURRENT_USER
               , SESSION_USER
               , classid
@@ -75,17 +75,17 @@ $$; COMMENT ON FUNCTION ddl_drop_log() IS
 CREATE FUNCTION ddl_log()
         RETURNS EVENT_TRIGGER LANGUAGE plpgsql AS $$
   BEGIN
-    INSERT INTO ddl_info ( role_name
-                         , session_role
-                         , classid
-                         , objid
-                         , objsubid
-                         , command_tag
-                         , object_type
-                         , schema_name
-                         , object_identity
-                         , in_extension
-                         )
+    INSERT INTO stdlib.ddl_info ( role_name
+                                , session_role
+                                , classid
+                                , objid
+                                , objsubid
+                                , command_tag
+                                , object_type
+                                , schema_name
+                                , object_identity
+                                , in_extension
+                                )
          SELECT CURRENT_USER
               , SESSION_USER
               , classid

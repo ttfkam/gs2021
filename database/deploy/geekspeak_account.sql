@@ -12,28 +12,35 @@ SET ROLE geekspeak_admin
 CREATE TABLE account (
                id uuid PRIMARY KEY
                   DEFAULT gen_random_uuid()
-,          emails stdlib.email[] NOT NULL
-                  CHECK (array_length(emails, 1) > 0)
 ,            name text NOT NULL
                   CHECK (length(trim(name)) > 0)
 ,             bio text
 ,           roles text[]
 ,         created timestamptz NOT NULL
                   DEFAULT CURRENT_TIMESTAMP
-,            LIKE stdlib.FTS INCLUDING INDEXES
-,         EXCLUDE USING gist (emails WITH &&)
 ) INHERITS (stdlib.SYSTEM_VERSIONED, stdlib.FTS);
 COMMENT ON  TABLE account        IS 'User accounts';
-COMMENT ON COLUMN account.emails IS 'Email address(es) linked to this account';
 COMMENT ON COLUMN account.name   IS 'Account''s name to be displayed';
 COMMENT ON COLUMN account.bio    IS 'Account holder''s short biography';
 COMMENT ON COLUMN account.roles  IS 'Roles within the application, eg. admin, geek, guest';
 
-CREATE FUNCTION primary_email(a account)
-        RETURNS text LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
-    SELECT a.emails[1];
-$$; COMMENT ON FUNCTION primary_email(account) IS
-'The primary email address for the account';
+CREATE INDEX account_stdlib_fts_idx
+          ON account
+       USING GIN (_stdlib_fts)
+           ;
+
+CREATE TABLE account_email (
+       email stdlib.email PRIMARY KEY
+, account_id uuid NOT NULL
+             REFERENCES account
+                     ON UPDATE CASCADE
+                     ON DELETE CASCADE
+);
+
+CREATE INDEX account_id_idx
+          ON account_email
+       USING BTREE (account_id)
+           ;
 
 --    __ _  ___ ___ ___  ___ ___
 --   / _` |/ __/ __/ _ \/ __/ __|
@@ -49,16 +56,18 @@ ALTER TABLE account
      ENABLE ROW LEVEL SECURITY
           ;
 
-CREATE FUNCTION admin_or_same_account(emails text[])
-        RETURNS boolean LANGUAGE sql STABLE PARALLEL SAFE AS $$
-    SELECT is_admin()
-           OR ARRAY[current_setting('jwt.claims.email', true)] <@ emails
-         ;
-$$;
-
 CREATE FUNCTION is_admin()
         RETURNS boolean LANGUAGE sql STABLE PARALLEL SAFE AS $$
     SELECT nullif(current_setting('jwt.claims.admin', true), '')::boolean
+         ;
+$$;
+
+CREATE FUNCTION admin_or_same_account(p_id uuid)
+        RETURNS boolean LANGUAGE sql STABLE PARALLEL SAFE AS $$
+    SELECT bool_or(current_setting('jwt.claims.email', true) = e.email)
+      FROM account_email e
+     WHERE is_admin()
+           OR p_id = e.account_id
          ;
 $$;
 
@@ -73,7 +82,6 @@ CREATE POLICY account_insert
            ON account
           FOR INSERT
            TO geekspeak_app
-        USING (is_admin())
    WITH CHECK (is_admin())
             ;
 
@@ -81,14 +89,21 @@ CREATE POLICY account_update
            ON account
           FOR UPDATE
            TO geekspeak_app
-        USING (admin_or_same_account(emails))
-   WITH CHECK (admin_or_same_account(emails))
+        USING (admin_or_same_account(id))
+   WITH CHECK (admin_or_same_account(id))
+            ;
+
+CREATE POLICY account_delete
+           ON account
+          FOR DELETE
+           TO geekspeak_app
+        USING (admin_or_same_account(id))
             ;
 
 CREATE FUNCTION fts(a account)
         RETURNS tsvector LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
-    SELECT stdlib.weighted_tsvector(new.name, 'A')
-           || stdlib.weighted_tsvector(new.bio, 'B')
+    SELECT stdlib.weighted_tsvector(a.name, 'A')
+           || stdlib.weighted_tsvector(a.bio, 'B')
          ;
 $$;
 

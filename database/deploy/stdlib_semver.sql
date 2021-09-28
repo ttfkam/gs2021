@@ -32,7 +32,10 @@ CREATE FUNCTION semver_expanded( IN  p_version      text
        ;
 $$;
 
-CREATE DOMAIN semver AS text CHECK (NOT semver_expanded(VALUE) IS NULL)
+CREATE DOMAIN semver
+           AS text
+        CHECK (NOT semver_expanded(VALUE) IS NULL)
+            ;
 COMMENT ON DOMAIN semver IS 'Semantic version number.';
 
 RESET search_path;

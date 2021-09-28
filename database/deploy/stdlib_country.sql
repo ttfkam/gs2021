@@ -61,65 +61,13 @@ COMMENT ON COLUMN country.postal_code_pattern IS
 COMMENT ON COLUMN country.tel_pattern IS
 'Phone number regular expression patterns by country/territory.';
 
-CREATE FUNCTION generate_postal_code_validator()
-        RETURNS trigger LANGUAGE plpgsql AS $$
-  DECLARE
-    when_statements text;
-  BEGIN
-    WITH pc AS (
-      SELECT CASE WHEN count(alpha_3_code) = 1 THEN
-                    'WHEN p_country_code = '''
-                    || string_agg(alpha_3_code, '')
-                    || ''' THEN p_postal_code ~ '''
-                    || postal_code_pattern
-                    || ''''
-                  ELSE
-                    'WHEN p_country_code IN ('''
-                    || string_agg(alpha_3_code, ''', ''')
-                    || ''') THEN p_postal_code ~ '''
-                    || postal_code_pattern
-                    || ''''
-             END AS when_statement
-        FROM country
-       WHERE postal_code_pattern IS NOT NULL
-       GROUP BY postal_code_pattern
-       ORDER BY array_agg(alpha_3_code) @> '{USA}' DESC
-              , 1
-    )
-    SELECT E'CASE WHEN p_postal_code IS NULL OR p_country_code IS NULL THEN false\n             '
-           || string_agg(pc.when_statement, E'\n             ')
-           || E'\n             ELSE false\n        END;'
-      INTO when_statements
-      FROM pc
-         ;
-
-    EXECUTE format( 'CREATE FUNCTION is_postal_code( p_postal_code text
-                                                              , p_country_code varchar(3) = ''USA''
-                                                              )
-                             RETURNS bool LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $dynamic$
-                       SELECT %1$s
-                     $dynamic$;'
-                  , when_statements
-                  );
-    RETURN NULL; -- AFTER trigger, so no effect but a return statement still needed
-  END;
-$$;
-
-  DROP TRIGGER IF EXISTS generate_postal_code_validator ON country;
-CREATE TRIGGER generate_postal_code_validator
-         AFTER INSERT
-               OR UPDATE
-               OR DELETE
-            ON country
-      FOR EACH STATEMENT
-       EXECUTE PROCEDURE generate_postal_code_validator()
-             ;
-
 CREATE FUNCTION is_postal_code( p_postal_code  text
-                                         , p_country_code varchar(3) = 'USA'
-                                         )
-        RETURNS bool LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
-  SELECT false
+                              , p_country_code varchar(3) = 'USA'
+                              )
+        RETURNS bool LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
+  SELECT c.postal_code_pattern ~ p_postal_code
+    FROM country c
+   WHERE c.alpha_3_code = p_country_code
          ;
 $$; COMMENT ON FUNCTION is_postal_code(text, varchar) IS
 'Validate postal code by country/territory.
@@ -127,9 +75,9 @@ $$; COMMENT ON FUNCTION is_postal_code(text, varchar) IS
 Regexes from validator.js (https://www.npmjs.com/package/validator)';
 
 CREATE FUNCTION is_postal_code( p_postal_code   text
-                                         , p_country_codes varchar(3)[]
-                                         )
-        RETURNS bool LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
+                              , p_country_codes varchar(3)[]
+                              )
+        RETURNS bool LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
   SELECT bool_or( is_postal_code( p_postal_code, codes.code ) )
     FROM unnest( p_country_codes ) AS codes( code )
        ;

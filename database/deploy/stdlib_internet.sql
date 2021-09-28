@@ -245,13 +245,13 @@ CREATE FUNCTION email_expanded( p_email varchar(254)
            , 'i'
            ) parts
   )
-  SELECT a.parts[1] email
-       , a.parts[2] username
-       , a.parts[3] domain
+  SELECT a.parts[1]
+       , a.parts[2]
+       , a.parts[3]
     FROM address a
    WHERE a.parts IS NOT NULL
        ;
-$$; COMMENT ON FUNCTION email_expanded(text) IS
+$$; COMMENT ON FUNCTION email_expanded(varchar) IS
 'HTML5 spec compliant email pattern (same as <input type="email"> for most browsers)
 Must be at least 3 characters, eg., ''a@b''
 
@@ -311,18 +311,18 @@ can be provided though UTF-8 is the default (and generally preferred).';
 CREATE FUNCTION query_string_to_jsonb(p_query text)
         RETURNS jsonb LANGUAGE sql STRICT IMMUTABLE PARALLEL RESTRICTED AS $$
   WITH all_params AS (
-    SELECT uri_decode(param.pair[1])            key
-         , array_agg(uri_decode(param.pair[2])) value
+    SELECT uri_decode(param.pair[1])            "key"
+         , array_agg(uri_decode(param.pair[2])) "value"
       FROM regexp_split_to_table(regexp_replace(p_query, '^\?', ''), '&') query(parameter)
      CROSS JOIN LATERAL regexp_split_to_array(query.parameter, '=')       param(pair)
      GROUP BY param.pair[1]
   )
   SELECT jsonb_object_agg(
-           key
-         , CASE WHEN array_length(value, 1) < 2 THEN to_json(value[1])
-                ELSE to_json(value) END
+           ap.key
+         , CASE WHEN array_length(ap.value, 1) < 2 THEN to_json(ap.value[1])
+                ELSE to_json(ap.value) END
          )
-    FROM all_params;
+    FROM all_params ap;
 $$; COMMENT ON FUNCTION query_string_to_jsonb(text) IS
 'Parse a raw query string into a object of key-value pairs. When a key occurs
 more than once, the values are put in an array.';
@@ -331,7 +331,7 @@ CREATE FUNCTION uri_expanded( IN  p_uri            varchar(2047)
                             , OUT href             varchar(2047)
                             , OUT protocol         varchar(15)
                             , OUT username         varchar(126)
-                            , OUT password         text
+                            , OUT "password"       text
                             , OUT hostname         varchar(256)
                             , OUT port             int4
                             , OUT host             varchar(256)
@@ -367,13 +367,13 @@ CREATE FUNCTION uri_expanded( IN  p_uri            varchar(2047)
   (  SELECT p_uri                                      href
           , split_part(p_uri, ':', 1)::text            protocol
           , NULL::text                                 username
-          , NULL::text                                 password
+          , NULL::text                                 "password"
           , NULL::text                                 hostname
           , NULL::int4                                 port
           , NULL::text                                 host
           , regexp_replace(p_uri, '^[^:]+:', '')::text pathname
           , NULL::bool                                 absolute_path
-          , NULL::text                                 search
+          , NULL::text                                 "search"
           , NULL::text                                 hash
           , NULL::text                                 origin
           , NULL::jsonb                                query_parameters
@@ -382,7 +382,7 @@ CREATE FUNCTION uri_expanded( IN  p_uri            varchar(2047)
      SELECT p_uri                                 href
           , m.uri_parts[1]                        protocol
           , m.uri_parts[2]                        username
-          , m.uri_parts[3]                        password
+          , m.uri_parts[3]                        "password"
           , m.uri_parts[4]                        hostname
           , m.uri_parts[5]::int4                  port
           , CASE WHEN m.uri_parts[5] IS NULL THEN m.uri_parts[4]
@@ -390,7 +390,7 @@ CREATE FUNCTION uri_expanded( IN  p_uri            varchar(2047)
             END                                   host
           , m.uri_parts[6]                        pathname
           , m.uri_parts[6] ~ '^/'                 absolute_path
-          , m.uri_parts[7]                        search
+          , m.uri_parts[7]                        "search"
           , m.uri_parts[8]                        hash
           , CASE WHEN m.uri_parts[1] IS NOT NULL AND m.uri_parts[4] IS NOT NULL
                       THEN concat( m.uri_parts[1]

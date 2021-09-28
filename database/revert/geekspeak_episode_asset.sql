@@ -13,6 +13,7 @@ DROP FUNCTION fts(episode_asset)
             ;
 
 DROP TABLE episode_asset
+         , __episode_asset__
    CASCADE
          ;
 
