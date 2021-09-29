@@ -7,6 +7,7 @@ services:
       POSTGRES_PASSWORD: demo
     volumes:
       - ./docker/pgdata:/var/lib/postgresql/data
+      - ./docker/initdb.d:/docker-entrypoint-initdb.d
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -17,15 +18,21 @@ services:
       - ./config/pgadmin/pgadmin4.json:/pgadmin4/servers.json
       - ./config/pgadmin/pgadmin4.py:/pgadmin4/config_local.py
       - ./config/pgadmin/pgadmin4.pgpass:/pgadmin4/pgpass
+    depends_on:
+      - db
 
   dbmigration:
     build: docker/Dockerfile.dbmigration
     volumes:
       - $HOME:/home
       - ./database:/repo
+    depends_on:
+      - db
 
   graphql:
     build: graphql
     environment:
       DB_URL: 'postgres://geekspeak_app:demo@db/geekspeak'
       DB_ADMIN_URL: 'postgres://geekspeak_admin:demo@db/geekspeak'
+    depends_on:
+      - db
