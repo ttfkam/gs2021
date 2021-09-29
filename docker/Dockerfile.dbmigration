@@ -1,0 +1,2 @@
+FROM sqitch/sqitch
+CMD [ "deploy", "-t", "postgres://postgres@db/geekspeak" ]

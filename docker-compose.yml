@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  db:
+    image: postgis/postgis:13-3.1
+    environment:
+      POSTGRES_PASSWORD: demo
+    volumes:
+      - ./docker/pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'pgadmin4@pgadmin.org'
+      PGADMIN_DEFAULT_PASSWORD: 'demo'
+    volumes:
+      - ./config/pgadmin/pgadmin4.json:/pgadmin4/servers.json
+      - ./config/pgadmin/pgadmin4.py:/pgadmin4/config_local.py
+      - ./config/pgadmin/pgadmin4.pgpass:/pgadmin4/pgpass
+
+  dbmigration:
+    build: docker/Dockerfile.dbmigration
+    volumes:
+      - $HOME:/home
+      - ./database:/repo
+
+  graphql:
+    build: graphql
+    environment:
+      DB_URL: 'postgres://geekspeak_app:demo@db/geekspeak'
+      DB_ADMIN_URL: 'postgres://geekspeak_admin:demo@db/geekspeak'
