@@ -9,15 +9,25 @@ db:5432:*:postgres:demo
 
 This allows the migration tool to update the local development database.
 
+Second, make sure Docker is installed and running.
+
+Third, run the following:
+
+```sh
+docker-compose up -d
+```
+
 ## Database
 
 [Sqitch](https://sqitch.org/docs/manual/sqitchtutorial/) migration files. To
-install Sqitch locally (not required):
+install Sqitch locally:
 
 ```sh
-% docker pull sqitch/sqitch
-% sudo curl -L https://git.io/JJKCn -o /usr/local/bin/sqitch && sudo chmod +x /usr/local/bin/sqitch
+docker pull sqitch/sqitch
+sudo curl -L https://git.io/JJKCn -o /usr/local/bin/sqitch && sudo chmod +x /usr/local/bin/sqitch
 ```
+
+You'll need this if you want to change the database structure.
 
 ## Infrastructure
 
