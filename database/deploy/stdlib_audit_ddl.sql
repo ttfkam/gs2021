@@ -112,6 +112,12 @@ CREATE EVENT TRIGGER _00_ddl_info
              EXECUTE PROCEDURE ddl_log()
                    ;
 
+GRANT SELECT
+    , INSERT
+   ON TABLE ddl_info
+   TO public
+    ;
+
 RESET search_path;
 
 COMMIT;

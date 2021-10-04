@@ -10,24 +10,24 @@ SET ROLE geekspeak_admin
        ;
 
 CREATE TABLE account (
-               id uuid PRIMARY KEY
-                  DEFAULT gen_random_uuid()
-,            name text NOT NULL
-                  CHECK (length(trim(name)) > 0)
-,             bio text
-,           roles text[]
-,         created timestamptz NOT NULL
-                  DEFAULT CURRENT_TIMESTAMP
-) INHERITS (stdlib.SYSTEM_VERSIONED, stdlib.FTS);
-COMMENT ON  TABLE account        IS 'User accounts';
+          id uuid PRIMARY KEY
+             DEFAULT gen_random_uuid()
+,       name text NOT NULL
+             CHECK (length(trim(name)) > 0)
+,        bio text
+,      roles text[]
+,    created timestamptz NOT NULL
+             DEFAULT CURRENT_TIMESTAMP
+,       LIKE stdlib.SYSTEM_VERSIONED
+             INCLUDING COMMENTS
+,       LIKE stdlib.FTS
+             INCLUDING COMMENTS
+             INCLUDING INDEXES
+); COMMENT ON TABLE account IS
+'User accounts';
 COMMENT ON COLUMN account.name   IS 'Account''s name to be displayed';
 COMMENT ON COLUMN account.bio    IS 'Account holder''s short biography';
 COMMENT ON COLUMN account.roles  IS 'Roles within the application, eg. admin, geek, guest';
-
-CREATE INDEX account_stdlib_fts_idx
-          ON account
-       USING GIN (_stdlib_fts)
-           ;
 
 CREATE TABLE account_email (
        email stdlib.email PRIMARY KEY
@@ -35,6 +35,7 @@ CREATE TABLE account_email (
              REFERENCES account
                      ON UPDATE CASCADE
                      ON DELETE CASCADE
+,       LIKE stdlib.SYSTEM_VERSIONED INCLUDING COMMENTS
 );
 
 CREATE INDEX account_id_idx
@@ -74,21 +75,21 @@ $$;
 CREATE POLICY account_select
            ON account
           FOR SELECT
-           TO geekspeak_app
+           TO geekspeak_api
         USING (true) -- Anyone can view
             ;
 
 CREATE POLICY account_insert
            ON account
           FOR INSERT
-           TO geekspeak_app
+           TO geekspeak_api
    WITH CHECK (is_admin())
             ;
 
 CREATE POLICY account_update
            ON account
           FOR UPDATE
-           TO geekspeak_app
+           TO geekspeak_api
         USING (admin_or_same_account(id))
    WITH CHECK (admin_or_same_account(id))
             ;
@@ -96,7 +97,7 @@ CREATE POLICY account_update
 CREATE POLICY account_delete
            ON account
           FOR DELETE
-           TO geekspeak_app
+           TO geekspeak_api
         USING (admin_or_same_account(id))
             ;
 
@@ -115,16 +116,17 @@ CREATE TRIGGER fts_update
              ;
 
  GRANT SELECT
+    ON TABLE account
+    TO geekspeak_api
+     , geekspeak_analysis
+     ;
+
+ GRANT SELECT
      , INSERT
      , UPDATE
      , DELETE
     ON TABLE account
-    TO geekspeak_app
-     ;
-
- GRANT SELECT
-    ON TABLE account
-    TO geekspeak_analysis
+    TO geekspeak_user
      ;
 
 RESET ROLE;

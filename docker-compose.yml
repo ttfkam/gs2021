@@ -1,38 +1,52 @@
-version: '3'
+version: "2.4"
 
 services:
   db:
     image: postgis/postgis:13-3.1
+    user: postgres
     environment:
       POSTGRES_PASSWORD: demo
     volumes:
       - ./docker/pgdata:/var/lib/postgresql/data
       - ./docker/initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  pgadmin:
+  dbadmin:
     image: dpage/pgadmin4:latest
     environment:
       PGADMIN_DEFAULT_EMAIL: 'pgadmin4@pgadmin.org'
       PGADMIN_DEFAULT_PASSWORD: 'demo'
     volumes:
-      - ./config/pgadmin/pgadmin4.json:/pgadmin4/servers.json
-      - ./config/pgadmin/pgadmin4.py:/pgadmin4/config_local.py
-      - ./config/pgadmin/pgadmin4.pgpass:/pgadmin4/pgpass
+      - ./docker/pgadmin/pgadmin4.json:/pgadmin4/servers.json
+      - ./docker/pgadmin/pgadmin4.py:/pgadmin4/config_local.py
+      - $HOME/.pgpass:/pgadmin4/pgpass
+    ports:
+      - "80"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   dbmigration:
-    build: docker/Dockerfile.dbmigration
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.dbmigration
     volumes:
-      - $HOME:/home
+      - $HOME/.pgpass:/home/.pgpass
       - ./database:/repo
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   graphql:
-    build: graphql
+    build: ./graphql
     environment:
-      DB_URL: 'postgres://geekspeak_app:demo@db/geekspeak'
-      DB_ADMIN_URL: 'postgres://geekspeak_admin:demo@db/geekspeak'
+      DB_URL: 'postgres://geekspeak_api:demo@db/geekspeak'
+      DB_ADMIN_URL: 'postgres://postgres:demo@db/geekspeak'
+    ports:
+      - "3000"
     depends_on:
-      - db
+      - dbmigration

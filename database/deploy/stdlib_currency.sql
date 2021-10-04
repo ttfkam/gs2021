@@ -21,7 +21,9 @@ CREATE TABLE currency (
                     REFERENCES currency (alpha_3_code)
                             ON UPDATE CASCADE
                             ON DELETE SET NULL
-) INHERITS (SYSTEM_VERSIONED); COMMENT ON TABLE currency IS
+,              LIKE stdlib.SYSTEM_VERSIONED
+                    INCLUDING COMMENTS
+); COMMENT ON TABLE currency IS
 'ISO-4217 currencies.';
 COMMENT ON COLUMN currency.alpha_3_code IS
 'ISO-4217 3-character currency code.';
@@ -353,6 +355,10 @@ INSERT INTO currency( alpha_3_code
                      , replaced_by       = EXCLUDED.replaced_by
           ;
 
+GRANT SELECT
+   ON TABLE currency
+   TO public
+    ;
 
 RESET search_path;
 

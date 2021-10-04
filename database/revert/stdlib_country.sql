@@ -10,7 +10,6 @@ DROP FUNCTION is_postal_code(text, varchar)
             ;
 
 DROP TABLE country
-         , __country__
    CASCADE
          ;
 

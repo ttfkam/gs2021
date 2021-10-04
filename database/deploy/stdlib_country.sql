@@ -31,7 +31,9 @@ CREATE TABLE country (
                        CHECK (length_in(postal_code_pattern, 1, 126))
 ,          tel_pattern text
                        CHECK (length_in(sovereignty, 1, 150))
-) INHERITS (SYSTEM_VERSIONED); COMMENT ON TABLE country IS
+,                 LIKE stdlib.SYSTEM_VERSIONED
+                       INCLUDING COMMENTS
+); COMMENT ON TABLE country IS
 'An amalgam of ISO-3166, postal code patterns, and telephone number patterns.';
 COMMENT ON COLUMN country.alpha_3_code IS
 'ISO-3166 3-character country/territory code.';
@@ -400,6 +402,11 @@ ON CONFLICT (alpha_3_code)
                      , tel_pattern         = EXCLUDED.tel_pattern
                      , recognized          = '(-infinity, infinity)'
           ;
+
+GRANT SELECT
+   ON TABLE country
+   TO public
+    ;
 
 RESET search_path;
 

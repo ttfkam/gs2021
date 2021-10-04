@@ -11,23 +11,28 @@ SET ROLE geekspeak_admin
 CREATE TABLE episode_status ( name text PRIMARY KEY );
 
 CREATE TABLE episode (
-               id uuid PRIMARY KEY
-                  DEFAULT gen_random_uuid()
-,           title text UNIQUE
-,           promo text
-,         summary text
-,          status text NOT NULL
-                  REFERENCES episode_status
-                          ON UPDATE CASCADE
-                          ON DELETE RESTRICT
-,         airdate timestamptz
-,            slug text
-,            body text
-,       bit_order uuid[]
-,         publish timestamptz
-,         created timestamptz NOT NULL
-                  DEFAULT CURRENT_TIMESTAMP
-) INHERITS (stdlib.FTS, stdlib.SYSTEM_VERSIONED); COMMENT ON TABLE episode IS
+          id uuid PRIMARY KEY
+             DEFAULT gen_random_uuid()
+,      title text UNIQUE
+,      promo text
+,    summary text
+,     status text NOT NULL
+             REFERENCES episode_status
+                     ON UPDATE CASCADE
+                     ON DELETE RESTRICT
+,    airdate timestamptz
+,       slug text
+,       body text
+,  bit_order uuid[]
+,    publish timestamptz
+,    created timestamptz NOT NULL
+             DEFAULT CURRENT_TIMESTAMP
+,       LIKE stdlib.SYSTEM_VERSIONED
+             INCLUDING COMMENTS
+,       LIKE stdlib.FTS
+             INCLUDING COMMENTS
+             INCLUDING INDEXES
+); COMMENT ON TABLE episode IS
 'Episodes of GeekSpeak';
 COMMENT ON COLUMN episode.promo     IS 'Episode promotional text';
 COMMENT ON COLUMN episode.airdate   IS 'When the episode was made available';
@@ -42,10 +47,6 @@ CREATE INDEX episode_airdate_idx
 CREATE INDEX episode_publish_idx
           ON episode
        USING BTREE (publish)
-           ;
-CREATE INDEX _stdlib_fts_idx
-          ON link
-       USING GIN (_stdlib_fts)
            ;
 
 CREATE TABLE IF NOT EXISTS geek_bit_status ( name text PRIMARY KEY );
@@ -70,10 +71,12 @@ CREATE TABLE IF NOT EXISTS geek_bit (
 ,            body text
 ,         created timestamptz NOT NULL
                   DEFAULT CURRENT_TIMESTAMP
+,            LIKE stdlib.SYSTEM_VERSIONED INCLUDING COMMENTS
+,            LIKE stdlib.FTS              INCLUDING COMMENTS
 ,          UNIQUE ( episode_id
                   , link_id
                   )
-) INHERITS (stdlib.FTS, stdlib.SYSTEM_VERSIONED); COMMENT ON TABLE geek_bit IS
+); COMMENT ON TABLE geek_bit IS
 'Geek bits';
 COMMENT ON COLUMN geek_bit.offset_ms IS 'Time offset where the geek_bit exists in the episode';
 COMMENT ON COLUMN geek_bit.body      IS 'Bit content';
@@ -114,26 +117,23 @@ CREATE TRIGGER fts_update
              ;
 
  GRANT SELECT
+    ON TABLE episode
+           , geek_bit
+           , episode_status
+           , geek_bit_status
+    TO geekspeak_api
+     , geekspeak_analysis
+     ;
+
+ GRANT SELECT
      , INSERT
      , UPDATE
      , DELETE
     ON TABLE episode
            , geek_bit
-    TO geekspeak_app
-     ;
-
- GRANT SELECT
-    ON TABLE episode_status
-           , geek_bit_status
-    TO geekspeak_app
-     ;
-
- GRANT SELECT
-    ON TABLE episode
-           , geek_bit
            , episode_status
            , geek_bit_status
-    TO geekspeak_analysis
+    TO geekspeak_user
      ;
 
 RESET ROLE;

@@ -6,18 +6,30 @@ BEGIN;
 DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_admin') THEN
 
   CREATE ROLE geekspeak_admin
-              CREATEROLE
               LOGIN
-              REPLICATION
               BYPASSRLS
+              CREATEROLE
+              REPLICATION
               CONNECTION LIMIT 10
             ;
 END IF; END; $$ LANGUAGE plpgsql;
 
-DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_app') THEN
+DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_user') THEN
 
-  CREATE ROLE geekspeak_app
+  CREATE ROLE geekspeak_user
+              NOLOGIN
+              NOINHERIT
+            ;
+END IF; END; $$ LANGUAGE plpgsql;
+
+DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_api') THEN
+
+  CREATE ROLE geekspeak_api
               LOGIN
+              NOINHERIT
+            ;
+        GRANT geekspeak_user
+           TO geekspeak_api
             ;
 END IF; END; $$ LANGUAGE plpgsql;
 
@@ -29,5 +41,11 @@ DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_analysis') THEN
               CONNECTION LIMIT 10
             ;
 END IF; END; $$ LANGUAGE plpgsql;
+
+ GRANT CREATE
+     , USAGE
+    ON SCHEMA system_versioning
+    TO geekspeak_admin
+     ;
 
 COMMIT;

@@ -7,9 +7,18 @@ BEGIN;
 SET search_path = stdlib;
 
 CREATE TABLE FTS (
-           id uuid
-, _stdlib_fts tsvector
+  _stdlib_fts tsvector
 );
+
+CREATE INDEX stdlib_fts_idx
+          ON FTS
+       USING GIN (_stdlib_fts)
+           ;
+
+GRANT SELECT
+   ON TABLE FTS
+   TO public
+    ;
 
 CREATE FUNCTION search( IN  p_query tsquery
                       , OUT id      uuid
@@ -17,7 +26,7 @@ CREATE FUNCTION search( IN  p_query tsquery
                       , OUT rank    float4
                       )
         RETURNS SETOF RECORD LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
-  SELECT id
+  SELECT gen_random_uuid()
        , tableoid::regclass
        , ts_rank_cd(_stdlib_fts, p_query) rank
     FROM FTS

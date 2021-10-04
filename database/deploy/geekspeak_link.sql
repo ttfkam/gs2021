@@ -10,24 +10,24 @@ SET ROLE geekspeak_admin
        ;
 
 CREATE TABLE link (
-               id uuid PRIMARY KEY
-                  DEFAULT gen_random_uuid()
-,             uri stdlib.uri UNIQUE
-,           title text
-,         summary text
-,          scrape text
-,        metadata jsonb
-,         created timestamptz NOT NULL
-                  DEFAULT CURRENT_TIMESTAMP
-) INHERITS (stdlib.FTS); COMMENT ON TABLE link IS
+          id uuid PRIMARY KEY
+             DEFAULT gen_random_uuid()
+,        uri stdlib.uri UNIQUE
+,      title text
+,    summary text
+,     scrape text
+,   metadata jsonb
+,    created timestamptz NOT NULL
+             DEFAULT CURRENT_TIMESTAMP
+,       LIKE stdlib.SYSTEM_VERSIONED
+             INCLUDING COMMENTS
+,       LIKE stdlib.FTS
+             INCLUDING COMMENTS
+             INCLUDING INDEXES
+); COMMENT ON TABLE link IS
 'External links';
 COMMENT ON COLUMN link.scrape   IS 'Scraped text from the link for full text search';
 COMMENT ON COLUMN link.metadata IS 'Link metadata such as OpenGraph data';
-
-CREATE INDEX link_stdlib_fts_idx
-          ON link
-       USING GIN (_stdlib_fts)
-           ;
 
 CREATE FUNCTION fts(rec link)
         RETURNS tsvector LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
@@ -45,16 +45,17 @@ CREATE TRIGGER fts_update
              ;
 
  GRANT SELECT
+    ON TABLE link
+    TO geekspeak_api
+     , geekspeak_analysis
+     ;
+
+ GRANT SELECT
      , INSERT
      , UPDATE
      , DELETE
     ON TABLE link
-    TO geekspeak_app
-     ;
-
- GRANT SELECT
-    ON TABLE link
-    TO geekspeak_analysis
+    TO geekspeak_user
      ;
 
 RESET ROLE;

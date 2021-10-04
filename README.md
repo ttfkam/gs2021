@@ -1,8 +1,18 @@
 # Geek Speak
 
+First things first. Either create a .pgpass file in your home directory or
+edit the existing one to hold the following entry:
+
+```
+db:5432:*:postgres:demo
+```
+
+This allows the migration tool to update the local development database.
+
 ## Database
 
-[Sqitch](https://sqitch.org/docs/manual/sqitchtutorial/) migration files. To install Sqitch:
+[Sqitch](https://sqitch.org/docs/manual/sqitchtutorial/) migration files. To
+install Sqitch locally (not required):
 
 ```sh
 % docker pull sqitch/sqitch

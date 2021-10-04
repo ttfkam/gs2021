@@ -15,8 +15,6 @@ DROP FUNCTION admin_or_same_account(uuid)
 DROP TABLE
  IF EXISTS account
          , account_email
-         , __account__
-         , __account_email__
    CASCADE
          ;
 

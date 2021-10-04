@@ -14,8 +14,6 @@ DROP FUNCTION fts(episode)
 DROP TABLE
  IF EXISTS episode
          , geek_bit
-         , __episode__
-         , __geek_bit__
          , episode_status
          , geek_bit_status
    CASCADE

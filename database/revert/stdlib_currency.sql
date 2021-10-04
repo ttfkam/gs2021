@@ -6,7 +6,6 @@ BEGIN;
 SET search_path = stdlib;
 
 DROP TABLE currency
-         , __currency__
    CASCADE
          ;
 
