@@ -268,13 +268,8 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
           TO PUBLIC
            ;
 
-       ALTER TABLE system_versioning.%3$I
-               ADD COLUMN IF NOT EXISTS _system stdlib.__system_versioned NOT NULL
-                 ;
-
        ALTER TABLE IF EXISTS %1$I.%2$I
-               ADD COLUMN IF NOT EXISTS _system stdlib.__system_versioned NOT NULL
-       ,   INHERIT system_versioning.%3$I
+           INHERIT system_versioning.%3$I
                  ;
        -- Prevent the system versioned column from being altered through GraphQL
        COMMENT ON COLUMN %1$I.%2$I._system IS
@@ -307,11 +302,11 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
          SELECT (rec._system).username;
        $system_versioned$;
 
-       DROP TRIGGER IF EXISTS system_versioned_insert_trigger      ON %1$I.%2$I;
-       DROP TRIGGER IF EXISTS system_versioned_update_trigger      ON %1$I.%2$I;
-       DROP TRIGGER IF EXISTS system_versioned_update_to_history   ON %1$I.%2$I;
-       DROP TRIGGER IF EXISTS system_versioned_delete_to_history   ON %1$I.%2$I;
-       DROP TRIGGER IF EXISTS system_versioned_truncate_to_history ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_insert_trigger      ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_update_trigger      ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_update_to_history   ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_delete_to_history   ON %1$I.%2$I;
+      --  DROP TRIGGER IF EXISTS system_versioned_truncate_to_history ON %1$I.%2$I;
 
        CREATE TRIGGER system_versioned_insert_trigger
                BEFORE INSERT
@@ -368,7 +363,7 @@ CREATE FUNCTION create_system_versioned_history()
              c.relnamespace::regnamespace::name AS schema_name
            , c.relname                          AS table_name
            , coalesce( history.relname
-                     , (c.relname || '_' || gen_random_uuid()::text)::name
+                     , (gen_random_uuid()::text  || '_' || c.relname)::name
                      )                          AS history_name
         FROM pg_event_trigger_ddl_commands() AS d
         JOIN pg_attribute                    AS a
@@ -386,10 +381,10 @@ CREATE FUNCTION create_system_versioned_history()
        WHERE c.relnamespace <> 'system_versioning'::regnamespace
        LIMIT 1
     LOOP
-      RAISE INFO 'Enabling system versioned history for table: %.%'
-               , r.schema_name
-               , r.table_name
-               ;
+      -- RAISE INFO 'Enabling system versioned history for table: %.%'
+      --          , r.schema_name
+      --          , r.table_name
+      --          ;
       PERFORM stdlib.init_system_versioned_history( r.schema_name
                                                   , r.table_name
                                                   , r.history_name
