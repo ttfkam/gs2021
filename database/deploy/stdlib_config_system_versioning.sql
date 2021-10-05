@@ -302,12 +302,6 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
          SELECT (rec._system).username;
        $system_versioned$;
 
-      --  DROP TRIGGER IF EXISTS system_versioned_insert_trigger      ON %1$I.%2$I;
-      --  DROP TRIGGER IF EXISTS system_versioned_update_trigger      ON %1$I.%2$I;
-      --  DROP TRIGGER IF EXISTS system_versioned_update_to_history   ON %1$I.%2$I;
-      --  DROP TRIGGER IF EXISTS system_versioned_delete_to_history   ON %1$I.%2$I;
-      --  DROP TRIGGER IF EXISTS system_versioned_truncate_to_history ON %1$I.%2$I;
-
        CREATE TRIGGER system_versioned_insert_trigger
                BEFORE INSERT
                    ON %1$I.%2$I
@@ -381,10 +375,6 @@ CREATE FUNCTION create_system_versioned_history()
        WHERE c.relnamespace <> 'system_versioning'::regnamespace
        LIMIT 1
     LOOP
-      -- RAISE INFO 'Enabling system versioned history for table: %.%'
-      --          , r.schema_name
-      --          , r.table_name
-      --          ;
       PERFORM stdlib.init_system_versioned_history( r.schema_name
                                                   , r.table_name
                                                   , r.history_name

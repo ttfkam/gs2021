@@ -50,3 +50,35 @@ services:
       - "3000"
     depends_on:
       - dbmigration
+
+  ui-public:
+    build:
+      context: ./ui/public
+      dockerfile: Dockerfile.dev
+    environment:
+      HOST: 0.0.0.0
+    volumes:
+      - ./ui/public/src:/app/src
+      - ./ui/public/static:/app/static
+    ports:
+      - "15000:15000"
+      - "8080:3000"
+    depends_on:
+      - graphql
+    command: npm run dev -- --host=0.0.0.0
+
+  ui-admin:
+    build:
+      context: ./ui/admin
+      dockerfile: Dockerfile.dev
+    environment:
+      HOST: 0.0.0.0
+    volumes:
+      - ./ui/admin/src:/app/src
+      - ./ui/admin/static:/app/static
+    ports:
+      - "15001:15001"
+      - "8081:3000"
+    depends_on:
+      - graphql
+    command: npm run dev -- --host=0.0.0.0
