@@ -1,0 +1,48 @@
+@startuml Database migration
+start
+:Store current migration;
+if (Verify current migration) then (failure)
+  #pink:Report error;
+  note left: Manual changes detected
+  kill
+endif
+#lightblue:Create test database named by git commit id
+          with live database as template;
+#lightblue:Perform dry run on test database;
+if (Migrate) then (failure)
+  #lightblue:Drop test database|
+  #pink:Report error;
+  kill
+elseif (Verify) then (failure)
+  #lightblue:Drop test database|
+  #pink:Report error;
+  kill
+elseif (Revert) then (failure)
+  #lightblue:Drop test database|
+  #pink:Report error;
+  kill
+elseif (Re-migrate) then (failure)
+  #lightblue:Drop test database|
+  #pink:Report error;
+  kill
+else
+endif
+#lightblue:Drop test database|
+:Run migration on live database;
+if (Migrate) then (failure)
+  #pink:Revert live database|
+  #pink:Report error;
+  kill
+elseif (Verify) then (failure)
+  #pink:Revert live database|
+  #pink::Report error;
+  kill
+else
+endif
+:Update database metadata in DynamoDB;
+#palegreen:Report success;
+if (Pipeline status) then (failure)
+  #pink:Revert live database|
+endif
+stop
+@enduml

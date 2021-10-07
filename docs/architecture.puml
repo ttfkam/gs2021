@@ -1,0 +1,67 @@
+@startuml GeekSpeak Architecture
+
+!include <awslib/AWSCommon>
+!include <awslib/AWSSimplified>
+
+!include <awslib/Compute/Lambda>
+!include <awslib/Database/DynamoDB>
+!include <awslib/Database/RDS>
+!include <awslib/DeveloperTools/XRay>
+!include <awslib/General/Users>
+!include <awslib/ManagementAndGovernance/CloudWatch>
+!include <awslib/ManagementAndGovernance/SystemsManagerParameterStore>
+!include <awslib/Mobile/APIGateway>
+!include <awslib/NetworkingAndContentDelivery/CloudFront>
+!include <awslib/NetworkingAndContentDelivery/Route53>
+!include <awslib/SecurityIdentityAndCompliance/CertificateManager>
+!include <awslib/SecurityIdentityAndCompliance/Cognito>
+!include <awslib/Storage/SimpleStorageServiceBucket>
+
+left to right direction
+
+package "VPC" {
+  Lambda(graphql, "/graphql\n(Postgraphile)", "Postgraphile access to the database")
+  Lambda(upload, "/upload", "Media file management")
+  package "Private Subnet" {
+    RDS(gsDb, "Database\n(RDS Postgres)", "Main data store for GeekSpeak")
+  }
+}
+
+APIGateway(apig, "API Gateway\napi.geekspeak.org", "Data API endpoint")
+CertificateManager(certs, "SSL Certs\n(Certificate Manager)", "")
+CloudFront(admin, "CDN\n(CloudFront)\nadmin.geekspeak.org", "Admin tools for modification")
+CloudFront(public, "CDN\n(CloudFront)\ngeekspeak.org", "Public access")
+CloudWatch(metrics, "Metrics & Logs\n(CloudWatch)", "How are we performing?")
+Cognito(userAuth, "Authentication\n(Cognito)", "JWT from authentication")
+DynamoDB(ddb, "Serverless State\n(DynamoDB)", "")
+Route53(dns, "DNS\n(Route53)\ngeekspeak.org", "DNS entries")
+SimpleStorageServiceBucket(staticAssets, "Static Assets\n(S3 Bucket)", "Where *.geekspeak.org files go")
+SystemsManagerParameterStore(config, "Database Creds\n(Parameter Store)", "SSM Parameter Store secret strings")
+Users(anonymous, "The Public\n(anonymous access)", "Anonymous users")
+Users(participants, "The Geeks", "Authenticated users")
+XRay(xray, "Distributed Tracing\n(X-Ray)", "Debugging for the win")
+
+dns <.. anonymous
+anonymous -> public
+public ---> staticAssets
+dns <.. participants
+public .. certs
+admin .. certs
+apig .. certs
+participants --> userAuth
+participants --> admin
+participants --> apig
+admin --> staticAssets
+userAuth .. admin
+userAuth .. apig
+apig --> graphql
+apig --> upload
+upload ...> config
+upload --> staticAssets
+upload --> gsDb
+gsDb .. config
+ddb <.. graphql
+graphql --> gsDb
+graphql ...> config
+
+@enduml
