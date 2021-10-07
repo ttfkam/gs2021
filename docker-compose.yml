@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: demo
     volumes:
       - ./docker/pgdata:/var/lib/postgresql/data
-      - ./docker/initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/local-db-init:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s

@@ -24,6 +24,7 @@ CREATE TABLE episode_asset (
 ,        LIKE stdlib.FTS
               INCLUDING COMMENTS
               INCLUDING INDEXES
+,      UNIQUE (episode_id, filename)
 ); COMMENT ON TABLE episode_asset IS
 'External files associated with an episode like images and other media';
 COMMENT ON COLUMN episode_asset.filename IS 'Human-readable file name';

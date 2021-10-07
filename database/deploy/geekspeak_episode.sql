@@ -48,6 +48,10 @@ CREATE INDEX episode_publish_idx
           ON episode
        USING BTREE (publish)
            ;
+CREATE INDEX episode_status_idx
+          ON episode
+       USING BTREE (status)
+           ;
 
 CREATE TABLE IF NOT EXISTS geek_bit_status ( name text PRIMARY KEY );
 
@@ -71,8 +75,11 @@ CREATE TABLE IF NOT EXISTS geek_bit (
 ,            body text
 ,         created timestamptz NOT NULL
                   DEFAULT CURRENT_TIMESTAMP
-,            LIKE stdlib.SYSTEM_VERSIONED INCLUDING COMMENTS
-,            LIKE stdlib.FTS              INCLUDING COMMENTS
+,            LIKE stdlib.SYSTEM_VERSIONED
+                  INCLUDING COMMENTS
+,            LIKE stdlib.FTS
+                  INCLUDING COMMENTS
+                  INCLUDING INDEXES
 ,          UNIQUE ( episode_id
                   , link_id
                   )
@@ -81,9 +88,13 @@ CREATE TABLE IF NOT EXISTS geek_bit (
 COMMENT ON COLUMN geek_bit.offset_ms IS 'Time offset where the geek_bit exists in the episode';
 COMMENT ON COLUMN geek_bit.body      IS 'Bit content';
 
-CREATE INDEX episode_stdlib_fts_idx
-          ON episode
-       USING GIN (_stdlib_fts)
+CREATE INDEX geek_bit_link_id_idx
+          ON geek_bit
+       USING BTREE (link_id)
+           ;
+CREATE INDEX geek_bit_episode_id_idx
+          ON geek_bit
+       USING BTREE (episode_id)
            ;
 
 CREATE FUNCTION fts(rec episode)

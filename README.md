@@ -17,6 +17,8 @@ Third, run the following:
 docker-compose up -d
 ```
 
+![GeekSpeak 2021 Architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/ttfkam/gs2021/master/docs/architecture.puml)
+
 ## Database
 
 [Sqitch](https://sqitch.org/docs/manual/sqitchtutorial/) migration files. To

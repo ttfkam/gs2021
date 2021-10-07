@@ -33,6 +33,19 @@ CREATE TABLE participant (
 ); COMMENT ON TABLE participant IS
 'Accounts associated with an episode';
 
+CREATE INDEX participant_episode_id_idx
+          ON participant
+       USING BTREE (episode_id)
+           ;
+CREATE INDEX participant_account_id_idx
+          ON participant
+       USING BTREE (account_id)
+           ;
+CREATE INDEX participant_episode_role_idx
+          ON participant
+       USING BTREE (episode_role)
+           ;
+
 GRANT SELECT
    ON TABLE episode_role
    TO geekspeak_api
