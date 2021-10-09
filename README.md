@@ -17,6 +17,17 @@ Third, run the following:
 docker-compose up -d
 ```
 
+Fourth, [create a JWT](https://jwt.io/) with a role and an email address for use with the GraphiQL GraphQL tool. (None of the other options matter for local development.)
+
+```json
+{
+  "role": "user",
+  "email": "youremail@example.com"
+}
+```
+
+## Architecture
+
 ![GeekSpeak 2021 Architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/ttfkam/gs2021/master/docs/architecture.puml)
 
 ## Database
