@@ -1,2 +1,3 @@
 FROM sqitch/sqitch
-CMD [ "deploy", "-t", "postgres://postgres@db/geekspeak" ]
+ENTRYPOINT []
+CMD /bin/sqitch deploy -t postgres://postgres@db/geekspeak && sleep infinity

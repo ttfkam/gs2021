@@ -89,7 +89,7 @@ CREATE FUNCTION current_system_versioned()
         RETURNS __system_versioned LANGUAGE sql STRICT VOLATILE PARALLEL RESTRICTED AS $$
   SELECT txid_current()
        , tstzrange(clock_timestamp(), NULL, '[)')
-       , current_app_user()
+       , stdlib.current_app_user()
        ;
 $$; COMMENT ON FUNCTION current_system_versioned() IS
 '@omit
@@ -110,7 +110,7 @@ Convenience function to update system versioned metadata.';
 CREATE FUNCTION system_versioned_insert()
         RETURNS trigger LANGUAGE plpgsql AS $$
   BEGIN
-    NEW._system := current_system_versioned();
+    NEW._system := stdlib.current_system_versioned();
     RETURN NEW;
   END;
 $$; COMMENT ON FUNCTION system_versioned_insert() IS
@@ -123,7 +123,7 @@ CREATE FUNCTION system_versioned_update()
         AND (to_jsonb(OLD) - '_system') = (to_jsonb(NEW) - '_system')) THEN
       RETURN NULL; -- Nothing new to write, so save some I/O
     END IF;
-    NEW._system := current_system_versioned();
+    NEW._system := stdlib.current_system_versioned();
     RETURN NEW;
   END;
 $$; COMMENT ON FUNCTION system_versioned_update() IS
@@ -133,7 +133,7 @@ CREATE FUNCTION system_versioned_update_to_history()
         RETURNS trigger LANGUAGE plpgsql AS $$
   BEGIN
     -- Set an end timestamp to the system versioned row before recording in history
-    OLD._system := system_versioned_close(OLD._system, lower((NEW._system).system_time));
+    OLD._system := stdlib.system_versioned_close(OLD._system, lower((NEW._system).system_time));
     EXECUTE format( 'INSERT INTO system_versioning.%1$I
                           SELECT *
                             FROM jsonb_populate_recordset( NULL::system_versioning.%1$I
@@ -165,7 +165,7 @@ CREATE FUNCTION system_versioned_delete_to_history()
                            ;';
   BEGIN
     -- Set an end timestamp to the system versioned row before recording in history
-    OLD._system := system_versioned_close(OLD._system, this_moment);
+    OLD._system := stdlib.system_versioned_close(OLD._system, this_moment);
     EXECUTE format( query
                   , TG_ARGV[0]
                   , concat( '[', row_to_json(OLD)::text, ']' )
@@ -174,7 +174,7 @@ CREATE FUNCTION system_versioned_delete_to_history()
     -- Set an end timestamp to the system versioned row before recording in history
     OLD._system = ( txid_current()
                   , tstzrange(this_moment, this_moment, '[]')
-                  , current_app_user()
+                  , stdlib.current_app_user()
                   );
     -- Insert the delete action
     EXECUTE format( query
@@ -253,6 +253,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
       '-- Creating history table
        CREATE TABLE IF NOT EXISTS system_versioning.%3$I (
                              LIKE %1$I.%2$I
+                                  INCLUDING COMMENTS
        ); COMMENT ON TABLE system_versioning.%3$I IS
        E''@omit\nAuto-generated history for table %1$I.%2$I.\nNot included in the GraphQL schema.'';
 
@@ -273,7 +274,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
                  ;
        -- Prevent the system versioned column from being altered through GraphQL
        COMMENT ON COLUMN %1$I.%2$I._system IS
-       E''Auto-generated system versioned data for table %1$I.%2$I.'';
+       E''@omit\nAuto-generated system versioned data for table %1$I.%2$I.'';
 
        CREATE OR REPLACE FUNCTION %1$I.%2$I(tstzrange)
                           RETURNS SETOF system_versioning.%3$I LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
@@ -282,7 +283,7 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
           WHERE (_system).system_time && $1
               ;
        $system_versioned$; COMMENT ON FUNCTION %1$I.%2$I(tstzrange) IS
-       E''Auto-generated\nAllow easy searching of %1$I.%2$I history by timestamp range'';
+       E''Allow easy searching of %1$I.%2$I history by timestamp range'';
 
        CREATE OR REPLACE FUNCTION %1$I.%2$I(timestamptz)
                           RETURNS SETOF system_versioning.%3$I LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
@@ -290,17 +291,27 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
            FROM %1$I.%2$I( tstzrange( $1, $1, ''[]'' ) )
               ;
        $system_versioned$; COMMENT ON FUNCTION %1$I.%2$I(timestamptz) IS
-       E''Auto-generated\nPoint in time accessor for %1$I.%2$I'';
+       E''Point in time accessor for %1$I.%2$I'';
 
-       CREATE OR REPLACE FUNCTION last_modified(rec %1$I.%2$I)
-                          RETURNS timestamptz LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $system_versioned$
+       CREATE OR REPLACE FUNCTION %1$I."%2$s_history"(rec %1$I.%2$I)
+                          RETURNS SETOF system_versioning.%3$I LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
+         SELECT *
+           FROM system_versioning.%3$I
+              ;
+       $system_versioned$; COMMENT ON FUNCTION %1$I."%2$s_history"(rec %1$I.%2$I) IS
+       E''Row history for %1$I.%2$I'';
+
+       CREATE OR REPLACE FUNCTION %1$I."%2$s_last_modified"(rec %1$I.%2$I)
+                          RETURNS timestamptz LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
          SELECT lower((rec._system).system_time);
-       $system_versioned$;
+       $system_versioned$; COMMENT ON FUNCTION %1$I."%2$s_last_modified"(%1$I.%2$I) IS
+       E''Row last modified for %1$I.%2$I'';
 
-       CREATE OR REPLACE FUNCTION last_modified_by(rec %1$I.%2$I)
-                          RETURNS text LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $system_versioned$
+       CREATE OR REPLACE FUNCTION %1$I."%2$s_last_modified_by"(rec %1$I.%2$I)
+                          RETURNS text LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
          SELECT (rec._system).username;
-       $system_versioned$;
+       $system_versioned$; COMMENT ON FUNCTION %1$I."%2$s_last_modified_by"(%1$I.%2$I) IS
+       E''User who last modified the row in %1$I.%2$I'';
 
        CREATE TRIGGER system_versioned_insert_trigger
                BEFORE INSERT
@@ -456,7 +467,7 @@ CREATE POLICY public_access
               SELECT coalesce(
                        bool_or(
                          -- If it's from 'app.user', just do a simple match
-                         CASE WHEN arr.username !~ '^%.+%$' THEN current_app_user() = arr.username
+                         CASE WHEN arr.username !~ '^%.+%$' THEN stdlib.current_app_user() = arr.username
                               -- If it looks like '%username%', strip the bounding percents and do
                               -- a role check, including inherited roles.
                               ELSE pg_has_role( CURRENT_USER

@@ -9,6 +9,9 @@ SET search_path = stdlib;
 CREATE TABLE FTS (
   _stdlib_fts tsvector
 );
+COMMENT ON COLUMN FTS._stdlib_fts IS
+'@omit
+Full text search vector';
 
 CREATE INDEX stdlib_fts_idx
           ON FTS

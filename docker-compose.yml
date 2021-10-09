@@ -46,10 +46,13 @@ services:
     environment:
       DB_URL: 'postgres://geekspeak_api:demo@db/geekspeak'
       DB_ADMIN_URL: 'postgres://postgres:demo@db/geekspeak'
+    volumes:
+      - ./graphql/lib:/app/lib
     ports:
       - "3000"
     depends_on:
       - dbmigration
+    command: "npm run start:dev"
 
   ui-public:
     build:

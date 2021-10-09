@@ -5,7 +5,8 @@
   "main": "lib/index.mjs",
   "scripts": {
     "start": "node lib/index.mjs",
-    "start:dev": "nodemon lib/index.mjs",
+    "start:dev": "nodemon --inspect=0.0.0.0 lib/index.mjs",
+    "start:dev-brk": "nodemon --inspect-brk=0.0.0.0 lib/index.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,6 +20,7 @@
     "@graphile-contrib/pg-many-to-many": "^1.0.1",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "dotenv": "^10.0.0",
+    "jwt-simple": "^0.5.6",
     "koa": "^2.13.1",
     "postgraphile": "^4.12.3",
     "serverless-http": "^2.7.0"

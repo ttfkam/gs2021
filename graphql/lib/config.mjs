@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import ssm from '@aws-sdk/client-ssm';
 import { createRequire } from 'module';
+import jwt from 'jwt-simple';
 import SimplifyInflector from '@graphile-contrib/pg-simplify-inflector';
 import ManyToManyPlugin from '@graphile-contrib/pg-many-to-many';
 
@@ -42,17 +43,30 @@ export const options = (serverless) => ({
     enableQueryBatching: true,
     enhanceGraphiql: !serverless,
     exportGqlSchemaPath: serverless ? undefined : env.GQL_SCHEMA_PATH,
-    extendedErrors: ["hint", "detail", "errcode"],
+    extendedErrors: ['hint', 'detail', 'errcode'],
     graphiql: !serverless,
     graphiqlRoute: '/',
     ignoreIndexes: false,
     ignoreRBAC: false,
-    legacyRelations: "omit",
+    jwtSecret: 'unused',
+    jwtVerifyOptions: {
+        audience: null,
+    },
+    legacyRelations: 'omit',
     ownerConnectionString: dbAdminUrl,
+    pgSettings: async req => {
+        const token = req.headers.authorization?.substring('Bearer '.length);
+        const decoded = token ? jwt.decode(token, '', true) : {};
+        return {
+            'role': `geekspeak_${decoded.role ?? 'api'}`,
+            'jwt.claims.email': decoded.email,
+        };
+    },
     readCache: serverless ? undefined : env.SCHEMA_CACHE_FILE,
     retryOnInitFail: !serverless,
     setofFunctionsContainNulls: false,
-    showErrorStack: "json",
+    showErrorStack: 'json',
+    simpleCollections: 'both',
     watchPg: !serverless,
 });
 export const port = parseInt(env.PORT, 10) || 3000;
