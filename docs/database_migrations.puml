@@ -21,6 +21,10 @@ elseif (Revert) then (failure)
   #lightblue:Drop test database|
   #pink:Report error;
   kill
+elseif (Verify) then (failure)
+  #lightblue:Drop test database|
+  #pink:Report error;
+  kill
 elseif (Re-migrate) then (failure)
   #lightblue:Drop test database|
   #pink:Report error;

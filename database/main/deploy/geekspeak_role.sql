@@ -26,7 +26,7 @@ DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_api') THEN
 
   CREATE ROLE geekspeak_api
               LOGIN
-              NOINHERIT
+              INHERIT
             ;
         GRANT geekspeak_user
            TO geekspeak_api
@@ -37,6 +37,7 @@ DO $$ BEGIN IF stdlib.not_exists('role', 'geekspeak_analysis') THEN
 
   CREATE ROLE geekspeak_analysis
               LOGIN
+              INHERIT
               BYPASSRLS
               CONNECTION LIMIT 10
             ;

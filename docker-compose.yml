@@ -36,7 +36,7 @@ services:
       dockerfile: Dockerfile.dbmigration
     volumes:
       - $HOME/.pgpass:/home/.pgpass
-      - ./database:/repo
+      - ./database/main:/repo
     depends_on:
       db:
         condition: service_healthy
