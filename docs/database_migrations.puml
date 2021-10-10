@@ -1,52 +1,62 @@
 @startuml Database migration
+
+skinparam {
+  ArrowColor black
+  PartitionBorderColor darkgray
+}
+
 start
 :Store current migration;
 if (Verify current migration) then (failure)
-  #pink:Report error;
+  #pink/white:Report error;
   note left: Manual changes detected
   kill
 endif
-#lightblue:Create test database named by git commit id
-          with live database as template;
-#lightblue:Perform dry run on test database;
-if (Migrate) then (failure)
-  #lightblue:Drop test database|
-  #pink:Report error;
-  kill
-elseif (Verify) then (failure)
-  #lightblue:Drop test database|
-  #pink:Report error;
-  kill
-elseif (Revert) then (failure)
-  #lightblue:Drop test database|
-  #pink:Report error;
-  kill
-elseif (Verify) then (failure)
-  #lightblue:Drop test database|
-  #pink:Report error;
-  kill
-elseif (Re-migrate) then (failure)
-  #lightblue:Drop test database|
-  #pink:Report error;
-  kill
-else
-endif
-#lightblue:Drop test database|
-:Run migration on live database;
-if (Migrate) then (failure)
-  #pink:Revert live database|
-  #pink:Report error;
-  kill
-elseif (Verify) then (failure)
-  #pink:Revert live database|
-  #pink::Report error;
-  kill
-else
-endif
-:Update database metadata in DynamoDB;
-#palegreen:Report success;
+
+partition #white/lightblue "Perform dry run" {
+  #lightcyan/white:Create test database named by git commit id
+            with live database as template;
+  if (Migrate) then (failure)
+    #lightcyan/pink:Drop test database|
+    #pink/white:Report error;
+    kill
+  elseif (Verify) then (failure)
+    #lightcyan/pink:Drop test database|
+    #pink/white:Report error;
+    kill
+  elseif (Revert) then (failure)
+    #lightcyan/pink:Drop test database|
+    #pink/white:Report error;
+    kill
+  elseif (Verify) then (failure)
+    #lightcyan/pink:Drop test database|
+    #pink/white:Report error;
+    kill
+  elseif (Re-migrate) then (failure)
+    #lightcyan/pink:Drop test database|
+    #pink/white:Report error;
+    kill
+  else
+  endif
+  #lightcyan/white:Drop test database|
+}
+
+partition #white/cornflowerblue "Run migration" {
+  if (Migrate) then (failure)
+    #pink/white:Revert live database|
+    #pink/white:Report error;
+    kill
+  elseif (Verify) then (failure)
+    #pink/white:Revert live database|
+    #pink/white:Report error;
+    kill
+  endif
+}
+
+:Update database metadata in S3;
+#lime/green:Report success;
 if (Pipeline status) then (failure)
-  #pink:Revert live database|
+  #pink/white:Revert live database|
 endif
 stop
 @enduml
