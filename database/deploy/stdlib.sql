@@ -30,7 +30,7 @@ SET search_path = stdlib, public;
 
 CREATE FUNCTION set_app_user(p_app_user text)
         RETURNS void LANGUAGE sql VOLATILE AS $$
-  SELECT set_config('jwt.claims.user', p_app_user, true)
+  SELECT set_config('jwt.claims.email', p_app_user, true)
    WHERE p_app_user IS NOT NULL
        ;
 
@@ -43,7 +43,7 @@ database cluster roles.';
 CREATE FUNCTION current_app_user()
         RETURNS text LANGUAGE sql STABLE PARALLEL SAFE AS $$
   SELECT coalesce(
-           nullif( current_setting('jwt.claims.user', true), '')
+           nullif( current_setting('jwt.claims.email', true), '')
                  , concat('%', SESSION_USER, '%')
                  )
        ;

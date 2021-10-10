@@ -23,6 +23,7 @@ DROP DOMAIN media_type
           , tcpip_port
           , email
           , uri
+    CASCADE
           ;
 
 RESET search_path;
