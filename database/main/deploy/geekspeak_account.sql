@@ -35,7 +35,8 @@ CREATE TABLE account_email (
              REFERENCES account
                      ON UPDATE CASCADE
                      ON DELETE CASCADE
-,       LIKE stdlib.SYSTEM_VERSIONED INCLUDING COMMENTS
+,       LIKE stdlib.SYSTEM_VERSIONED
+             INCLUDING COMMENTS
 );
 
 CREATE INDEX account_id_idx

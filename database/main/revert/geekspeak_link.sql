@@ -7,11 +7,10 @@ SET ROLE geekspeak_admin
        ;
 
 DROP FUNCTION fts(link)
-      CASCADE
             ;
 
 DROP TABLE link
-           CASCADE
+   CASCADE
          ;
 
 RESET ROLE;

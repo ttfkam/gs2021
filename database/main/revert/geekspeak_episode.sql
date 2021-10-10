@@ -8,11 +8,9 @@ SET ROLE geekspeak_admin
 
 DROP FUNCTION fts(episode)
             , fts(geek_bit)
-      CASCADE
             ;
 
-DROP TABLE
- IF EXISTS episode
+DROP TABLE episode
          , geek_bit
          , episode_status
          , geek_bit_status

@@ -96,6 +96,10 @@ CREATE INDEX geek_bit_episode_id_idx
           ON geek_bit
        USING BTREE (episode_id)
            ;
+CREATE INDEX geek_bit_status_idx
+          ON geek_bit
+       USING BTREE (status)
+           ;
 
 CREATE FUNCTION fts(rec episode)
         RETURNS tsvector LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$

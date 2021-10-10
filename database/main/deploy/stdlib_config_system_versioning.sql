@@ -79,9 +79,19 @@ COMMENT ON TABLE SYSTEM_VERSIONED IS
 Generic system versioned metadata to track changes by user, transaction, and/or timestamp.
 By inheriting from this table, an event trigger will handle details.';
 
+CREATE VIEW table_history AS
+     SELECT live.oid::regclass live
+          , history.relname    history
+       FROM pg_inherits inh
+       JOIN pg_class    live    ON (inh.inhrelid  = live.oid)
+       JOIN pg_class    history ON (inh.inhparent = history.oid)
+      WHERE history.relnamespace = 'system_versioning'::regnamespace
+          ;
+
 GRANT SELECT
    ON TABLE __system_versioned
           , SYSTEM_VERSIONED
+          , table_history
    TO public
     ;
 
@@ -130,7 +140,7 @@ $$; COMMENT ON FUNCTION system_versioned_update() IS
 'Updates system versioned metadata automatically on system versioned tables.';
 
 CREATE FUNCTION system_versioned_update_to_history()
-        RETURNS trigger LANGUAGE plpgsql AS $$
+        RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
   BEGIN
     -- Set an end timestamp to the system versioned row before recording in history
     OLD._system := stdlib.system_versioned_close(OLD._system, lower((NEW._system).system_time));
@@ -152,7 +162,7 @@ $$; COMMENT ON FUNCTION system_versioned_update_to_history() IS
 'Records updates to system versioned tables to their respective history tables.';
 
 CREATE FUNCTION system_versioned_delete_to_history()
-        RETURNS trigger LANGUAGE plpgsql AS $$
+        RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
   DECLARE
        json_row text;
     this_moment timestamptz = clock_timestamp();
@@ -189,7 +199,7 @@ $$; COMMENT ON FUNCTION system_versioned_delete_to_history() IS
 'Records deletes from system versioned tables to their respective history tables.';
 
 CREATE FUNCTION system_versioned_truncate_to_history()
-        RETURNS trigger LANGUAGE plpgsql AS $$
+        RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
   BEGIN
     -- Set all of the end timestamps and send to history in one shot.
     EXECUTE format( 'WITH ended AS (
@@ -223,24 +233,55 @@ $$; COMMENT ON FUNCTION system_versioned_truncate_to_history() IS
 
 CREATE FUNCTION is_history_attached(p_table text)
         RETURNS bool LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
-  SELECT COUNT(inh.*) = 1
-    FROM pg_inherits AS inh
-    JOIN pg_class    AS rel
-         ON ( inh.inhrelid = rel.oid )
-    JOIN pg_class    AS history
-         ON ( inh.inhparent = history.oid
-              AND history.relnamespace = 'system_versioning'::regnamespace
-            )
-   WHERE inh.inhrelid = to_regclass(p_table)
+  SELECT COUNT(th.*) = 1
+    FROM stdlib.table_history th
+   WHERE th.live = to_regclass(p_table)
        ;
 $$; COMMENT ON FUNCTION is_history_attached(text) IS
 'Whether a table is system versioned, has a history table, and is currently linked to
 that history.';
 
-CREATE FUNCTION last_modified(p_system __system_versioned)
-        RETURNS timestamptz LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
-  SELECT lower(p_system.system_time)
-       ;
+CREATE FUNCTION make_history_dependent( p_live    regclass
+                                      , p_history regclass
+                                      )
+        RETURNS void LANGUAGE sql STRICT VOLATILE SECURITY DEFINER AS $$
+  INSERT INTO pg_depend ( classid
+                        , objid
+                        , objsubid
+                        , refclassid
+                        , refobjid
+                        , refobjsubid
+                        , deptype
+                        )
+       SELECT 'pg_class'::regclass
+            , p_history
+            , 0
+            , 'pg_class'::regclass
+            , p_live
+            , 0
+            , 'n'
+         FROM pg_class c
+        WHERE c.oid = p_history
+              AND c.relnamespace = 'system_versioning'::regnamespace
+            ;
+$$;
+
+CREATE FUNCTION grant_access_to_history( IN       p_live_table regclass
+                                       , VARIADIC p_roles      regrole[]
+                                       )
+        RETURNS void LANGUAGE plpgsql STRICT VOLATILE AS $$
+  BEGIN
+    EXECUTE format(
+      '
+        GRANT SELECT
+           ON TABLE %1$s
+           TO %2$s
+            ;
+      '
+    , (SELECT history::text FROM table_history WHERE live = p_live_table)
+    ,  array_to_string(p_roles::text[], ', ')
+    );
+  END;
 $$;
 
 CREATE FUNCTION init_system_versioned_history( p_schema_name name
@@ -262,19 +303,17 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
          FROM PUBLIC
             ; -- on the history table
 
-       -- Only allow insert and select to the history; make existing records immutable
-       GRANT SELECT
-           , INSERT
-          ON system_versioning.%3$I
-          TO PUBLIC
-           ;
-
        ALTER TABLE IF EXISTS %1$I.%2$I
            INHERIT system_versioning.%3$I
                  ;
        -- Prevent the system versioned column from being altered through GraphQL
        COMMENT ON COLUMN %1$I.%2$I._system IS
        E''@omit\nAuto-generated system versioned data for table %1$I.%2$I.'';
+
+       -- Allow histories to cascade when dropping their live tables
+       SELECT stdlib.make_history_dependent( ''%1$I.%2$I''::regclass
+                                           , ''system_versioning.%3$I''::regclass
+                                           );
 
        CREATE OR REPLACE FUNCTION %1$I.%2$I(tstzrange)
                           RETURNS SETOF system_versioning.%3$I LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
@@ -357,6 +396,29 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
 $$; COMMENT ON FUNCTION init_system_versioned_history(name, name, name) IS
 'Create a system versioned history table, link to active table, and set up access triggers.';
 
+CREATE FUNCTION drop_history(VARIADIC p_tables regclass[])
+        RETURNS void LANGUAGE plpgsql STRICT VOLATILE AS $$
+  DECLARE
+    r record;
+  BEGIN
+    FOR r IN
+      SELECT
+    DISTINCT th.live
+           , th.history
+        FROM stdlib.table_history th
+        JOIN unnest(p_tables) live(ref)
+             ON (th.live = live.ref)
+    LOOP
+      EXECUTE format(
+        '
+          DROP TABLE system_versioning.%2$I
+             CASCADE
+                   ;
+        ', live::text, history);
+    END LOOP;
+  END;
+$$;
+
 CREATE FUNCTION create_system_versioned_history()
         RETURNS EVENT_TRIGGER LANGUAGE plpgsql AS $$
   DECLARE
@@ -364,26 +426,20 @@ CREATE FUNCTION create_system_versioned_history()
     columns record;
   BEGIN
     FOR r IN
-      SELECT DISTINCT
-             c.relnamespace::regnamespace::name AS schema_name
-           , c.relname                          AS table_name
-           , coalesce( history.relname
-                     , (gen_random_uuid()::text  || '_' || c.relname)::name
-                     )                          AS history_name
+      SELECT c.relnamespace::regnamespace::name                   AS schema_name
+           , c.relname                                            AS table_name
+           , (gen_random_uuid()::text  || '_' || c.relname)::name AS history_name
         FROM pg_event_trigger_ddl_commands() AS d
         JOIN pg_attribute                    AS a
              ON ( d.objid = a.attrelid
                   AND a.attname = '_system'
                 )
         JOIN pg_class                        AS c
-             ON (d.objid = c.oid)
-        LEFT JOIN pg_inherits                AS i
-             ON ( d.objid = i.inhrelid )
-        LEFT JOIN pg_class                   AS history
-             ON ( i.inhparent = history.oid
-                  AND history.relnamespace = 'system_versioning'::regnamespace
-                )
+             ON ( d.objid = c.oid )
+        LEFT JOIN stdlib.table_history       AS th
+             ON ( d.objid = th.live )
        WHERE c.relnamespace <> 'system_versioning'::regnamespace
+             AND th.history IS NULL -- Don't add history where it already exists
        LIMIT 1
     LOOP
       PERFORM stdlib.init_system_versioned_history( r.schema_name

@@ -7,11 +7,9 @@ SET ROLE geekspeak_admin
        ;
 
 DROP FUNCTION fts(episode_asset)
-      CASCADE
             ;
 
-DROP TABLE
- IF EXISTS episode_asset
+DROP TABLE episode_asset
    CASCADE
          ;
 

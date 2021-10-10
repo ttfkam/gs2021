@@ -12,7 +12,8 @@ SET ROLE geekspeak_admin
 CREATE TABLE link (
           id uuid PRIMARY KEY
              DEFAULT gen_random_uuid()
-,        uri stdlib.uri UNIQUE
+,        uri stdlib.uri NOT NULL
+             UNIQUE
 ,      title text
 ,    summary text
 ,     scrape text

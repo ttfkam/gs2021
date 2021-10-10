@@ -2,24 +2,38 @@
     "version": 1,
     "config": {
         "class": {
-            "bit_status": {
+            "geek_bit_status": {
                 "tags": {
-                    "omit": "read,update,create,delete,all,many"
+                    "omit": "update,delete"
                 }
             },
             "episode_role": {
                 "tags": {
-                    "omit": "read,update,create,delete,all,many"
+                    "omit": "update,delete"
                 }
             },
             "episode_status": {
                 "tags": {
-                    "omit": "read,update,create,delete,all,many"
+                    "omit": "update,delete"
+                }
+            },
+            "episode": {
+                "attribute": {
+                    "status": {
+                        "tags": {
+                            "omit": "many"
+                        }
+                    }
                 }
             }
         },
         "procedure": {
-            "weighted_tsvector": {
+            "admin_or_same_account": {
+                "tags": {
+                    "omit": "execute"
+                }
+            },
+            "is_admin": {
                 "tags": {
                     "omit": "execute"
                 }

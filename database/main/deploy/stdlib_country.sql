@@ -70,7 +70,7 @@ CREATE FUNCTION is_postal_code( p_postal_code  text
   SELECT c.postal_code_pattern ~ p_postal_code
     FROM country c
    WHERE c.alpha_3_code = p_country_code
-         ;
+       ;
 $$; COMMENT ON FUNCTION is_postal_code(text, varchar) IS
 'Validate postal code by country/territory.
 

@@ -1,6 +1,6 @@
 %syntax-version=1.0.0
 %project=geekspeak
-%uri=https://github.com/sqitchers/sqitch-intro/
+%uri=https://github.com/ttfkam/gs2021/
 
 stdlib 2021-09-26T00:13:35Z Miles Elam <miles@geekspeak.org> # Database standard library
 stdlib_audit_ddl [stdlib] 2021-09-26T00:19:57Z Miles Elam <miles@geekspeak.org> # Database DDL auditing

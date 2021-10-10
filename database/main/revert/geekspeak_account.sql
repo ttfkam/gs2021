@@ -6,17 +6,17 @@ BEGIN;
 SET ROLE geekspeak_admin
        ;
 
-DROP FUNCTION admin_or_same_account(uuid)
-            , is_admin()
-            , fts(account)
-      CASCADE
+DROP FUNCTION fts(account)
             ;
 
-DROP TABLE
- IF EXISTS account
+DROP TABLE account
          , account_email
    CASCADE
          ;
+
+DROP FUNCTION admin_or_same_account(uuid)
+            , is_admin()
+            ;
 
 RESET ROLE;
 

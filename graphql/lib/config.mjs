@@ -48,10 +48,6 @@ export const options = (serverless) => ({
     graphiqlRoute: '/',
     ignoreIndexes: false,
     ignoreRBAC: false,
-    jwtSecret: 'unused',
-    jwtVerifyOptions: {
-        audience: null,
-    },
     legacyRelations: 'omit',
     ownerConnectionString: dbAdminUrl,
     pgSettings: async req => {
