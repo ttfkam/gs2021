@@ -284,6 +284,24 @@ CREATE FUNCTION grant_access_to_history( IN       p_live_table regclass
   END;
 $$;
 
+CREATE FUNCTION revoke_access_from_history( IN       p_live_table regclass
+                                          , VARIADIC p_roles      regrole[]
+                                          )
+        RETURNS void LANGUAGE plpgsql STRICT VOLATILE AS $$
+  BEGIN
+    EXECUTE format(
+      '
+        REVOKE SELECT
+            ON TABLE %1$s
+          FROM %2$s
+             ;
+      '
+    , (SELECT history::text FROM table_history WHERE live = p_live_table)
+    ,  array_to_string(p_roles::text[], ', ')
+    );
+  END;
+$$;
+
 CREATE FUNCTION init_system_versioned_history( p_schema_name name
                                              , p_table_name name
                                              , p_history_name name
