@@ -28,16 +28,14 @@ package "VPC" {
 }
 
 APIGateway(apig, "API Gateway\napi.geekspeak.org", "Data API endpoint")
-CertificateManager(certs, "SSL Certs\n(Certificate Manager)", "")
 CloudFront(admin, "CDN\n(CloudFront)\nadmin.geekspeak.org", "Admin tools for modification")
 CloudFront(public, "CDN\n(CloudFront)\ngeekspeak.org", "Public access")
 CloudWatch(metrics, "Metrics & Logs\n(CloudWatch)", "How are we performing?")
 Cognito(userAuth, "Authentication\n(Cognito)", "JWT from authentication")
-SimpleStorageServiceBucket(serverlessState, "Serverless State\n(S3 Bucket)", "Database schema cache files")
 Route53(dns, "DNS\n(Route53)\ngeekspeak.org", "DNS entries")
+SimpleStorageServiceBucket(dbSchemaCache, "DB Schema Cache\n(S3 Bucket)", "Database schema cache files")
 SimpleStorageServiceBucket(staticAdminAssets, "Static Admin Assets\n(S3 Bucket)", "Where *.geekspeak.org files go")
 SimpleStorageServiceBucket(staticPublicAssets, "Static Public Assets\n(S3 Bucket)", "Where *.geekspeak.org files go")
-SystemsManagerParameterStore(config, "Database Creds\n(Parameter Store)", "SSM Parameter Store secret strings")
 Users(anonymous, "The Public\n(anonymous access)", "Anonymous users")
 Users(participants, "The Geeks", "Authenticated users")
 XRay(xray, "Distributed Tracing\n(X-Ray)", "Debugging for the win")
@@ -46,9 +44,6 @@ dns <.. anonymous
 anonymous -> public
 public ---> staticPublicAssets
 dns <.. participants
-public .. certs
-admin .. certs
-apig .. certs
 participants --> userAuth
 participants --> admin
 participants --> apig
@@ -57,12 +52,9 @@ userAuth .. admin
 userAuth .. apig
 apig --> graphql
 apig --> upload
-upload ...> config
 upload --> staticPublicAssets
-upload --> gsDb
-gsDb .. config
-serverlessState <.. graphql
-graphql --> gsDb
-graphql ...> config
+upload --> gsDb : IAM Auth
+graphql ..> dbSchemaCache
+graphql --> gsDb : IAM Auth
 
 @enduml

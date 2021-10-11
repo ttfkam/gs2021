@@ -1,0 +1,23 @@
+@startmindmap Monorepo Organization
+!theme materia
+
++ •
+++ Documentation
+++ Local Dev
++++ Main Database\n(PostgreSQL)
+++++ Initialization
+++++ Migration Assistant\n(Sqitch)
++++ DB Admin\n(PgAdmin4)
+-- AWS Infrastructure (CDK)
+--- Stacks
+--- Pipeline
+-- Database Migrations\n(Sqitch for PostgreSQL)
+--- Main
+-- API\n[[https://api.geekspeak.org/ api.geekspeak.org]]
+--- GraphQL\n/graphql
+--- File Upload\n/upload
+-- User Interfaces
+--- Administration\n[[https://admin.geekspeak.org/ admin.geekspeak.org]]
+--- Public-Facing\n[[https://geekspeak.org/ geekspeak.org]]
+
+@endmindmap

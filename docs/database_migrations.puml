@@ -1,62 +1,93 @@
 @startuml Database migration
+!theme materia
 
-skinparam {
-  ArrowColor black
-  PartitionBorderColor darkgray
-}
+!pragma useVerticalIf on
 
 start
-:Store current migration;
-if (Verify current migration) then (failure)
-  #pink/white:Report error;
-  note left: Manual changes detected
+note left: Start the database migration
+
+:Retrieve the previous migration name;
+if (Verify current migration) then (fail)
+  -[#red]->
+  #orangered:Report error;
+  note right: Manual changes detected
   kill
 endif
 
-partition #white/lightblue "Perform dry run" {
-  #lightcyan/white:Create test database named by git commit id
+partition "**Perform dry run**" {
+  :Create test database named by git commit id
             with live database as template;
-  if (Migrate) then (failure)
-    #lightcyan/pink:Drop test database|
-    #pink/white:Report error;
+  if (Migrate) then (fail)
+    -[#red]->
+    :Drop test database|
+    -[#red]->
+    #darkorange:Report error;
+    note right: Up script error
     kill
-  elseif (Verify) then (failure)
-    #lightcyan/pink:Drop test database|
-    #pink/white:Report error;
+  elseif (Verify) then (fail)
+    -[#red]->
+    :Drop test database|
+    -[#red]->
+    #darkorange:Report error;
+    note right: Bad state error
     kill
-  elseif (Revert) then (failure)
-    #lightcyan/pink:Drop test database|
-    #pink/white:Report error;
+  elseif (Revert) then (fail)
+    -[#red]->
+    :Drop test database|
+    -[#red]->
+    #darkorange:Report error;
+    note right: Reversion error
     kill
-  elseif (Verify) then (failure)
-    #lightcyan/pink:Drop test database|
-    #pink/white:Report error;
+  elseif (Verify) then (fail)
+    -[#red]->
+    :Drop test database|
+    -[#red]->
+    #darkorange:Report error;
+    note right: Dirty roll back
     kill
-  elseif (Re-migrate) then (failure)
-    #lightcyan/pink:Drop test database|
-    #pink/white:Report error;
+  elseif (Re-migrate) then (fail)
+    -[#red]->
+    :Drop test database|
+    -[#red]->
+    #darkorange:Report error;
+    note right: Not idempotent
     kill
   else
   endif
-  #lightcyan/white:Drop test database|
+  :Drop test database|
 }
 
-partition #white/cornflowerblue "Run migration" {
-  if (Migrate) then (failure)
-    #pink/white:Revert live database|
-    #pink/white:Report error;
+partition "**Run migration**" {
+  if (Migrate) then (fail)
+    -[#red]->
+    :Revert|
+    -[#red]->
+    #orangered:Report error;
+    note right: Likely a data conversion failure
     kill
-  elseif (Verify) then (failure)
-    #pink/white:Revert live database|
-    #pink/white:Report error;
+  elseif (Verify) then (fail)
+    -[#red]->
+    :Revert|
+    -[#red]->
+    #orangered:Report error;
+    note right: Bad state had somehow crept in
     kill
   endif
 }
 
-:Update database metadata in S3;
-#lime/green:Report success;
-if (Pipeline status) then (failure)
-  #pink/white:Revert live database|
+:Store updated database metadata in S3;
+#green:Report success;
+if (Pipeline status) then (fail)
+  -[#red]->
+  :Revert to previous migration|
+  note right: Something else in the pipeline failed, so roll back
+  -[#red]->
+  :Report rollback;
+  -[#red]->
+else (no errors following)
 endif
+
 stop
+note left: Done
+
 @enduml
