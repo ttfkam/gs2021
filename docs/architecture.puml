@@ -15,6 +15,7 @@
 !include <awslib/NetworkingAndContentDelivery/Route53>
 !include <awslib/SecurityIdentityAndCompliance/CertificateManager>
 !include <awslib/SecurityIdentityAndCompliance/Cognito>
+!include <awslib/SecurityIdentityAndCompliance/IAMPermissions>
 !include <awslib/Storage/SimpleStorageServiceBucket>
 
 left to right direction
@@ -22,11 +23,11 @@ left to right direction
 package "VPC" {
   Lambda(graphql, "/graphql\n(Postgraphile)", "Postgraphile access to the database")
   Lambda(upload, "/upload", "Media file management")
+  IAMPermissions(iam, "IAM Permissions", "")
   package "Private Subnet" {
     RDS(gsDb, "Database\n(RDS Postgres)", "Main data store for GeekSpeak")
   }
 }
-
 APIGateway(apig, "API Gateway\napi.geekspeak.org", "Data API endpoint")
 CloudFront(admin, "CDN\n(CloudFront)\nadmin.geekspeak.org", "Admin tools for modification")
 CloudFront(public, "CDN\n(CloudFront)\ngeekspeak.org", "Public access")
@@ -53,8 +54,9 @@ userAuth .. apig
 apig --> graphql
 apig --> upload
 upload --> staticPublicAssets
-upload --> gsDb : IAM Auth
+iam .. upload
+upload --> gsDb
 graphql ..> dbSchemaCache
-graphql --> gsDb : IAM Auth
-
+iam .. graphql
+graphql --> gsDb
 @enduml

@@ -7,8 +7,8 @@ services:
     environment:
       POSTGRES_PASSWORD: demo
     volumes:
-      - ./docker/pgdata:/var/lib/postgresql/data
-      - ./docker/local-db-init:/docker-entrypoint-initdb.d
+      - ./local-dev/pgdata:/var/lib/postgresql/data
+      - ./local-dev/main-db-init:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -21,8 +21,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: 'pgadmin4@pgadmin.org'
       PGADMIN_DEFAULT_PASSWORD: 'demo'
     volumes:
-      - ./docker/pgadmin/pgadmin4.json:/pgadmin4/servers.json
-      - ./docker/pgadmin/pgadmin4.py:/pgadmin4/config_local.py
+      - ./local-dev/pgadmin/pgadmin4.json:/pgadmin4/servers.json
+      - ./local-dev/pgadmin/pgadmin4.py:/pgadmin4/config_local.py
       - $HOME/.pgpass:/pgadmin4/pgpass
     ports:
       - "80"
@@ -32,7 +32,7 @@ services:
 
   dbmigration:
     build:
-      context: ./docker
+      context: ./local-dev
       dockerfile: Dockerfile.dbmigration
     volumes:
       - $HOME/.pgpass:/home/.pgpass
@@ -42,12 +42,12 @@ services:
         condition: service_healthy
 
   graphql:
-    build: ./graphql
+    build: ./lambda/api/graphql
     environment:
       DB_URL: 'postgres://geekspeak_api:demo@db/geekspeak'
       DB_ADMIN_URL: 'postgres://postgres:demo@db/geekspeak'
     volumes:
-      - ./graphql/lib:/app/lib
+      - ./lambda/api/graphql/lib:/app/lib
     ports:
       - "3000"
     depends_on:
@@ -65,7 +65,7 @@ services:
       - ./ui/public/static:/app/static
     ports:
       - "15000:15000"
-      - "8080:3000"
+      - "3000"
     depends_on:
       - graphql
     command: npm run dev -- --host=0.0.0.0
@@ -81,7 +81,7 @@ services:
       - ./ui/admin/static:/app/static
     ports:
       - "15001:15001"
-      - "8081:3000"
+      - "3000"
     depends_on:
       - graphql
     command: npm run dev -- --host=0.0.0.0
