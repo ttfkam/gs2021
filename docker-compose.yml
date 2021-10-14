@@ -61,6 +61,8 @@ services:
     environment:
       HOST: 0.0.0.0
     volumes:
+      - ./ui/public/package.json:/app/package.json
+      - ./ui/public/package-lock.json:/app/package-lock.json
       - ./ui/public/src:/app/src
       - ./ui/public/static:/app/static
     ports:
@@ -76,6 +78,8 @@ services:
     environment:
       HOST: 0.0.0.0
     volumes:
+      - ./ui/admin/package.json:/app/package.json
+      - ./ui/admin/package-lock.json:/app/package-lock.json
       - ./ui/admin/src:/app/src
       - ./ui/admin/static:/app/static
     ports:
