@@ -18,8 +18,8 @@ services:
   dbadmin:
     image: dpage/pgadmin4:latest
     environment:
-      PGADMIN_DEFAULT_EMAIL: 'pgadmin4@pgadmin.org'
-      PGADMIN_DEFAULT_PASSWORD: 'demo'
+      PGADMIN_DEFAULT_EMAIL: "pgadmin4@pgadmin.org"
+      PGADMIN_DEFAULT_PASSWORD: "demo"
     volumes:
       - ./local-dev/pgadmin/pgadmin4.json:/pgadmin4/servers.json
       - ./local-dev/pgadmin/pgadmin4.py:/pgadmin4/config_local.py
@@ -44,8 +44,8 @@ services:
   graphql:
     build: ./lambda/api/graphql
     environment:
-      DB_URL: 'postgres://geekspeak_api:demo@db/geekspeak'
-      DB_ADMIN_URL: 'postgres://postgres:demo@db/geekspeak'
+      DB_URL: "postgres://geekspeak_api:demo@db/geekspeak"
+      DB_ADMIN_URL: "postgres://postgres:demo@db/geekspeak"
     volumes:
       - ./lambda/api/graphql/lib:/app/lib
     ports:
@@ -64,8 +64,7 @@ services:
       - ./ui/public/src:/app/src
       - ./ui/public/static:/app/static
     ports:
-      - "15000:15000"
-      - "3000"
+      - "4000:4000"
     depends_on:
       - graphql
     command: npm run dev -- --host=0.0.0.0
@@ -80,8 +79,7 @@ services:
       - ./ui/admin/src:/app/src
       - ./ui/admin/static:/app/static
     ports:
-      - "15001:15001"
-      - "3000"
+      - "4001:4001"
     depends_on:
       - graphql
     command: npm run dev -- --host=0.0.0.0
