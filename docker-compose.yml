@@ -66,10 +66,10 @@ services:
       - ./ui/public/src:/app/src
       - ./ui/public/static:/app/static
     ports:
-      - "4000:4000"
+      - "3000"
     depends_on:
       - graphql
-    command: npm run dev --  --port=4000  --host=0.0.0.0
+    command: npm run dev -- --host=0.0.0.0
 
   ui-admin:
     build:
@@ -83,7 +83,7 @@ services:
       - ./ui/admin/src:/app/src
       - ./ui/admin/static:/app/static
     ports:
-      - "4001:4001"
+      - "3000"
     depends_on:
       - graphql
-    command: npm run dev -- --port=4001 --host=0.0.0.0
+    command: npm run dev -- --host=0.0.0.0

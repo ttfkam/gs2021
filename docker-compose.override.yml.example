@@ -1,0 +1,25 @@
+version: "2.4"
+
+services:
+
+  dbadmin:
+    ports:
+      - "9000:80"
+
+  graphql:
+    ports:
+      - "3000:3000"
+
+  ui-public:
+    environment:
+      GRAPHQL_URL: "http://localhost:3000/graphql"
+    ports:
+      - "4000:4000"
+    command: npm run dev -- --port=4000 --host=0.0.0.0
+
+  ui-admin:
+    environment:
+      GRAPHQL_URL: "http://localhost:3000/graphql"
+    ports:
+      - "4001:4001"
+    command: npm run dev -- --port=4001 --host=0.0.0.0
