@@ -9,6 +9,7 @@ services:
     volumes:
       - ./local-dev/pgdata:/var/lib/postgresql/data
       - ./local-dev/main-db-init:/docker-entrypoint-initdb.d
+      # - ./local-dev/old_gs.db:/old_gs.db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s

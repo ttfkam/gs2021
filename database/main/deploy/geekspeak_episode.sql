@@ -20,7 +20,7 @@ CREATE TABLE episode (
              REFERENCES episode_status
                      ON UPDATE CASCADE
                      ON DELETE RESTRICT
-,    airdate timestamptz
+,    airdate date
 ,       slug text
 ,       body text
 ,  bit_order uuid[]
@@ -100,6 +100,16 @@ CREATE INDEX geek_bit_status_idx
           ON geek_bit
        USING BTREE (status)
            ;
+
+CREATE FUNCTION episodes_by_airdate(p_start date, p_end date)
+        RETURNS SETOF episode LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
+    SELECT e.*
+      FROM episode e
+     WHERE e.airdate >= p_start
+           AND e.airdate < p_end
+         ;
+$$; COMMENT ON FUNCTION episodes_by_airdate(date, date) IS
+'Retrive all episodes from a date range. Note: end date is exclusive.';
 
 CREATE FUNCTION fts(rec episode)
         RETURNS tsvector LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$

@@ -2,6 +2,10 @@ version: "2.4"
 
 services:
 
+  db:
+    volumes:
+      - ./local-dev/old_gs.db:/old_gs.db
+
   dbadmin:
     ports:
       - "9000:80"
