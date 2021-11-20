@@ -11,10 +11,9 @@ const config = {
 		target: '#svelte',
 		vite: {
 			server: {
-				host: '0.0.0.0',
 				hmr: {
-					protocol: 'ws',
-				}
+					clientPort: 8080,
+				},
 			}
 		}
 	}

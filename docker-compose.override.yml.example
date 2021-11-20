@@ -2,28 +2,17 @@ version: "2.4"
 
 services:
 
+  # Map volumes for activities like loading old database data
+
   db:
     volumes:
       - ./local-dev/old_gs.db:/old_gs.db
 
+  # Remap ports and other changes to your dev box.
+  # Ports are always host port first, private container port second.
+  # The container port stays the same.
+
   dbadmin:
     ports:
+      # Make the database admin tool always available on port 9000
       - "9000:80"
-
-  graphql:
-    ports:
-      - "3000:3000"
-
-  ui-public:
-    environment:
-      GRAPHQL_URL: "http://localhost:3000/graphql"
-    ports:
-      - "4000:4000"
-    command: npm run dev -- --port=4000 --host=0.0.0.0
-
-  ui-admin:
-    environment:
-      GRAPHQL_URL: "http://localhost:3000/graphql"
-    ports:
-      - "4001:4001"
-    command: npm run dev -- --port=4001 --host=0.0.0.0
