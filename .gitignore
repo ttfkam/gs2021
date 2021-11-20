@@ -3,3 +3,4 @@ scratchpad
 pgdata
 docker-compose.override.yml
 old_gs.db
+*.code-workspace
