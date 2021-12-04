@@ -87,6 +87,8 @@ CREATE VIEW table_history AS
        JOIN pg_class    history ON (inh.inhparent = history.oid)
       WHERE history.relnamespace = 'system_versioning'::regnamespace
           ;
+COMMENT ON VIEW table_history IS
+'Mapping between live tables and their associated history tables.';
 
 GRANT SELECT
    ON TABLE __system_versioned
@@ -307,6 +309,8 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
                                              , p_history_name name
                                              )
         RETURNS void LANGUAGE plpgsql STRICT VOLATILE PARALLEL UNSAFE AS $$
+  DECLARE
+    pkey_column name;
   BEGIN
     EXECUTE format(
       '-- Creating history table
@@ -333,30 +337,27 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
                                            , ''system_versioning.%3$I''::regclass
                                            );
 
-       CREATE OR REPLACE FUNCTION %1$I.%2$I(tstzrange)
+       CREATE OR REPLACE FUNCTION %1$I.%2$I_history_by_range(tstzrange)
                           RETURNS SETOF system_versioning.%3$I LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
          SELECT *
            FROM system_versioning.%3$I
           WHERE (_system).system_time && $1
               ;
-       $system_versioned$; COMMENT ON FUNCTION %1$I.%2$I(tstzrange) IS
+       $system_versioned$; COMMENT ON FUNCTION %1$I.%2$I_history_by_range(tstzrange) IS
        E''Allow easy searching of %1$I.%2$I history by timestamp range'';
 
-       CREATE OR REPLACE FUNCTION %1$I.%2$I(timestamptz)
+       CREATE OR REPLACE FUNCTION %1$I.%2$I_history_by_timestamp(timestamptz)
                           RETURNS SETOF system_versioning.%3$I LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
          SELECT *
            FROM %1$I.%2$I( tstzrange( $1, $1, ''[]'' ) )
               ;
-       $system_versioned$; COMMENT ON FUNCTION %1$I.%2$I(timestamptz) IS
+       $system_versioned$; COMMENT ON FUNCTION %1$I.%2$I_history_by_timestamp(timestamptz) IS
        E''Point in time accessor for %1$I.%2$I'';
 
-       CREATE OR REPLACE FUNCTION %1$I."%2$s_history"(rec %1$I.%2$I)
-                          RETURNS SETOF system_versioning.%3$I LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
+       CREATE VIEW %1$I."%2$s_history"
          SELECT *
            FROM system_versioning.%3$I
               ;
-       $system_versioned$; COMMENT ON FUNCTION %1$I."%2$s_history"(rec %1$I.%2$I) IS
-       E''Row history for %1$I.%2$I'';
 
        CREATE OR REPLACE FUNCTION %1$I."%2$s_last_modified"(rec %1$I.%2$I)
                           RETURNS timestamptz LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $system_versioned$
@@ -410,6 +411,26 @@ CREATE FUNCTION init_system_versioned_history( p_schema_name name
                     ; COMMENT ON TRIGGER system_versioned_truncate_to_history ON %1$I.%2$I IS
        E''Auto-generated\nAdd truncated entries to the history and make sure system versioned data is coherent'';
     ', p_schema_name, p_table_name, p_history_name);
+
+      SELECT INTO pkey_column
+             (array_agg(a.attname))[1]
+        FROM pg_attribute  a
+        JOIN pg_constraint c ON (a.attrelid = c.conrelid AND c.conkey @> ARRAY[a.attnum])
+       WHERE a.atttypid = 'uuid'::regtype
+             AND c.contype = 'p'
+             AND a.attrelid::regclass = (p_schema_name || '.' || p_table_name)::regclass
+    GROUP BY a.attrelid
+      HAVING count(a.attname) = 1
+           ;
+
+    IF pkey_column IS NOT NULL THEN
+      EXECUTE format('
+        CREATE OR REPLACE FUNCTION system_versioning.temporal_id(temporal_row system_versioning.%1$I)
+                           RETURNS uuid LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $system_versioned$
+          SELECT uuid_generate_v5(temporal_row.%2$I, (temporal_row._system).transaction_id::text)
+        $system_versioned$;
+      ', p_history_name, pkey_column);
+    END IF;
   END;
 $$; COMMENT ON FUNCTION init_system_versioned_history(name, name, name) IS
 'Create a system versioned history table, link to active table, and set up access triggers.';
