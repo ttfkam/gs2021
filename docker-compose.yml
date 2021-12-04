@@ -1,6 +1,7 @@
 version: "2.4"
 
 services:
+
   db:
     image: postgis/postgis:13-3.1
     user: postgres
@@ -9,7 +10,6 @@ services:
     volumes:
       - ./local-dev/pgdata:/var/lib/postgresql/data
       - ./local-dev/main-db-init:/docker-entrypoint-initdb.d
-      # - ./local-dev/old_gs.db:/old_gs.db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -50,7 +50,7 @@ services:
     volumes:
       - ./lambda/api/graphql/lib:/app/lib
     ports:
-      - "3000"
+      - "3000:3000"
     depends_on:
       - dbmigration
     command: "npm run start:dev"
@@ -61,16 +61,17 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       HOST: 0.0.0.0
+      GRAPHQL_URL: "http://localhost:3000/graphql"
     volumes:
       - ./ui/public/package.json:/app/package.json
       - ./ui/public/package-lock.json:/app/package-lock.json
       - ./ui/public/src:/app/src
       - ./ui/public/static:/app/static
     ports:
-      - "3000"
+      - "8080:3000"
     depends_on:
       - graphql
-    command: npm run dev -- --host=0.0.0.0
+    command: npm run dev
 
   ui-admin:
     build:
@@ -78,13 +79,14 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       HOST: 0.0.0.0
+      GRAPHQL_URL: "http://localhost:3000/graphql"
     volumes:
       - ./ui/admin/package.json:/app/package.json
       - ./ui/admin/package-lock.json:/app/package-lock.json
       - ./ui/admin/src:/app/src
       - ./ui/admin/static:/app/static
     ports:
-      - "3000"
+      - "8081:3000"
     depends_on:
       - graphql
-    command: npm run dev -- --host=0.0.0.0
+    command: npm run dev
