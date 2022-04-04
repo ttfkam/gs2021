@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import logo from './svelte-logo.svg';
 </script>
 
 <header>
 	<div class="corner">
-		<a href="https://kit.svelte.dev">
-			<img src={logo} alt="SvelteKit" />
+		<a href="/">
+			<img src={'/images/GeekSpeak_Logo_400x400.png'} alt="GeekSpeak" />
 		</a>
 	</div>
 
@@ -15,9 +14,10 @@
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
 		</svg>
 		<ul>
-			<li class:active={$page.path === '/'}><a sveltekit:prefetch href="/">Home</a></li>
-			<li class:active={$page.path === '/about'}><a sveltekit:prefetch href="/about">About</a></li>
-			<li class:active={$page.path === '/todos'}><a sveltekit:prefetch href="/todos">Todos</a></li>
+			<li class:active={$page.url.pathname === '/'}><a sveltekit:prefetch href="/">Home</a></li>
+			<li class:active={$page.url.pathname === '/episodes'}>
+				<a sveltekit:prefetch href="/episodes">Episodes</a>
+			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
@@ -36,8 +36,8 @@
 	}
 
 	.corner {
-		width: 3em;
-		height: 3em;
+		width: 100px;
+		height: 100px;
 	}
 
 	.corner a {
@@ -49,8 +49,8 @@
 	}
 
 	.corner img {
-		width: 2em;
-		height: 2em;
+		width: 100px;
+		height: 100px;
 		object-fit: contain;
 	}
 

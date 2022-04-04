@@ -1,0 +1,5435 @@
+"""
+Auto-generated history for table public.episode.
+Not included in the GraphQL schema.
+"""
+type A38E1E94B0724E559E19B983D6Fdb093Episode {
+  _system: String!
+  airdate: Date
+  bitOrder: [UUID]
+  body: String
+  created: Datetime!
+  promo: String
+  publish: Datetime
+  rowId: UUID!
+  status: String!
+  summary: String
+  title: String
+}
+
+"""
+A connection to a list of `A38E1E94B0724E559E19B983D6Fdb093Episode` values.
+"""
+type A38E1E94B0724E559E19B983D6Fdb093EpisodesConnection {
+  """
+  A list of edges which contains the `A38E1E94B0724E559E19B983D6Fdb093Episode` and cursor to aid in pagination.
+  """
+  edges: [A38E1E94B0724E559E19B983D6Fdb093EpisodesEdge!]!
+
+  """A list of `A38E1E94B0724E559E19B983D6Fdb093Episode` objects."""
+  nodes: [A38E1E94B0724E559E19B983D6Fdb093Episode!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `A38E1E94B0724E559E19B983D6Fdb093Episode` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `A38E1E94B0724E559E19B983D6Fdb093Episode` edge in the connection."""
+type A38E1E94B0724E559E19B983D6Fdb093EpisodesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `A38E1E94B0724E559E19B983D6Fdb093Episode` at the end of the edge."""
+  node: A38E1E94B0724E559E19B983D6Fdb093Episode!
+}
+
+"""User accounts"""
+type Account implements Node {
+  """Account holder's short biography"""
+  bio: String
+  created: Datetime!
+
+  """Reads and enables pagination through a set of `EpisodeRole`."""
+  episodeRolesByParticipantAccountIdAndRole(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeRoleCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EpisodeRole`."""
+    orderBy: [EpisodeRolesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AccountEpisodeRolesByParticipantAccountIdAndRoleManyToManyConnection!
+
+  """Reads and enables pagination through a set of `EpisodeRole`."""
+  episodeRolesByParticipantAccountIdAndRoleList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeRoleCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `EpisodeRole`."""
+    orderBy: [EpisodeRolesOrderBy!]
+  ): [EpisodeRole!]!
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByParticipantAccountIdAndEpisodeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AccountEpisodesByParticipantAccountIdAndEpisodeIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByParticipantAccountIdAndEpisodeIdList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!]
+  ): [Episode!]!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Row last modified for public.account"""
+  lastModified: Datetime
+
+  """User who last modified the row in public.account"""
+  lastModifiedBy: String
+
+  """Account's name to be displayed"""
+  name: String!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participants(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+
+  """Roles within the application, eg. admin, geek, guest"""
+  roles: [String]
+  rowId: UUID!
+}
+
+"""
+A condition to be used against `Account` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input AccountCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+}
+
+"""
+A connection to a list of `EpisodeRole` values, with data from `Participant`.
+"""
+type AccountEpisodeRolesByParticipantAccountIdAndRoleManyToManyConnection {
+  """
+  A list of edges which contains the `EpisodeRole`, info from the `Participant`, and the cursor to aid in pagination.
+  """
+  edges: [AccountEpisodeRolesByParticipantAccountIdAndRoleManyToManyEdge!]!
+
+  """A list of `EpisodeRole` objects."""
+  nodes: [EpisodeRole!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `EpisodeRole` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `EpisodeRole` edge in the connection, with data from `Participant`."""
+type AccountEpisodeRolesByParticipantAccountIdAndRoleManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `EpisodeRole` at the end of the edge."""
+  node: EpisodeRole!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsByRole(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsByRoleList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+}
+
+"""
+A connection to a list of `Episode` values, with data from `Participant`.
+"""
+type AccountEpisodesByParticipantAccountIdAndEpisodeIdManyToManyConnection {
+  """
+  A list of edges which contains the `Episode`, info from the `Participant`, and the cursor to aid in pagination.
+  """
+  edges: [AccountEpisodesByParticipantAccountIdAndEpisodeIdManyToManyEdge!]!
+
+  """A list of `Episode` objects."""
+  nodes: [Episode!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Episode` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Episode` edge in the connection, with data from `Participant`."""
+type AccountEpisodesByParticipantAccountIdAndEpisodeIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Episode` at the end of the edge."""
+  node: Episode!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participants(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+}
+
+"""An input for mutations affecting `Account`"""
+input AccountInput {
+  """Account holder's short biography"""
+  bio: String
+  created: Datetime
+
+  """Account's name to be displayed"""
+  name: String!
+
+  """Roles within the application, eg. admin, geek, guest"""
+  roles: [String]
+  rowId: UUID
+}
+
+"""
+Represents an update to a `Account`. Fields that are set will be updated.
+"""
+input AccountPatch {
+  """Account holder's short biography"""
+  bio: String
+  created: Datetime
+
+  """Account's name to be displayed"""
+  name: String
+
+  """Roles within the application, eg. admin, geek, guest"""
+  roles: [String]
+  rowId: UUID
+}
+
+"""A connection to a list of `Account` values."""
+type AccountsConnection {
+  """
+  A list of edges which contains the `Account` and cursor to aid in pagination.
+  """
+  edges: [AccountsEdge!]!
+
+  """A list of `Account` objects."""
+  nodes: [Account!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Account` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Account` edge in the connection."""
+type AccountsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Account` at the end of the edge."""
+  node: Account!
+}
+
+"""Methods to use when ordering `Account`."""
+enum AccountsOrderBy {
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""All input for the create `Account` mutation."""
+input CreateAccountInput {
+  """The `Account` to be created by this mutation."""
+  account: AccountInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `Account` mutation."""
+type CreateAccountPayload {
+  """The `Account` that was created by this mutation."""
+  account: Account
+
+  """An edge for our `Account`. May be used by Relay 1."""
+  accountEdge(
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AccountsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `EpisodeAsset` mutation."""
+input CreateEpisodeAssetInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `EpisodeAsset` to be created by this mutation."""
+  episodeAsset: EpisodeAssetInput!
+}
+
+"""The output of our create `EpisodeAsset` mutation."""
+type CreateEpisodeAssetPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Episode` that is related to this `EpisodeAsset`."""
+  episode: Episode
+
+  """The `EpisodeAsset` that was created by this mutation."""
+  episodeAsset: EpisodeAsset
+
+  """An edge for our `EpisodeAsset`. May be used by Relay 1."""
+  episodeAssetEdge(
+    """The method to use when ordering `EpisodeAsset`."""
+    orderBy: [EpisodeAssetsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeAssetsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `Episode` mutation."""
+input CreateEpisodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Episode` to be created by this mutation."""
+  episode: EpisodeInput!
+}
+
+"""The output of our create `Episode` mutation."""
+type CreateEpisodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Episode` that was created by this mutation."""
+  episode: Episode
+
+  """An edge for our `Episode`. May be used by Relay 1."""
+  episodeEdge(
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodesEdge
+
+  """Reads a single `EpisodeStatus` that is related to this `Episode`."""
+  episodeStatusByStatus: EpisodeStatus
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `EpisodeStatus` mutation."""
+input CreateEpisodeStatusInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `EpisodeStatus` to be created by this mutation."""
+  episodeStatus: EpisodeStatusInput!
+}
+
+"""The output of our create `EpisodeStatus` mutation."""
+type CreateEpisodeStatusPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `EpisodeStatus` that was created by this mutation."""
+  episodeStatus: EpisodeStatus
+
+  """An edge for our `EpisodeStatus`. May be used by Relay 1."""
+  episodeStatusEdge(
+    """The method to use when ordering `EpisodeStatus`."""
+    orderBy: [EpisodeStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeStatusesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `GeekBit` mutation."""
+input CreateGeekBitInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `GeekBit` to be created by this mutation."""
+  geekBit: GeekBitInput!
+}
+
+"""The output of our create `GeekBit` mutation."""
+type CreateGeekBitPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Episode` that is related to this `GeekBit`."""
+  episode: Episode
+
+  """The `GeekBit` that was created by this mutation."""
+  geekBit: GeekBit
+
+  """An edge for our `GeekBit`. May be used by Relay 1."""
+  geekBitEdge(
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsEdge
+
+  """Reads a single `GeekBitStatus` that is related to this `GeekBit`."""
+  geekBitStatusByStatus: GeekBitStatus
+
+  """Reads a single `Link` that is related to this `GeekBit`."""
+  link: Link
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `GeekBitStatus` mutation."""
+input CreateGeekBitStatusInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `GeekBitStatus` to be created by this mutation."""
+  geekBitStatus: GeekBitStatusInput!
+}
+
+"""The output of our create `GeekBitStatus` mutation."""
+type CreateGeekBitStatusPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `GeekBitStatus` that was created by this mutation."""
+  geekBitStatus: GeekBitStatus
+
+  """An edge for our `GeekBitStatus`. May be used by Relay 1."""
+  geekBitStatusEdge(
+    """The method to use when ordering `GeekBitStatus`."""
+    orderBy: [GeekBitStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitStatusesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `Link` mutation."""
+input CreateLinkInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Link` to be created by this mutation."""
+  link: LinkInput!
+}
+
+"""The output of our create `Link` mutation."""
+type CreateLinkPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Link` that was created by this mutation."""
+  link: Link
+
+  """An edge for our `Link`. May be used by Relay 1."""
+  linkEdge(
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LinksEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `Participant` mutation."""
+input CreateParticipantInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Participant` to be created by this mutation."""
+  participant: ParticipantInput!
+}
+
+"""The output of our create `Participant` mutation."""
+type CreateParticipantPayload {
+  """Reads a single `Account` that is related to this `Participant`."""
+  account: Account
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Episode` that is related to this `Participant`."""
+  episode: Episode
+
+  """Reads a single `EpisodeRole` that is related to this `Participant`."""
+  episodeRoleByRole: EpisodeRole
+
+  """The `Participant` that was created by this mutation."""
+  participant: Participant
+
+  """An edge for our `Participant`. May be used by Relay 1."""
+  participantEdge(
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""The day, does not include a time."""
+scalar Date
+
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+"""
+scalar Datetime
+
+"""
+The value at one end of a range. A range can either include this value, or not.
+"""
+input DatetimeRangeBoundInput {
+  """Whether or not the value of this bound is included in the range."""
+  inclusive: Boolean!
+
+  """The value at one end of our range."""
+  value: Datetime!
+}
+
+"""A range of `Datetime`."""
+input DatetimeRangeInput {
+  """The ending bound of our range."""
+  end: DatetimeRangeBoundInput
+
+  """The starting bound of our range."""
+  start: DatetimeRangeBoundInput
+}
+
+"""All input for the `deleteAccountById` mutation."""
+input DeleteAccountByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Account` to be deleted.
+  """
+  id: ID!
+}
+
+"""All input for the `deleteAccount` mutation."""
+input DeleteAccountInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `Account` mutation."""
+type DeleteAccountPayload {
+  """The `Account` that was deleted by this mutation."""
+  account: Account
+
+  """An edge for our `Account`. May be used by Relay 1."""
+  accountEdge(
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AccountsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedAccountId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteEpisodeAssetByEpisodeIdAndFilename` mutation."""
+input DeleteEpisodeAssetByEpisodeIdAndFilenameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  episodeId: UUID!
+
+  """Human-readable file name"""
+  filename: String!
+}
+
+"""All input for the `deleteEpisodeAssetById` mutation."""
+input DeleteEpisodeAssetByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `EpisodeAsset` to be deleted.
+  """
+  id: ID!
+}
+
+"""All input for the `deleteEpisodeAsset` mutation."""
+input DeleteEpisodeAssetInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `EpisodeAsset` mutation."""
+type DeleteEpisodeAssetPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedEpisodeAssetId: ID
+
+  """Reads a single `Episode` that is related to this `EpisodeAsset`."""
+  episode: Episode
+
+  """The `EpisodeAsset` that was deleted by this mutation."""
+  episodeAsset: EpisodeAsset
+
+  """An edge for our `EpisodeAsset`. May be used by Relay 1."""
+  episodeAssetEdge(
+    """The method to use when ordering `EpisodeAsset`."""
+    orderBy: [EpisodeAssetsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeAssetsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteEpisodeById` mutation."""
+input DeleteEpisodeByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Episode` to be deleted.
+  """
+  id: ID!
+}
+
+"""All input for the `deleteEpisodeByTitle` mutation."""
+input DeleteEpisodeByTitleInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  title: String!
+}
+
+"""All input for the `deleteEpisode` mutation."""
+input DeleteEpisodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `Episode` mutation."""
+type DeleteEpisodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedEpisodeId: ID
+
+  """The `Episode` that was deleted by this mutation."""
+  episode: Episode
+
+  """An edge for our `Episode`. May be used by Relay 1."""
+  episodeEdge(
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodesEdge
+
+  """Reads a single `EpisodeStatus` that is related to this `Episode`."""
+  episodeStatusByStatus: EpisodeStatus
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteGeekBitByEpisodeIdAndLinkId` mutation."""
+input DeleteGeekBitByEpisodeIdAndLinkIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  episodeId: UUID!
+  linkId: UUID!
+}
+
+"""All input for the `deleteGeekBitById` mutation."""
+input DeleteGeekBitByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `GeekBit` to be deleted.
+  """
+  id: ID!
+}
+
+"""All input for the `deleteGeekBit` mutation."""
+input DeleteGeekBitInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `GeekBit` mutation."""
+type DeleteGeekBitPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedGeekBitId: ID
+
+  """Reads a single `Episode` that is related to this `GeekBit`."""
+  episode: Episode
+
+  """The `GeekBit` that was deleted by this mutation."""
+  geekBit: GeekBit
+
+  """An edge for our `GeekBit`. May be used by Relay 1."""
+  geekBitEdge(
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsEdge
+
+  """Reads a single `GeekBitStatus` that is related to this `GeekBit`."""
+  geekBitStatusByStatus: GeekBitStatus
+
+  """Reads a single `Link` that is related to this `GeekBit`."""
+  link: Link
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteLinkById` mutation."""
+input DeleteLinkByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Link` to be deleted.
+  """
+  id: ID!
+}
+
+"""All input for the `deleteLinkByUri` mutation."""
+input DeleteLinkByUriInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  uri: Uri!
+}
+
+"""All input for the `deleteLink` mutation."""
+input DeleteLinkInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `Link` mutation."""
+type DeleteLinkPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedLinkId: ID
+
+  """The `Link` that was deleted by this mutation."""
+  link: Link
+
+  """An edge for our `Link`. May be used by Relay 1."""
+  linkEdge(
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LinksEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteParticipantById` mutation."""
+input DeleteParticipantByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Participant` to be deleted.
+  """
+  id: ID!
+}
+
+"""All input for the `deleteParticipant` mutation."""
+input DeleteParticipantInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `Participant` mutation."""
+type DeleteParticipantPayload {
+  """Reads a single `Account` that is related to this `Participant`."""
+  account: Account
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedParticipantId: ID
+
+  """Reads a single `Episode` that is related to this `Participant`."""
+  episode: Episode
+
+  """Reads a single `EpisodeRole` that is related to this `Participant`."""
+  episodeRoleByRole: EpisodeRole
+
+  """The `Participant` that was deleted by this mutation."""
+  participant: Participant
+
+  """An edge for our `Participant`. May be used by Relay 1."""
+  participantEdge(
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""
+Auto-generated history for table public.participant.
+Not included in the GraphQL schema.
+"""
+type E4D9Ed8679C44D5982EbD22Decfb3967Participant {
+  _system: String!
+  accountId: UUID!
+  created: Datetime!
+  episodeId: UUID!
+  role: String!
+  rowId: UUID!
+}
+
+"""
+A connection to a list of `E4D9Ed8679C44D5982EbD22Decfb3967Participant` values.
+"""
+type E4D9Ed8679C44D5982EbD22Decfb3967ParticipantsConnection {
+  """
+  A list of edges which contains the `E4D9Ed8679C44D5982EbD22Decfb3967Participant` and cursor to aid in pagination.
+  """
+  edges: [E4D9Ed8679C44D5982EbD22Decfb3967ParticipantsEdge!]!
+
+  """A list of `E4D9Ed8679C44D5982EbD22Decfb3967Participant` objects."""
+  nodes: [E4D9Ed8679C44D5982EbD22Decfb3967Participant!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `E4D9Ed8679C44D5982EbD22Decfb3967Participant` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `E4D9Ed8679C44D5982EbD22Decfb3967Participant` edge in the connection.
+"""
+type E4D9Ed8679C44D5982EbD22Decfb3967ParticipantsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """
+  The `E4D9Ed8679C44D5982EbD22Decfb3967Participant` at the end of the edge.
+  """
+  node: E4D9Ed8679C44D5982EbD22Decfb3967Participant!
+}
+
+"""
+Accepts valid email addresses.
+
+Length limited to 254 characters (https://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690)
+"""
+scalar Email
+
+"""Episodes of GeekSpeak"""
+type Episode implements Node {
+  """Reads and enables pagination through a set of `Account`."""
+  accountsByParticipantEpisodeIdAndAccountId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeAccountsByParticipantEpisodeIdAndAccountIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Account`."""
+  accountsByParticipantEpisodeIdAndAccountIdList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!]
+  ): [Account!]!
+
+  """When the episode was made available"""
+  airdate: Date
+
+  """Order that bits appear on the episode page"""
+  bitOrder: [UUID]
+
+  """Episode content"""
+  body: String
+  created: Datetime!
+
+  """Reads and enables pagination through a set of `EpisodeAsset`."""
+  episodeAssets(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeAssetCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EpisodeAsset`."""
+    orderBy: [EpisodeAssetsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeAssetsConnection!
+
+  """Reads and enables pagination through a set of `EpisodeAsset`."""
+  episodeAssetsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeAssetCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `EpisodeAsset`."""
+    orderBy: [EpisodeAssetsOrderBy!]
+  ): [EpisodeAsset!]!
+
+  """Reads and enables pagination through a set of `EpisodeRole`."""
+  episodeRolesByParticipantEpisodeIdAndRole(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeRoleCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EpisodeRole`."""
+    orderBy: [EpisodeRolesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeEpisodeRolesByParticipantEpisodeIdAndRoleManyToManyConnection!
+
+  """Reads and enables pagination through a set of `EpisodeRole`."""
+  episodeRolesByParticipantEpisodeIdAndRoleList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeRoleCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `EpisodeRole`."""
+    orderBy: [EpisodeRolesOrderBy!]
+  ): [EpisodeRole!]!
+
+  """Reads a single `EpisodeStatus` that is related to this `Episode`."""
+  episodeStatusByStatus: EpisodeStatus
+
+  """Reads and enables pagination through a set of `GeekBitStatus`."""
+  geekBitStatusesByGeekBitEpisodeIdAndStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitStatusCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBitStatus`."""
+    orderBy: [GeekBitStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeGeekBitStatusesByGeekBitEpisodeIdAndStatusManyToManyConnection!
+
+  """Reads and enables pagination through a set of `GeekBitStatus`."""
+  geekBitStatusesByGeekBitEpisodeIdAndStatusList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitStatusCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBitStatus`."""
+    orderBy: [GeekBitStatusesOrderBy!]
+  ): [GeekBitStatus!]!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBits(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsConnection!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!]
+  ): [GeekBit!]!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Row last modified for public.episode"""
+  lastModified: Datetime
+
+  """User who last modified the row in public.episode"""
+  lastModifiedBy: String
+
+  """Reads and enables pagination through a set of `Link`."""
+  linksByGeekBitEpisodeIdAndLinkId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LinkCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeLinksByGeekBitEpisodeIdAndLinkIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Link`."""
+  linksByGeekBitEpisodeIdAndLinkIdList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LinkCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!]
+  ): [Link!]!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participants(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+
+  """Episode promotional text"""
+  promo: String
+
+  """When the episode is to be made visible"""
+  publish: Datetime
+  rowId: UUID!
+  status: String!
+  summary: String
+  title: String
+}
+
+"""
+A connection to a list of `Account` values, with data from `Participant`.
+"""
+type EpisodeAccountsByParticipantEpisodeIdAndAccountIdManyToManyConnection {
+  """
+  A list of edges which contains the `Account`, info from the `Participant`, and the cursor to aid in pagination.
+  """
+  edges: [EpisodeAccountsByParticipantEpisodeIdAndAccountIdManyToManyEdge!]!
+
+  """A list of `Account` objects."""
+  nodes: [Account!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Account` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Account` edge in the connection, with data from `Participant`."""
+type EpisodeAccountsByParticipantEpisodeIdAndAccountIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Account` at the end of the edge."""
+  node: Account!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participants(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+}
+
+"""External files associated with an episode like images and other media"""
+type EpisodeAsset implements Node {
+  created: Datetime!
+  description: String
+
+  """Reads a single `Episode` that is related to this `EpisodeAsset`."""
+  episode: Episode
+  episodeId: UUID
+
+  """Human-readable file name"""
+  filename: String!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Row last modified for public.episode_asset"""
+  lastModified: Datetime
+
+  """User who last modified the row in public.episode_asset"""
+  lastModifiedBy: String
+  mediaType: String!
+
+  """Asset metadata such as found in EXIF data or ID3v2"""
+  metadata: JSON
+  rowId: UUID!
+}
+
+"""
+A condition to be used against `EpisodeAsset` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input EpisodeAssetCondition {
+  """Checks for equality with the object’s `episodeId` field."""
+  episodeId: UUID
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+}
+
+"""An input for mutations affecting `EpisodeAsset`"""
+input EpisodeAssetInput {
+  created: Datetime
+  description: String
+  episodeId: UUID
+
+  """Human-readable file name"""
+  filename: String!
+  mediaType: String!
+
+  """Asset metadata such as found in EXIF data or ID3v2"""
+  metadata: JSON
+  rowId: UUID!
+}
+
+"""
+Represents an update to a `EpisodeAsset`. Fields that are set will be updated.
+"""
+input EpisodeAssetPatch {
+  created: Datetime
+  description: String
+  episodeId: UUID
+
+  """Human-readable file name"""
+  filename: String
+  mediaType: String
+
+  """Asset metadata such as found in EXIF data or ID3v2"""
+  metadata: JSON
+  rowId: UUID
+}
+
+"""A connection to a list of `EpisodeAsset` values."""
+type EpisodeAssetsConnection {
+  """
+  A list of edges which contains the `EpisodeAsset` and cursor to aid in pagination.
+  """
+  edges: [EpisodeAssetsEdge!]!
+
+  """A list of `EpisodeAsset` objects."""
+  nodes: [EpisodeAsset!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `EpisodeAsset` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `EpisodeAsset` edge in the connection."""
+type EpisodeAssetsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `EpisodeAsset` at the end of the edge."""
+  node: EpisodeAsset!
+}
+
+"""Methods to use when ordering `EpisodeAsset`."""
+enum EpisodeAssetsOrderBy {
+  EPISODE_ID_ASC
+  EPISODE_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Episode` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input EpisodeCondition {
+  """Checks for equality with the object’s `airdate` field."""
+  airdate: Date
+
+  """Checks for equality with the object’s `publish` field."""
+  publish: Datetime
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+
+  """Checks for equality with the object’s `status` field."""
+  status: String
+
+  """Checks for equality with the object’s `title` field."""
+  title: String
+}
+
+"""
+A connection to a list of `EpisodeRole` values, with data from `Participant`.
+"""
+type EpisodeEpisodeRolesByParticipantEpisodeIdAndRoleManyToManyConnection {
+  """
+  A list of edges which contains the `EpisodeRole`, info from the `Participant`, and the cursor to aid in pagination.
+  """
+  edges: [EpisodeEpisodeRolesByParticipantEpisodeIdAndRoleManyToManyEdge!]!
+
+  """A list of `EpisodeRole` objects."""
+  nodes: [EpisodeRole!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `EpisodeRole` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `EpisodeRole` edge in the connection, with data from `Participant`."""
+type EpisodeEpisodeRolesByParticipantEpisodeIdAndRoleManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `EpisodeRole` at the end of the edge."""
+  node: EpisodeRole!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsByRole(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsByRoleList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+}
+
+"""
+A connection to a list of `GeekBitStatus` values, with data from `GeekBit`.
+"""
+type EpisodeGeekBitStatusesByGeekBitEpisodeIdAndStatusManyToManyConnection {
+  """
+  A list of edges which contains the `GeekBitStatus`, info from the `GeekBit`, and the cursor to aid in pagination.
+  """
+  edges: [EpisodeGeekBitStatusesByGeekBitEpisodeIdAndStatusManyToManyEdge!]!
+
+  """A list of `GeekBitStatus` objects."""
+  nodes: [GeekBitStatus!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GeekBitStatus` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GeekBitStatus` edge in the connection, with data from `GeekBit`."""
+type EpisodeGeekBitStatusesByGeekBitEpisodeIdAndStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsByStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsConnection!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsByStatusList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!]
+  ): [GeekBit!]!
+
+  """The `GeekBitStatus` at the end of the edge."""
+  node: GeekBitStatus!
+}
+
+"""An input for mutations affecting `Episode`"""
+input EpisodeInput {
+  """When the episode was made available"""
+  airdate: Date
+
+  """Order that bits appear on the episode page"""
+  bitOrder: [UUID]
+
+  """Episode content"""
+  body: String
+  created: Datetime
+
+  """Episode promotional text"""
+  promo: String
+
+  """When the episode is to be made visible"""
+  publish: Datetime
+  rowId: UUID
+  status: String!
+  summary: String
+  title: String
+}
+
+"""A connection to a list of `Link` values, with data from `GeekBit`."""
+type EpisodeLinksByGeekBitEpisodeIdAndLinkIdManyToManyConnection {
+  """
+  A list of edges which contains the `Link`, info from the `GeekBit`, and the cursor to aid in pagination.
+  """
+  edges: [EpisodeLinksByGeekBitEpisodeIdAndLinkIdManyToManyEdge!]!
+
+  """A list of `Link` objects."""
+  nodes: [Link!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Link` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Link` edge in the connection, with data from `GeekBit`."""
+type EpisodeLinksByGeekBitEpisodeIdAndLinkIdManyToManyEdge {
+  """Bit content"""
+  body: String
+  created: Datetime!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Link` at the end of the edge."""
+  node: Link!
+
+  """Time offset where the geek_bit exists in the episode"""
+  offsetMs: Int
+  rowId: UUID!
+  status: String!
+  title: String
+}
+
+"""
+Represents an update to a `Episode`. Fields that are set will be updated.
+"""
+input EpisodePatch {
+  """When the episode was made available"""
+  airdate: Date
+
+  """Order that bits appear on the episode page"""
+  bitOrder: [UUID]
+
+  """Episode content"""
+  body: String
+  created: Datetime
+
+  """Episode promotional text"""
+  promo: String
+
+  """When the episode is to be made visible"""
+  publish: Datetime
+  rowId: UUID
+  status: String
+  summary: String
+  title: String
+}
+
+"""User role in the production of an episode"""
+type EpisodeRole implements Node {
+  """Reads and enables pagination through a set of `Account`."""
+  accountsByParticipantRoleAndAccountId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeRoleAccountsByParticipantRoleAndAccountIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Account`."""
+  accountsByParticipantRoleAndAccountIdList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!]
+  ): [Account!]!
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByParticipantRoleAndEpisodeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeRoleEpisodesByParticipantRoleAndEpisodeIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByParticipantRoleAndEpisodeIdList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!]
+  ): [Episode!]!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+  name: String!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsByRole(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsByRoleList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+}
+
+"""
+A connection to a list of `Account` values, with data from `Participant`.
+"""
+type EpisodeRoleAccountsByParticipantRoleAndAccountIdManyToManyConnection {
+  """
+  A list of edges which contains the `Account`, info from the `Participant`, and the cursor to aid in pagination.
+  """
+  edges: [EpisodeRoleAccountsByParticipantRoleAndAccountIdManyToManyEdge!]!
+
+  """A list of `Account` objects."""
+  nodes: [Account!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Account` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Account` edge in the connection, with data from `Participant`."""
+type EpisodeRoleAccountsByParticipantRoleAndAccountIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Account` at the end of the edge."""
+  node: Account!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participants(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+}
+
+"""
+A condition to be used against `EpisodeRole` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input EpisodeRoleCondition {
+  """Checks for equality with the object’s `name` field."""
+  name: String
+}
+
+"""
+A connection to a list of `Episode` values, with data from `Participant`.
+"""
+type EpisodeRoleEpisodesByParticipantRoleAndEpisodeIdManyToManyConnection {
+  """
+  A list of edges which contains the `Episode`, info from the `Participant`, and the cursor to aid in pagination.
+  """
+  edges: [EpisodeRoleEpisodesByParticipantRoleAndEpisodeIdManyToManyEdge!]!
+
+  """A list of `Episode` objects."""
+  nodes: [Episode!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Episode` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Episode` edge in the connection, with data from `Participant`."""
+type EpisodeRoleEpisodesByParticipantRoleAndEpisodeIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Episode` at the end of the edge."""
+  node: Episode!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participants(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection!
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participantsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]!
+}
+
+"""A connection to a list of `EpisodeRole` values."""
+type EpisodeRolesConnection {
+  """
+  A list of edges which contains the `EpisodeRole` and cursor to aid in pagination.
+  """
+  edges: [EpisodeRolesEdge!]!
+
+  """A list of `EpisodeRole` objects."""
+  nodes: [EpisodeRole!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `EpisodeRole` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `EpisodeRole` edge in the connection."""
+type EpisodeRolesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `EpisodeRole` at the end of the edge."""
+  node: EpisodeRole!
+}
+
+"""Methods to use when ordering `EpisodeRole`."""
+enum EpisodeRolesOrderBy {
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type EpisodeStatus implements Node {
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodesConnection!
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByStatusList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!]
+  ): [Episode!]!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+  name: String!
+}
+
+"""
+A condition to be used against `EpisodeStatus` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input EpisodeStatusCondition {
+  """Checks for equality with the object’s `name` field."""
+  name: String
+}
+
+"""An input for mutations affecting `EpisodeStatus`"""
+input EpisodeStatusInput {
+  name: String!
+}
+
+"""A connection to a list of `EpisodeStatus` values."""
+type EpisodeStatusesConnection {
+  """
+  A list of edges which contains the `EpisodeStatus` and cursor to aid in pagination.
+  """
+  edges: [EpisodeStatusesEdge!]!
+
+  """A list of `EpisodeStatus` objects."""
+  nodes: [EpisodeStatus!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `EpisodeStatus` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `EpisodeStatus` edge in the connection."""
+type EpisodeStatusesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `EpisodeStatus` at the end of the edge."""
+  node: EpisodeStatus!
+}
+
+"""Methods to use when ordering `EpisodeStatus`."""
+enum EpisodeStatusesOrderBy {
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""A connection to a list of `Episode` values."""
+type EpisodesConnection {
+  """
+  A list of edges which contains the `Episode` and cursor to aid in pagination.
+  """
+  edges: [EpisodesEdge!]!
+
+  """A list of `Episode` objects."""
+  nodes: [Episode!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Episode` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Episode` edge in the connection."""
+type EpisodesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Episode` at the end of the edge."""
+  node: Episode!
+}
+
+"""Methods to use when ordering `Episode`."""
+enum EpisodesOrderBy {
+  AIRDATE_ASC
+  AIRDATE_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  PUBLISH_ASC
+  PUBLISH_DESC
+  STATUS_ASC
+  STATUS_DESC
+  TITLE_ASC
+  TITLE_DESC
+}
+
+"""Geek bits"""
+type GeekBit implements Node {
+  """Bit content"""
+  body: String
+  created: Datetime!
+
+  """Reads a single `Episode` that is related to this `GeekBit`."""
+  episode: Episode
+  episodeId: UUID
+
+  """Reads a single `GeekBitStatus` that is related to this `GeekBit`."""
+  geekBitStatusByStatus: GeekBitStatus
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Row last modified for public.geek_bit"""
+  lastModified: Datetime
+
+  """User who last modified the row in public.geek_bit"""
+  lastModifiedBy: String
+
+  """Reads a single `Link` that is related to this `GeekBit`."""
+  link: Link
+  linkId: UUID
+
+  """Time offset where the geek_bit exists in the episode"""
+  offsetMs: Int
+  rowId: UUID!
+  status: String!
+  title: String
+}
+
+"""
+A condition to be used against `GeekBit` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input GeekBitCondition {
+  """Checks for equality with the object’s `episodeId` field."""
+  episodeId: UUID
+
+  """Checks for equality with the object’s `linkId` field."""
+  linkId: UUID
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+
+  """Checks for equality with the object’s `status` field."""
+  status: String
+}
+
+"""An input for mutations affecting `GeekBit`"""
+input GeekBitInput {
+  """Bit content"""
+  body: String
+  created: Datetime
+  episodeId: UUID
+  linkId: UUID
+
+  """Time offset where the geek_bit exists in the episode"""
+  offsetMs: Int
+  rowId: UUID
+  status: String!
+  title: String
+}
+
+"""
+Represents an update to a `GeekBit`. Fields that are set will be updated.
+"""
+input GeekBitPatch {
+  """Bit content"""
+  body: String
+  created: Datetime
+  episodeId: UUID
+  linkId: UUID
+
+  """Time offset where the geek_bit exists in the episode"""
+  offsetMs: Int
+  rowId: UUID
+  status: String
+  title: String
+}
+
+type GeekBitStatus implements Node {
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByGeekBitStatusAndEpisodeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitStatusEpisodesByGeekBitStatusAndEpisodeIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByGeekBitStatusAndEpisodeIdList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!]
+  ): [Episode!]!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsByStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsConnection!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsByStatusList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!]
+  ): [GeekBit!]!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Reads and enables pagination through a set of `Link`."""
+  linksByGeekBitStatusAndLinkId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LinkCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitStatusLinksByGeekBitStatusAndLinkIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Link`."""
+  linksByGeekBitStatusAndLinkIdList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LinkCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!]
+  ): [Link!]!
+  name: String!
+}
+
+"""
+A condition to be used against `GeekBitStatus` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input GeekBitStatusCondition {
+  """Checks for equality with the object’s `name` field."""
+  name: String
+}
+
+"""A connection to a list of `Episode` values, with data from `GeekBit`."""
+type GeekBitStatusEpisodesByGeekBitStatusAndEpisodeIdManyToManyConnection {
+  """
+  A list of edges which contains the `Episode`, info from the `GeekBit`, and the cursor to aid in pagination.
+  """
+  edges: [GeekBitStatusEpisodesByGeekBitStatusAndEpisodeIdManyToManyEdge!]!
+
+  """A list of `Episode` objects."""
+  nodes: [Episode!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Episode` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Episode` edge in the connection, with data from `GeekBit`."""
+type GeekBitStatusEpisodesByGeekBitStatusAndEpisodeIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBits(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsConnection!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!]
+  ): [GeekBit!]!
+
+  """The `Episode` at the end of the edge."""
+  node: Episode!
+}
+
+"""An input for mutations affecting `GeekBitStatus`"""
+input GeekBitStatusInput {
+  name: String!
+}
+
+"""A connection to a list of `Link` values, with data from `GeekBit`."""
+type GeekBitStatusLinksByGeekBitStatusAndLinkIdManyToManyConnection {
+  """
+  A list of edges which contains the `Link`, info from the `GeekBit`, and the cursor to aid in pagination.
+  """
+  edges: [GeekBitStatusLinksByGeekBitStatusAndLinkIdManyToManyEdge!]!
+
+  """A list of `Link` objects."""
+  nodes: [Link!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Link` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Link` edge in the connection, with data from `GeekBit`."""
+type GeekBitStatusLinksByGeekBitStatusAndLinkIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBits(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsConnection!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!]
+  ): [GeekBit!]!
+
+  """The `Link` at the end of the edge."""
+  node: Link!
+}
+
+"""A connection to a list of `GeekBitStatus` values."""
+type GeekBitStatusesConnection {
+  """
+  A list of edges which contains the `GeekBitStatus` and cursor to aid in pagination.
+  """
+  edges: [GeekBitStatusesEdge!]!
+
+  """A list of `GeekBitStatus` objects."""
+  nodes: [GeekBitStatus!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GeekBitStatus` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GeekBitStatus` edge in the connection."""
+type GeekBitStatusesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `GeekBitStatus` at the end of the edge."""
+  node: GeekBitStatus!
+}
+
+"""Methods to use when ordering `GeekBitStatus`."""
+enum GeekBitStatusesOrderBy {
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""A connection to a list of `GeekBit` values."""
+type GeekBitsConnection {
+  """
+  A list of edges which contains the `GeekBit` and cursor to aid in pagination.
+  """
+  edges: [GeekBitsEdge!]!
+
+  """A list of `GeekBit` objects."""
+  nodes: [GeekBit!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GeekBit` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GeekBit` edge in the connection."""
+type GeekBitsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `GeekBit` at the end of the edge."""
+  node: GeekBit!
+}
+
+"""Methods to use when ordering `GeekBit`."""
+enum GeekBitsOrderBy {
+  EPISODE_ID_ASC
+  EPISODE_ID_DESC
+  ID_ASC
+  ID_DESC
+  LINK_ID_ASC
+  LINK_ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  STATUS_ASC
+  STATUS_DESC
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""External links"""
+type Link implements Node {
+  created: Datetime!
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByGeekBitLinkIdAndEpisodeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LinkEpisodesByGeekBitLinkIdAndEpisodeIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodesByGeekBitLinkIdAndEpisodeIdList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!]
+  ): [Episode!]!
+
+  """Reads and enables pagination through a set of `GeekBitStatus`."""
+  geekBitStatusesByGeekBitLinkIdAndStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitStatusCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBitStatus`."""
+    orderBy: [GeekBitStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LinkGeekBitStatusesByGeekBitLinkIdAndStatusManyToManyConnection!
+
+  """Reads and enables pagination through a set of `GeekBitStatus`."""
+  geekBitStatusesByGeekBitLinkIdAndStatusList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitStatusCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBitStatus`."""
+    orderBy: [GeekBitStatusesOrderBy!]
+  ): [GeekBitStatus!]!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBits(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsConnection!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!]
+  ): [GeekBit!]!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Row last modified for public.link"""
+  lastModified: Datetime
+
+  """User who last modified the row in public.link"""
+  lastModifiedBy: String
+
+  """Link metadata such as OpenGraph data"""
+  metadata: JSON
+  rowId: UUID!
+
+  """Scraped text from the link for full text search"""
+  scrape: String
+  summary: String
+  title: String
+  uri: Uri!
+}
+
+"""
+A condition to be used against `Link` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input LinkCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+
+  """Checks for equality with the object’s `uri` field."""
+  uri: Uri
+}
+
+"""A connection to a list of `Episode` values, with data from `GeekBit`."""
+type LinkEpisodesByGeekBitLinkIdAndEpisodeIdManyToManyConnection {
+  """
+  A list of edges which contains the `Episode`, info from the `GeekBit`, and the cursor to aid in pagination.
+  """
+  edges: [LinkEpisodesByGeekBitLinkIdAndEpisodeIdManyToManyEdge!]!
+
+  """A list of `Episode` objects."""
+  nodes: [Episode!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Episode` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Episode` edge in the connection, with data from `GeekBit`."""
+type LinkEpisodesByGeekBitLinkIdAndEpisodeIdManyToManyEdge {
+  """Bit content"""
+  body: String
+  created: Datetime!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Episode` at the end of the edge."""
+  node: Episode!
+
+  """Time offset where the geek_bit exists in the episode"""
+  offsetMs: Int
+  rowId: UUID!
+  status: String!
+  title: String
+}
+
+"""
+A connection to a list of `GeekBitStatus` values, with data from `GeekBit`.
+"""
+type LinkGeekBitStatusesByGeekBitLinkIdAndStatusManyToManyConnection {
+  """
+  A list of edges which contains the `GeekBitStatus`, info from the `GeekBit`, and the cursor to aid in pagination.
+  """
+  edges: [LinkGeekBitStatusesByGeekBitLinkIdAndStatusManyToManyEdge!]!
+
+  """A list of `GeekBitStatus` objects."""
+  nodes: [GeekBitStatus!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GeekBitStatus` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GeekBitStatus` edge in the connection, with data from `GeekBit`."""
+type LinkGeekBitStatusesByGeekBitLinkIdAndStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsByStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsConnection!
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBitsByStatusList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!]
+  ): [GeekBit!]!
+
+  """The `GeekBitStatus` at the end of the edge."""
+  node: GeekBitStatus!
+}
+
+"""An input for mutations affecting `Link`"""
+input LinkInput {
+  created: Datetime
+
+  """Link metadata such as OpenGraph data"""
+  metadata: JSON
+  rowId: UUID
+
+  """Scraped text from the link for full text search"""
+  scrape: String
+  summary: String
+  title: String
+  uri: Uri!
+}
+
+"""Represents an update to a `Link`. Fields that are set will be updated."""
+input LinkPatch {
+  created: Datetime
+
+  """Link metadata such as OpenGraph data"""
+  metadata: JSON
+  rowId: UUID
+
+  """Scraped text from the link for full text search"""
+  scrape: String
+  summary: String
+  title: String
+  uri: Uri
+}
+
+"""A connection to a list of `Link` values."""
+type LinksConnection {
+  """
+  A list of edges which contains the `Link` and cursor to aid in pagination.
+  """
+  edges: [LinksEdge!]!
+
+  """A list of `Link` objects."""
+  nodes: [Link!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Link` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Link` edge in the connection."""
+type LinksEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Link` at the end of the edge."""
+  node: Link!
+}
+
+"""Methods to use when ordering `Link`."""
+enum LinksOrderBy {
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  URI_ASC
+  URI_DESC
+}
+
+"""
+The root mutation type which contains root level fields which mutate data.
+"""
+type Mutation {
+  """Creates a single `Account`."""
+  createAccount(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateAccountInput!
+  ): CreateAccountPayload
+
+  """Creates a single `Episode`."""
+  createEpisode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateEpisodeInput!
+  ): CreateEpisodePayload
+
+  """Creates a single `EpisodeAsset`."""
+  createEpisodeAsset(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateEpisodeAssetInput!
+  ): CreateEpisodeAssetPayload
+
+  """Creates a single `EpisodeStatus`."""
+  createEpisodeStatus(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateEpisodeStatusInput!
+  ): CreateEpisodeStatusPayload
+
+  """Creates a single `GeekBit`."""
+  createGeekBit(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateGeekBitInput!
+  ): CreateGeekBitPayload
+
+  """Creates a single `GeekBitStatus`."""
+  createGeekBitStatus(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateGeekBitStatusInput!
+  ): CreateGeekBitStatusPayload
+
+  """Creates a single `Link`."""
+  createLink(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateLinkInput!
+  ): CreateLinkPayload
+
+  """Creates a single `Participant`."""
+  createParticipant(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateParticipantInput!
+  ): CreateParticipantPayload
+
+  """Deletes a single `Account` using a unique key."""
+  deleteAccount(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAccountInput!
+  ): DeleteAccountPayload
+
+  """Deletes a single `Account` using its globally unique id."""
+  deleteAccountById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAccountByIdInput!
+  ): DeleteAccountPayload
+
+  """Deletes a single `Episode` using a unique key."""
+  deleteEpisode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEpisodeInput!
+  ): DeleteEpisodePayload
+
+  """Deletes a single `EpisodeAsset` using a unique key."""
+  deleteEpisodeAsset(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEpisodeAssetInput!
+  ): DeleteEpisodeAssetPayload
+
+  """Deletes a single `EpisodeAsset` using a unique key."""
+  deleteEpisodeAssetByEpisodeIdAndFilename(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEpisodeAssetByEpisodeIdAndFilenameInput!
+  ): DeleteEpisodeAssetPayload
+
+  """Deletes a single `EpisodeAsset` using its globally unique id."""
+  deleteEpisodeAssetById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEpisodeAssetByIdInput!
+  ): DeleteEpisodeAssetPayload
+
+  """Deletes a single `Episode` using its globally unique id."""
+  deleteEpisodeById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEpisodeByIdInput!
+  ): DeleteEpisodePayload
+
+  """Deletes a single `Episode` using a unique key."""
+  deleteEpisodeByTitle(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEpisodeByTitleInput!
+  ): DeleteEpisodePayload
+
+  """Deletes a single `GeekBit` using a unique key."""
+  deleteGeekBit(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteGeekBitInput!
+  ): DeleteGeekBitPayload
+
+  """Deletes a single `GeekBit` using a unique key."""
+  deleteGeekBitByEpisodeIdAndLinkId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteGeekBitByEpisodeIdAndLinkIdInput!
+  ): DeleteGeekBitPayload
+
+  """Deletes a single `GeekBit` using its globally unique id."""
+  deleteGeekBitById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteGeekBitByIdInput!
+  ): DeleteGeekBitPayload
+
+  """Deletes a single `Link` using a unique key."""
+  deleteLink(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteLinkInput!
+  ): DeleteLinkPayload
+
+  """Deletes a single `Link` using its globally unique id."""
+  deleteLinkById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteLinkByIdInput!
+  ): DeleteLinkPayload
+
+  """Deletes a single `Link` using a unique key."""
+  deleteLinkByUri(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteLinkByUriInput!
+  ): DeleteLinkPayload
+
+  """Deletes a single `Participant` using a unique key."""
+  deleteParticipant(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteParticipantInput!
+  ): DeleteParticipantPayload
+
+  """Deletes a single `Participant` using its globally unique id."""
+  deleteParticipantById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteParticipantByIdInput!
+  ): DeleteParticipantPayload
+
+  """Updates a single `Account` using a unique key and a patch."""
+  updateAccount(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAccountInput!
+  ): UpdateAccountPayload
+
+  """Updates a single `Account` using its globally unique id and a patch."""
+  updateAccountById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAccountByIdInput!
+  ): UpdateAccountPayload
+
+  """Updates a single `Episode` using a unique key and a patch."""
+  updateEpisode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEpisodeInput!
+  ): UpdateEpisodePayload
+
+  """Updates a single `EpisodeAsset` using a unique key and a patch."""
+  updateEpisodeAsset(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEpisodeAssetInput!
+  ): UpdateEpisodeAssetPayload
+
+  """Updates a single `EpisodeAsset` using a unique key and a patch."""
+  updateEpisodeAssetByEpisodeIdAndFilename(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEpisodeAssetByEpisodeIdAndFilenameInput!
+  ): UpdateEpisodeAssetPayload
+
+  """
+  Updates a single `EpisodeAsset` using its globally unique id and a patch.
+  """
+  updateEpisodeAssetById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEpisodeAssetByIdInput!
+  ): UpdateEpisodeAssetPayload
+
+  """Updates a single `Episode` using its globally unique id and a patch."""
+  updateEpisodeById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEpisodeByIdInput!
+  ): UpdateEpisodePayload
+
+  """Updates a single `Episode` using a unique key and a patch."""
+  updateEpisodeByTitle(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEpisodeByTitleInput!
+  ): UpdateEpisodePayload
+
+  """Updates a single `GeekBit` using a unique key and a patch."""
+  updateGeekBit(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateGeekBitInput!
+  ): UpdateGeekBitPayload
+
+  """Updates a single `GeekBit` using a unique key and a patch."""
+  updateGeekBitByEpisodeIdAndLinkId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateGeekBitByEpisodeIdAndLinkIdInput!
+  ): UpdateGeekBitPayload
+
+  """Updates a single `GeekBit` using its globally unique id and a patch."""
+  updateGeekBitById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateGeekBitByIdInput!
+  ): UpdateGeekBitPayload
+
+  """Updates a single `Link` using a unique key and a patch."""
+  updateLink(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateLinkInput!
+  ): UpdateLinkPayload
+
+  """Updates a single `Link` using its globally unique id and a patch."""
+  updateLinkById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateLinkByIdInput!
+  ): UpdateLinkPayload
+
+  """Updates a single `Link` using a unique key and a patch."""
+  updateLinkByUri(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateLinkByUriInput!
+  ): UpdateLinkPayload
+
+  """Updates a single `Participant` using a unique key and a patch."""
+  updateParticipant(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateParticipantInput!
+  ): UpdateParticipantPayload
+
+  """
+  Updates a single `Participant` using its globally unique id and a patch.
+  """
+  updateParticipantById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateParticipantByIdInput!
+  ): UpdateParticipantPayload
+}
+
+"""An object with a globally unique `ID`."""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+}
+
+"""Accounts associated with an episode"""
+type Participant implements Node {
+  """Reads a single `Account` that is related to this `Participant`."""
+  account: Account
+  accountId: UUID!
+  created: Datetime!
+
+  """Reads a single `Episode` that is related to this `Participant`."""
+  episode: Episode
+  episodeId: UUID!
+
+  """Reads a single `EpisodeRole` that is related to this `Participant`."""
+  episodeRoleByRole: EpisodeRole
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Row last modified for public.participant"""
+  lastModified: Datetime
+
+  """User who last modified the row in public.participant"""
+  lastModifiedBy: String
+  role: String!
+  rowId: UUID!
+}
+
+"""
+A condition to be used against `Participant` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input ParticipantCondition {
+  """Checks for equality with the object’s `accountId` field."""
+  accountId: UUID
+
+  """Checks for equality with the object’s `episodeId` field."""
+  episodeId: UUID
+
+  """Checks for equality with the object’s `role` field."""
+  role: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+}
+
+"""An input for mutations affecting `Participant`"""
+input ParticipantInput {
+  accountId: UUID!
+  created: Datetime
+  episodeId: UUID!
+  role: String!
+  rowId: UUID
+}
+
+"""
+Represents an update to a `Participant`. Fields that are set will be updated.
+"""
+input ParticipantPatch {
+  accountId: UUID
+  created: Datetime
+  episodeId: UUID
+  role: String
+  rowId: UUID
+}
+
+"""A connection to a list of `Participant` values."""
+type ParticipantsConnection {
+  """
+  A list of edges which contains the `Participant` and cursor to aid in pagination.
+  """
+  edges: [ParticipantsEdge!]!
+
+  """A list of `Participant` objects."""
+  nodes: [Participant!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Participant` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Participant` edge in the connection."""
+type ParticipantsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Participant` at the end of the edge."""
+  node: Participant!
+}
+
+"""Methods to use when ordering `Participant`."""
+enum ParticipantsOrderBy {
+  ACCOUNT_ID_ASC
+  ACCOUNT_ID_DESC
+  EPISODE_ID_ASC
+  EPISODE_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  ROLE_ASC
+  ROLE_DESC
+}
+
+"""The root query type which gives access points into the data universe."""
+type Query implements Node {
+  account(rowId: UUID!): Account
+
+  """Reads a single `Account` using its globally unique `ID`."""
+  accountById(
+    """The globally unique `ID` to be used in selecting a single `Account`."""
+    id: ID!
+  ): Account
+
+  """
+  Allow easy searching of public.account_email history by timestamp range
+  """
+  accountEmailHistoryByRange(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+    arg0: DatetimeRangeInput!
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _3E8014Ee6A55436A90A6800B1036B5AcAccountEmailsConnection
+
+  """
+  Allow easy searching of public.account_email history by timestamp range
+  """
+  accountEmailHistoryByRangeList(
+    arg0: DatetimeRangeInput!
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail!]
+
+  """Point in time accessor for public.account_email"""
+  accountEmailHistoryByTimestamp(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+    moment: Datetime!
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _3E8014Ee6A55436A90A6800B1036B5AcAccountEmailsConnection
+
+  """Point in time accessor for public.account_email"""
+  accountEmailHistoryByTimestampList(
+    """Only read the first `n` values of the set."""
+    first: Int
+    moment: Datetime!
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail!]
+
+  """Allow easy searching of public.account history by timestamp range"""
+  accountHistoryByRange(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+    arg0: DatetimeRangeInput!
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _09038Af0Cacf4D4F8Bd90Cc5D9704989AccountsConnection
+
+  """Allow easy searching of public.account history by timestamp range"""
+  accountHistoryByRangeList(
+    arg0: DatetimeRangeInput!
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_09038Af0Cacf4D4F8Bd90Cc5D9704989Account!]
+
+  """Point in time accessor for public.account"""
+  accountHistoryByTimestamp(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+    moment: Datetime!
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _09038Af0Cacf4D4F8Bd90Cc5D9704989AccountsConnection
+
+  """Point in time accessor for public.account"""
+  accountHistoryByTimestampList(
+    """Only read the first `n` values of the set."""
+    first: Int
+    moment: Datetime!
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_09038Af0Cacf4D4F8Bd90Cc5D9704989Account!]
+
+  """Reads and enables pagination through a set of `Account`."""
+  accounts(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AccountsConnection
+
+  """Reads a set of `Account`."""
+  accountsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!]
+  ): [Account!]
+
+  """
+  Convert from camel case to pascal case, eg., camel_to_pascal -> CamelToPascal
+  """
+  camelToPascal(camelCase: String!): String
+  episode(rowId: UUID!): Episode
+  episodeAsset(rowId: UUID!): EpisodeAsset
+  episodeAssetByEpisodeIdAndFilename(episodeId: UUID!, filename: String!): EpisodeAsset
+
+  """Reads a single `EpisodeAsset` using its globally unique `ID`."""
+  episodeAssetById(
+    """
+    The globally unique `ID` to be used in selecting a single `EpisodeAsset`.
+    """
+    id: ID!
+  ): EpisodeAsset
+
+  """
+  Allow easy searching of public.episode_asset history by timestamp range
+  """
+  episodeAssetHistoryByRange(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+    arg0: DatetimeRangeInput!
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAssetsConnection
+
+  """
+  Allow easy searching of public.episode_asset history by timestamp range
+  """
+  episodeAssetHistoryByRangeList(
+    arg0: DatetimeRangeInput!
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset!]
+
+  """Point in time accessor for public.episode_asset"""
+  episodeAssetHistoryByTimestamp(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+    moment: Datetime!
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAssetsConnection
+
+  """Point in time accessor for public.episode_asset"""
+  episodeAssetHistoryByTimestampList(
+    """Only read the first `n` values of the set."""
+    first: Int
+    moment: Datetime!
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset!]
+
+  """Reads and enables pagination through a set of `EpisodeAsset`."""
+  episodeAssets(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeAssetCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EpisodeAsset`."""
+    orderBy: [EpisodeAssetsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeAssetsConnection
+
+  """Reads a set of `EpisodeAsset`."""
+  episodeAssetsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeAssetCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `EpisodeAsset`."""
+    orderBy: [EpisodeAssetsOrderBy!]
+  ): [EpisodeAsset!]
+
+  """Reads a single `Episode` using its globally unique `ID`."""
+  episodeById(
+    """The globally unique `ID` to be used in selecting a single `Episode`."""
+    id: ID!
+  ): Episode
+  episodeByTitle(title: String!): Episode
+
+  """Allow easy searching of public.episode history by timestamp range"""
+  episodeHistoryByRange(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+    arg0: DatetimeRangeInput!
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): A38E1E94B0724E559E19B983D6Fdb093EpisodesConnection
+
+  """Allow easy searching of public.episode history by timestamp range"""
+  episodeHistoryByRangeList(
+    arg0: DatetimeRangeInput!
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [A38E1E94B0724E559E19B983D6Fdb093Episode!]
+
+  """Point in time accessor for public.episode"""
+  episodeHistoryByTimestamp(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+    moment: Datetime!
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): A38E1E94B0724E559E19B983D6Fdb093EpisodesConnection
+
+  """Point in time accessor for public.episode"""
+  episodeHistoryByTimestampList(
+    """Only read the first `n` values of the set."""
+    first: Int
+    moment: Datetime!
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [A38E1E94B0724E559E19B983D6Fdb093Episode!]
+  episodeRole(name: String!): EpisodeRole
+
+  """Reads a single `EpisodeRole` using its globally unique `ID`."""
+  episodeRoleById(
+    """
+    The globally unique `ID` to be used in selecting a single `EpisodeRole`.
+    """
+    id: ID!
+  ): EpisodeRole
+
+  """Reads and enables pagination through a set of `EpisodeRole`."""
+  episodeRoles(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeRoleCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EpisodeRole`."""
+    orderBy: [EpisodeRolesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeRolesConnection
+
+  """Reads a set of `EpisodeRole`."""
+  episodeRolesList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeRoleCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `EpisodeRole`."""
+    orderBy: [EpisodeRolesOrderBy!]
+  ): [EpisodeRole!]
+  episodeStatus(name: String!): EpisodeStatus
+
+  """Reads a single `EpisodeStatus` using its globally unique `ID`."""
+  episodeStatusById(
+    """
+    The globally unique `ID` to be used in selecting a single `EpisodeStatus`.
+    """
+    id: ID!
+  ): EpisodeStatus
+
+  """Reads and enables pagination through a set of `EpisodeStatus`."""
+  episodeStatuses(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeStatusCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EpisodeStatus`."""
+    orderBy: [EpisodeStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeStatusesConnection
+
+  """Reads a set of `EpisodeStatus`."""
+  episodeStatusesList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeStatusCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `EpisodeStatus`."""
+    orderBy: [EpisodeStatusesOrderBy!]
+  ): [EpisodeStatus!]
+
+  """Reads and enables pagination through a set of `Episode`."""
+  episodes(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodesConnection
+
+  """Retrive all episodes from a date range. Note: end date is exclusive."""
+  episodesByAirdate(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    pEnd: Date!
+    pStart: Date!
+  ): EpisodesConnection
+
+  """Retrive all episodes from a date range. Note: end date is exclusive."""
+  episodesByAirdateList(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+    pEnd: Date!
+    pStart: Date!
+  ): [Episode!]
+
+  """Reads a set of `Episode`."""
+  episodesList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EpisodeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!]
+  ): [Episode!]
+  geekBit(rowId: UUID!): GeekBit
+  geekBitByEpisodeIdAndLinkId(episodeId: UUID!, linkId: UUID!): GeekBit
+
+  """Reads a single `GeekBit` using its globally unique `ID`."""
+  geekBitById(
+    """The globally unique `ID` to be used in selecting a single `GeekBit`."""
+    id: ID!
+  ): GeekBit
+
+  """Allow easy searching of public.geek_bit history by timestamp range"""
+  geekBitHistoryByRange(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+    arg0: DatetimeRangeInput!
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _3Cf76Fa890904C1194F0455B0F97660BGeekBitsConnection
+
+  """Allow easy searching of public.geek_bit history by timestamp range"""
+  geekBitHistoryByRangeList(
+    arg0: DatetimeRangeInput!
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_3Cf76Fa890904C1194F0455B0F97660BGeekBit!]
+
+  """Point in time accessor for public.geek_bit"""
+  geekBitHistoryByTimestamp(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+    moment: Datetime!
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _3Cf76Fa890904C1194F0455B0F97660BGeekBitsConnection
+
+  """Point in time accessor for public.geek_bit"""
+  geekBitHistoryByTimestampList(
+    """Only read the first `n` values of the set."""
+    first: Int
+    moment: Datetime!
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_3Cf76Fa890904C1194F0455B0F97660BGeekBit!]
+  geekBitStatus(name: String!): GeekBitStatus
+
+  """Reads a single `GeekBitStatus` using its globally unique `ID`."""
+  geekBitStatusById(
+    """
+    The globally unique `ID` to be used in selecting a single `GeekBitStatus`.
+    """
+    id: ID!
+  ): GeekBitStatus
+
+  """Reads and enables pagination through a set of `GeekBitStatus`."""
+  geekBitStatuses(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitStatusCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBitStatus`."""
+    orderBy: [GeekBitStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitStatusesConnection
+
+  """Reads a set of `GeekBitStatus`."""
+  geekBitStatusesList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitStatusCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBitStatus`."""
+    orderBy: [GeekBitStatusesOrderBy!]
+  ): [GeekBitStatus!]
+
+  """Reads and enables pagination through a set of `GeekBit`."""
+  geekBits(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsConnection
+
+  """Reads a set of `GeekBit`."""
+  geekBitsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GeekBitCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!]
+  ): [GeekBit!]
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  """
+  id: ID!
+  link(rowId: UUID!): Link
+
+  """Reads a single `Link` using its globally unique `ID`."""
+  linkById(
+    """The globally unique `ID` to be used in selecting a single `Link`."""
+    id: ID!
+  ): Link
+  linkByUri(uri: Uri!): Link
+
+  """Allow easy searching of public.link history by timestamp range"""
+  linkHistoryByRange(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+    arg0: DatetimeRangeInput!
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _5D3C29958B184A1Ea4138A38B0A60Af6LinksConnection
+
+  """Allow easy searching of public.link history by timestamp range"""
+  linkHistoryByRangeList(
+    arg0: DatetimeRangeInput!
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_5D3C29958B184A1EA4138A38B0A60Af6Link!]
+
+  """Point in time accessor for public.link"""
+  linkHistoryByTimestamp(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+    moment: Datetime!
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): _5D3C29958B184A1Ea4138A38B0A60Af6LinksConnection
+
+  """Point in time accessor for public.link"""
+  linkHistoryByTimestampList(
+    """Only read the first `n` values of the set."""
+    first: Int
+    moment: Datetime!
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [_5D3C29958B184A1EA4138A38B0A60Af6Link!]
+
+  """Reads and enables pagination through a set of `Link`."""
+  links(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LinkCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LinksConnection
+
+  """Reads a set of `Link`."""
+  linksList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LinkCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!]
+  ): [Link!]
+
+  """Fetches an object given its globally unique `ID`."""
+  node(
+    """The globally unique `ID`."""
+    id: ID!
+  ): Node
+  participant(rowId: UUID!): Participant
+
+  """Reads a single `Participant` using its globally unique `ID`."""
+  participantById(
+    """
+    The globally unique `ID` to be used in selecting a single `Participant`.
+    """
+    id: ID!
+  ): Participant
+
+  """Allow easy searching of public.participant history by timestamp range"""
+  participantHistoryByRange(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+    arg0: DatetimeRangeInput!
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): E4D9Ed8679C44D5982EbD22Decfb3967ParticipantsConnection
+
+  """Allow easy searching of public.participant history by timestamp range"""
+  participantHistoryByRangeList(
+    arg0: DatetimeRangeInput!
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [E4D9Ed8679C44D5982EbD22Decfb3967Participant!]
+
+  """Point in time accessor for public.participant"""
+  participantHistoryByTimestamp(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+    moment: Datetime!
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): E4D9Ed8679C44D5982EbD22Decfb3967ParticipantsConnection
+
+  """Point in time accessor for public.participant"""
+  participantHistoryByTimestampList(
+    """Only read the first `n` values of the set."""
+    first: Int
+    moment: Datetime!
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [E4D9Ed8679C44D5982EbD22Decfb3967Participant!]
+
+  """Reads and enables pagination through a set of `Participant`."""
+  participants(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsConnection
+
+  """Reads a set of `Participant`."""
+  participantsList(
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ParticipantCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!]
+  ): [Participant!]
+
+  """
+  Convert from pascal case to camel case, eg., PascalToCamel -> pascalToCamel
+  """
+  pascalToCamel(pascalCase: String!): String
+
+  """
+  Convert from pascal case to snake case, eg., PascalToSnake -> pascal_to_snake
+  """
+  pascalToSnake(pascalCase: String!): String
+
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """
+  Convert from snake case to pascal case, eg., snake_to_pascal -> SnakeToPascal
+  """
+  snakeToPascal(snakeCase: String!): String
+}
+
+"""
+A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+"""
+scalar UUID
+
+"""All input for the `updateAccountById` mutation."""
+input UpdateAccountByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Account` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `Account` being updated.
+  """
+  patch: AccountPatch!
+}
+
+"""All input for the `updateAccount` mutation."""
+input UpdateAccountInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Account` being updated.
+  """
+  patch: AccountPatch!
+  rowId: UUID!
+}
+
+"""The output of our update `Account` mutation."""
+type UpdateAccountPayload {
+  """The `Account` that was updated by this mutation."""
+  account: Account
+
+  """An edge for our `Account`. May be used by Relay 1."""
+  accountEdge(
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AccountsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateEpisodeAssetByEpisodeIdAndFilename` mutation."""
+input UpdateEpisodeAssetByEpisodeIdAndFilenameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  episodeId: UUID!
+
+  """Human-readable file name"""
+  filename: String!
+
+  """
+  An object where the defined keys will be set on the `EpisodeAsset` being updated.
+  """
+  patch: EpisodeAssetPatch!
+}
+
+"""All input for the `updateEpisodeAssetById` mutation."""
+input UpdateEpisodeAssetByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `EpisodeAsset` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `EpisodeAsset` being updated.
+  """
+  patch: EpisodeAssetPatch!
+}
+
+"""All input for the `updateEpisodeAsset` mutation."""
+input UpdateEpisodeAssetInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `EpisodeAsset` being updated.
+  """
+  patch: EpisodeAssetPatch!
+  rowId: UUID!
+}
+
+"""The output of our update `EpisodeAsset` mutation."""
+type UpdateEpisodeAssetPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Episode` that is related to this `EpisodeAsset`."""
+  episode: Episode
+
+  """The `EpisodeAsset` that was updated by this mutation."""
+  episodeAsset: EpisodeAsset
+
+  """An edge for our `EpisodeAsset`. May be used by Relay 1."""
+  episodeAssetEdge(
+    """The method to use when ordering `EpisodeAsset`."""
+    orderBy: [EpisodeAssetsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodeAssetsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateEpisodeById` mutation."""
+input UpdateEpisodeByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Episode` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `Episode` being updated.
+  """
+  patch: EpisodePatch!
+}
+
+"""All input for the `updateEpisodeByTitle` mutation."""
+input UpdateEpisodeByTitleInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Episode` being updated.
+  """
+  patch: EpisodePatch!
+  title: String!
+}
+
+"""All input for the `updateEpisode` mutation."""
+input UpdateEpisodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Episode` being updated.
+  """
+  patch: EpisodePatch!
+  rowId: UUID!
+}
+
+"""The output of our update `Episode` mutation."""
+type UpdateEpisodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Episode` that was updated by this mutation."""
+  episode: Episode
+
+  """An edge for our `Episode`. May be used by Relay 1."""
+  episodeEdge(
+    """The method to use when ordering `Episode`."""
+    orderBy: [EpisodesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EpisodesEdge
+
+  """Reads a single `EpisodeStatus` that is related to this `Episode`."""
+  episodeStatusByStatus: EpisodeStatus
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateGeekBitByEpisodeIdAndLinkId` mutation."""
+input UpdateGeekBitByEpisodeIdAndLinkIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  episodeId: UUID!
+  linkId: UUID!
+
+  """
+  An object where the defined keys will be set on the `GeekBit` being updated.
+  """
+  patch: GeekBitPatch!
+}
+
+"""All input for the `updateGeekBitById` mutation."""
+input UpdateGeekBitByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `GeekBit` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `GeekBit` being updated.
+  """
+  patch: GeekBitPatch!
+}
+
+"""All input for the `updateGeekBit` mutation."""
+input UpdateGeekBitInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `GeekBit` being updated.
+  """
+  patch: GeekBitPatch!
+  rowId: UUID!
+}
+
+"""The output of our update `GeekBit` mutation."""
+type UpdateGeekBitPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Episode` that is related to this `GeekBit`."""
+  episode: Episode
+
+  """The `GeekBit` that was updated by this mutation."""
+  geekBit: GeekBit
+
+  """An edge for our `GeekBit`. May be used by Relay 1."""
+  geekBitEdge(
+    """The method to use when ordering `GeekBit`."""
+    orderBy: [GeekBitsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GeekBitsEdge
+
+  """Reads a single `GeekBitStatus` that is related to this `GeekBit`."""
+  geekBitStatusByStatus: GeekBitStatus
+
+  """Reads a single `Link` that is related to this `GeekBit`."""
+  link: Link
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateLinkById` mutation."""
+input UpdateLinkByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Link` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `Link` being updated.
+  """
+  patch: LinkPatch!
+}
+
+"""All input for the `updateLinkByUri` mutation."""
+input UpdateLinkByUriInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Link` being updated.
+  """
+  patch: LinkPatch!
+  uri: Uri!
+}
+
+"""All input for the `updateLink` mutation."""
+input UpdateLinkInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Link` being updated.
+  """
+  patch: LinkPatch!
+  rowId: UUID!
+}
+
+"""The output of our update `Link` mutation."""
+type UpdateLinkPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Link` that was updated by this mutation."""
+  link: Link
+
+  """An edge for our `Link`. May be used by Relay 1."""
+  linkEdge(
+    """The method to use when ordering `Link`."""
+    orderBy: [LinksOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LinksEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateParticipantById` mutation."""
+input UpdateParticipantByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Participant` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `Participant` being updated.
+  """
+  patch: ParticipantPatch!
+}
+
+"""All input for the `updateParticipant` mutation."""
+input UpdateParticipantInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Participant` being updated.
+  """
+  patch: ParticipantPatch!
+  rowId: UUID!
+}
+
+"""The output of our update `Participant` mutation."""
+type UpdateParticipantPayload {
+  """Reads a single `Account` that is related to this `Participant`."""
+  account: Account
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Episode` that is related to this `Participant`."""
+  episode: Episode
+
+  """Reads a single `EpisodeRole` that is related to this `Participant`."""
+  episodeRoleByRole: EpisodeRole
+
+  """The `Participant` that was updated by this mutation."""
+  participant: Participant
+
+  """An edge for our `Participant`. May be used by Relay 1."""
+  participantEdge(
+    """The method to use when ordering `Participant`."""
+    orderBy: [ParticipantsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ParticipantsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""
+Accepts valid URLs.
+
+Length limited to 2047 characters (https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
+"""
+scalar Uri
+
+"""
+Auto-generated history for table public.account.
+Not included in the GraphQL schema.
+"""
+type _09038Af0Cacf4D4F8Bd90Cc5D9704989Account {
+  _system: String!
+  bio: String
+  created: Datetime!
+  name: String!
+  roles: [String]
+  rowId: UUID!
+}
+
+"""
+A connection to a list of `_09038Af0Cacf4D4F8Bd90Cc5D9704989Account` values.
+"""
+type _09038Af0Cacf4D4F8Bd90Cc5D9704989AccountsConnection {
+  """
+  A list of edges which contains the `_09038Af0Cacf4D4F8Bd90Cc5D9704989Account` and cursor to aid in pagination.
+  """
+  edges: [_09038Af0Cacf4D4F8Bd90Cc5D9704989AccountsEdge!]!
+
+  """A list of `_09038Af0Cacf4D4F8Bd90Cc5D9704989Account` objects."""
+  nodes: [_09038Af0Cacf4D4F8Bd90Cc5D9704989Account!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `_09038Af0Cacf4D4F8Bd90Cc5D9704989Account` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `_09038Af0Cacf4D4F8Bd90Cc5D9704989Account` edge in the connection."""
+type _09038Af0Cacf4D4F8Bd90Cc5D9704989AccountsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `_09038Af0Cacf4D4F8Bd90Cc5D9704989Account` at the end of the edge."""
+  node: _09038Af0Cacf4D4F8Bd90Cc5D9704989Account!
+}
+
+"""
+Auto-generated history for table public.geek_bit.
+Not included in the GraphQL schema.
+"""
+type _3Cf76Fa890904C1194F0455B0F97660BGeekBit {
+  _system: String!
+  body: String
+  created: Datetime!
+  episodeId: UUID
+  linkId: UUID
+  offsetMs: Int
+  rowId: UUID!
+  status: String!
+  title: String
+}
+
+"""
+A connection to a list of `_3Cf76Fa890904C1194F0455B0F97660BGeekBit` values.
+"""
+type _3Cf76Fa890904C1194F0455B0F97660BGeekBitsConnection {
+  """
+  A list of edges which contains the `_3Cf76Fa890904C1194F0455B0F97660BGeekBit` and cursor to aid in pagination.
+  """
+  edges: [_3Cf76Fa890904C1194F0455B0F97660BGeekBitsEdge!]!
+
+  """A list of `_3Cf76Fa890904C1194F0455B0F97660BGeekBit` objects."""
+  nodes: [_3Cf76Fa890904C1194F0455B0F97660BGeekBit!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `_3Cf76Fa890904C1194F0455B0F97660BGeekBit` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `_3Cf76Fa890904C1194F0455B0F97660BGeekBit` edge in the connection."""
+type _3Cf76Fa890904C1194F0455B0F97660BGeekBitsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `_3Cf76Fa890904C1194F0455B0F97660BGeekBit` at the end of the edge."""
+  node: _3Cf76Fa890904C1194F0455B0F97660BGeekBit!
+}
+
+"""
+Auto-generated history for table public.account_email.
+Not included in the GraphQL schema.
+"""
+type _3E8014Ee6A55436A90A6800B1036B5AcAccountEmail {
+  _system: String!
+  accountId: UUID!
+  email: Email!
+}
+
+"""
+A connection to a list of `_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail` values.
+"""
+type _3E8014Ee6A55436A90A6800B1036B5AcAccountEmailsConnection {
+  """
+  A list of edges which contains the `_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail` and cursor to aid in pagination.
+  """
+  edges: [_3E8014Ee6A55436A90A6800B1036B5AcAccountEmailsEdge!]!
+
+  """A list of `_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail` objects."""
+  nodes: [_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail` edge in the connection.
+"""
+type _3E8014Ee6A55436A90A6800B1036B5AcAccountEmailsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """
+  The `_3E8014Ee6A55436A90A6800B1036B5AcAccountEmail` at the end of the edge.
+  """
+  node: _3E8014Ee6A55436A90A6800B1036B5AcAccountEmail!
+}
+
+"""
+Auto-generated history for table public.link.
+Not included in the GraphQL schema.
+"""
+type _5D3C29958B184A1EA4138A38B0A60Af6Link {
+  _system: String!
+  created: Datetime!
+  metadata: JSON
+  rowId: UUID!
+  scrape: String
+  summary: String
+  title: String
+  uri: Uri!
+}
+
+"""
+A connection to a list of `_5D3C29958B184A1EA4138A38B0A60Af6Link` values.
+"""
+type _5D3C29958B184A1Ea4138A38B0A60Af6LinksConnection {
+  """
+  A list of edges which contains the `_5D3C29958B184A1EA4138A38B0A60Af6Link` and cursor to aid in pagination.
+  """
+  edges: [_5D3C29958B184A1Ea4138A38B0A60Af6LinksEdge!]!
+
+  """A list of `_5D3C29958B184A1EA4138A38B0A60Af6Link` objects."""
+  nodes: [_5D3C29958B184A1EA4138A38B0A60Af6Link!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `_5D3C29958B184A1EA4138A38B0A60Af6Link` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `_5D3C29958B184A1EA4138A38B0A60Af6Link` edge in the connection."""
+type _5D3C29958B184A1Ea4138A38B0A60Af6LinksEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `_5D3C29958B184A1EA4138A38B0A60Af6Link` at the end of the edge."""
+  node: _5D3C29958B184A1EA4138A38B0A60Af6Link!
+}
+
+"""
+Auto-generated history for table public.episode_asset.
+Not included in the GraphQL schema.
+"""
+type _71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset {
+  _system: String!
+  created: Datetime!
+  description: String
+  episodeId: UUID
+  filename: String!
+  mediaType: String!
+  metadata: JSON
+  rowId: UUID!
+}
+
+"""
+A connection to a list of `_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset` values.
+"""
+type _71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAssetsConnection {
+  """
+  A list of edges which contains the `_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset` and cursor to aid in pagination.
+  """
+  edges: [_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAssetsEdge!]!
+
+  """A list of `_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset` objects."""
+  nodes: [_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset` edge in the connection.
+"""
+type _71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAssetsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """
+  The `_71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset` at the end of the edge.
+  """
+  node: _71Afa6C59D8C4B7D87E85Ab85C334DfeEpisodeAsset!
+}

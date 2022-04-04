@@ -1,3 +1,9 @@
+<script context="module">
+	import { setEnvironment } from '$houdini';
+	import env from '../environment';
+	setEnvironment(env);
+</script>
+
 <script lang="ts">
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
@@ -10,7 +16,7 @@
 </main>
 
 <footer>
-	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+	<p>GeekSpeak tech radio since 1998</p>
 </footer>
 
 <style>

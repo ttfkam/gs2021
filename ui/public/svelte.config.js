@@ -1,19 +1,27 @@
 import preprocess from 'svelte-preprocess';
+import houdini from 'houdini-preprocess';
+import path from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
-	preprocess: preprocess(),
+	preprocess: [preprocess(), houdini()],
 
 	kit: {
-		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte',
 		vite: {
+			resolve: {
+				alias: {
+					$houdini: path.resolve('.', '$houdini')
+				}
+			},
 			server: {
 				hmr: {
-					clientPort: 8080,
+					clientPort: 8080
 				},
+				fs: {
+					allow: ['.']
+				}
 			}
 		}
 	}
