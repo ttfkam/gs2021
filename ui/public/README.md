@@ -36,3 +36,18 @@ npm run build
 ```
 
 > You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+
+## GraphQL Schema
+
+We are using Houdini for our GraphQL Client.
+When the GraphQL Schema changes make sure to pull it in
+
+```bash
+npx houdini generate --pull-schema
+```
+
+Houdini has an oddity which will probably only emerge in dev runs. It loads it's config based on the `exec path + houdini.config` - and so it will not load from docker - solution - stop the ui/public docker and run locally
+
+```bash
+npm run dev  -- --port=8080 --host=0.0.0.0
+```
