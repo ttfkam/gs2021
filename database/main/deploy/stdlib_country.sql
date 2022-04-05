@@ -1,7 +1,8 @@
 -- Deploy geekspeak:stdlib_country to pg
 -- requires: stdlib_config_system_versioning
 
-BEGIN;
+BEGIN
+;
 
 -- Make sure everything we create here is put into the stdlib namespace
 SET search_path = stdlib, public;
@@ -34,34 +35,46 @@ CREATE TABLE country (
 ,                 LIKE stdlib.SYSTEM_VERSIONED
                        INCLUDING COMMENTS
 ); COMMENT ON TABLE country IS
-'An amalgam of ISO-3166, postal code patterns, and telephone number patterns.';
+'An amalgam of ISO-3166, postal code patterns, and telephone number patterns.'
+;
 COMMENT ON COLUMN country.alpha_3_code IS
-'ISO-3166 3-character country/territory code.';
+'ISO-3166 3-character country/territory code.'
+;
 COMMENT ON COLUMN country.alpha_2_code IS
 'ISO-3166 2-character country/territory code. Prefer the 3-character code in
-alpha_3_code when possible.';
+alpha_3_code when possible.'
+;
 COMMENT ON COLUMN country.numeric_code IS
 'ISO-3166 3-digit numeric country/territory code. Prefer the 3-character code
-in alpha_3_code when possible.';
+in alpha_3_code when possible.'
+;
 COMMENT ON COLUMN country.name IS
-'The simpler, familiar, common name for a country/territory.';
+'The simpler, familiar, common name for a country/territory.'
+;
 COMMENT ON COLUMN country.official_name IS
-'The official (translated to English) name for a country/territory.';
+'The official (translated to English) name for a country/territory.'
+;
 COMMENT ON COLUMN country.parent IS
 'If the entry is not a sovereign nation, references the sovereign nation that
-governs it.';
+governs it.'
+;
 COMMENT ON COLUMN country.sovereignty IS
 'If the entry is not a sovereign nation but is not controlled by a nation
-state, specifies the controlling entity or international treaty.';
+state, specifies the controlling entity or international treaty.'
+;
 COMMENT ON COLUMN country.tlds IS
-'The region''s 2-character top level internet (DNS) domains.';
+'The region''s 2-character top level internet (DNS) domains.'
+;
 COMMENT ON COLUMN country.recognized IS
 'When the nation was first internationally recognized to if/when the entity
-ceased to exist in its current form.';
+ceased to exist in its current form.'
+;
 COMMENT ON COLUMN country.postal_code_pattern IS
-'Postal code regular expression patterns by country/territory.';
+'Postal code regular expression patterns by country/territory.'
+;
 COMMENT ON COLUMN country.tel_pattern IS
-'Phone number regular expression patterns by country/territory.';
+'Phone number regular expression patterns by country/territory.'
+;
 
 CREATE FUNCTION is_postal_code( p_postal_code  text
                               , p_country_code varchar(3) = 'USA'
@@ -70,11 +83,12 @@ CREATE FUNCTION is_postal_code( p_postal_code  text
   SELECT c.postal_code_pattern ~ p_postal_code
     FROM country c
    WHERE c.alpha_3_code = p_country_code
-       ;
+  ;
 $$; COMMENT ON FUNCTION is_postal_code(text, varchar) IS
 'Validate postal code by country/territory.
 
-Regexes from validator.js (https://www.npmjs.com/package/validator)';
+Regexes from validator.js (https://www.npmjs.com/package/validator)'
+;
 
 CREATE FUNCTION is_postal_code( p_postal_code   text
                               , p_country_codes varchar(3)[]
@@ -82,9 +96,10 @@ CREATE FUNCTION is_postal_code( p_postal_code   text
         RETURNS bool LANGUAGE sql STRICT STABLE PARALLEL SAFE AS $$
   SELECT bool_or( is_postal_code( p_postal_code, codes.code ) )
     FROM unnest( p_country_codes ) AS codes( code )
-       ;
+  ;
 $$; COMMENT ON FUNCTION is_postal_code(text, varchar[]) IS
-'Validate postal code by a list of countries/territories.';
+'Validate postal code by a list of countries/territories.'
+;
 
 INSERT INTO country ( alpha_3_code
                     , alpha_2_code
@@ -297,7 +312,7 @@ ON CONFLICT (alpha_3_code)
                      , postal_code_pattern = EXCLUDED.postal_code_pattern
                      , tel_pattern         = EXCLUDED.tel_pattern
                      , recognized          = '(-infinity, infinity)'
-          ;
+;
 
 -- Outlier entries
 INSERT INTO country ( alpha_3_code
@@ -329,7 +344,7 @@ ON CONFLICT (alpha_3_code)
                      , postal_code_pattern = EXCLUDED.postal_code_pattern
                      , tel_pattern         = EXCLUDED.tel_pattern
                      , recognized          = '(-infinity, infinity)'
-          ;
+;
 
 -- Territories (last so that the "parent" foreign key constraints resolve correctly
 INSERT INTO country ( alpha_3_code
@@ -401,13 +416,15 @@ ON CONFLICT (alpha_3_code)
                      , postal_code_pattern = EXCLUDED.postal_code_pattern
                      , tel_pattern         = EXCLUDED.tel_pattern
                      , recognized          = '(-infinity, infinity)'
-          ;
+;
 
 GRANT SELECT
    ON TABLE country
    TO public
-    ;
+;
 
-RESET search_path;
+RESET search_path
+;
 
-COMMIT;
+COMMIT
+;

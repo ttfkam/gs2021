@@ -1,10 +1,12 @@
 -- Deploy geekspeak:stdlib_aws to pg
 -- requires: stdlib_internet
 
-BEGIN;
+BEGIN
+;
 
 -- Make sure everything we create here is put into the stdlib namespace
-SET search_path = stdlib, public;
+SET search_path = stdlib, public
+;
 
 /*
   See https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-s3-bucket-naming-requirements.html
@@ -12,8 +14,9 @@ SET search_path = stdlib, public;
 */
 CREATE FUNCTION is_s3_bucket(p_name text)
         RETURNS bool LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
-  SELECT p_name ~ '^[a-z0-9][-0-9a-z.]+[0-9a-z.]$' AND NOT p_name ~ '\.-|-\.|\.\.|^\d+\.\d+\.\d+.\d+$'
-       ;
+  SELECT p_name ~ '^[a-z0-9][-0-9a-z.]+[0-9a-z.]$'
+         AND NOT p_name ~ '\.-|-\.|\.\.|^\d+\.\d+\.\d+.\d+$'
+  ;
 $$; COMMENT ON FUNCTION is_s3_bucket(text) IS
 '1) Each label in the bucket name must start with a lowercase letter or number.
 2) The bucket name can be between 3 and 63 characters long, and can contain
@@ -31,7 +34,7 @@ CREATE OR REPLACE FUNCTION is_s3_uri(p_s3_uri text)
          AND (uri_expanded(p_s3_uri)).port IS NULL
          AND (uri_expanded(p_s3_uri)).search IS NULL
          AND (uri_expanded(p_s3_uri)).hash IS NULL
-       ;
+  ;
 $$; COMMENT ON FUNCTION is_s3_uri(text) IS
 'Example: s3://my_bucket/some/file/path/as/an/object/key
 
@@ -50,8 +53,7 @@ limits for S3 URIs:
 CREATE DOMAIN s3_bucket
            AS varchar(63)
         CHECK (is_s3_bucket(VALUE))
-            ;
-COMMENT ON DOMAIN s3_bucket IS
+; COMMENT ON DOMAIN s3_bucket IS
 'Accepts valid S3 bucket names.
 
 1) Each label in the bucket name must start with a lowercase letter or number.
@@ -64,8 +66,7 @@ have consecutive periods, or use dashes adjacent to periods.
 CREATE DOMAIN s3_uri
            AS varchar(1093)
         CHECK (is_s3_uri(VALUE))
-            ;
-COMMENT ON DOMAIN s3_bucket IS
+; COMMENT ON DOMAIN s3_bucket IS
 'Accepts valid S3 URIs.
 
 Example: s3://my_bucket/some/file/path/as/an/object/key
@@ -82,6 +83,8 @@ limits for S3 URIs:
   max 1093 chars
 ';
 
-RESET search_path;
+RESET search_path
+;
 
-COMMIT;
+COMMIT
+;

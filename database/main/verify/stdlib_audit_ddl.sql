@@ -1,7 +1,9 @@
 -- Verify geekspeak:stdlib_audit_ddl on pg
 
-BEGIN;
+BEGIN
+;
 
 -- XXX Add verifications here.
 
-ROLLBACK;
+ROLLBACK
+;

@@ -1,9 +1,11 @@
 -- Revert geekspeak:stdlib_lint from pg
 
-BEGIN;
+BEGIN
+;
 
 -- Make sure everything we drop here is from the stdlib namespace
-SET search_path = stdlib;
+SET search_path = stdlib
+;
 
 DROP FUNCTION is_reserved(text)
             , raise(varchar, varchar, text, text, text)
@@ -15,11 +17,13 @@ DROP FUNCTION is_reserved(text)
             , lint(text)
             , lint_column_realtime()
             , lint_relation_realtime()
-            ;
+;
 
 DROP TABLE reserved_word
-         ;
+;
 
-RESET search_path;
+RESET search_path
+;
 
-COMMIT;
+COMMIT
+;

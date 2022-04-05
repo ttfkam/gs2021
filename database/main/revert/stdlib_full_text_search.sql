@@ -1,9 +1,11 @@
 -- Revert geekspeak:stdlib_full_text_search from pg
 
-BEGIN;
+BEGIN
+;
 
 -- Make sure everything we drop here is from the stdlib namespace
-SET search_path = stdlib;
+SET search_path = stdlib
+;
 
 DROP FUNCTION
     IF EXISTS search(tsquery)
@@ -11,11 +13,13 @@ DROP FUNCTION
             , fts(FTS)
             , fts_trigger()
             , weighted_tsvector(text,"char")
-            ;
+;
 
 DROP TABLE FTS
-         ;
+;
 
-RESET search_path;
+RESET search_path
+;
 
-COMMIT;
+COMMIT
+;

@@ -1,7 +1,9 @@
 -- Revert geekspeak:geekspeak_role from pg
 
-BEGIN;
+BEGIN
+;
 
 -- We don't remove roles
 
-COMMIT;
+COMMIT
+;

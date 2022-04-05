@@ -1,7 +1,9 @@
 -- Verify geekspeak:stdlib on pg
 
-BEGIN;
+BEGIN
+;
 
 -- XXX Add verifications here.
 
-ROLLBACK;
+ROLLBACK
+;
