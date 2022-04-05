@@ -1,16 +1,18 @@
 -- Revert geekspeak:stdlib_config_system_versioning from pg
 
-BEGIN;
+BEGIN
+;
 
 -- Make sure everything we drop here is from the stdlib namespace
-SET search_path = stdlib;
+SET search_path = stdlib
+;
 
 DROP EVENT TRIGGER _52_create_system_versioned_history
-                 ;
+;
 
 DROP TABLE config
    CASCADE
-         ;
+;
 
 DROP FUNCTION current_system_versioned()
             , system_versioned_close(__system_versioned, timestamptz)
@@ -35,18 +37,20 @@ DROP FUNCTION current_system_versioned()
             , set_config(text, int8, name[], name[])
             , set_config(text, float8, name[], name[])
             , set_config(text, bool, name[], name[])
-            ;
+;
 
 DROP TABLE SYSTEM_VERSIONED
          , __system_versioned
-         ;
+;
 
 DROP VIEW table_history
-        ;
+;
 
 DROP SCHEMA system_versioning
-          ;
+;
 
-RESET search_path;
+RESET search_path
+;
 
-COMMIT;
+COMMIT
+;

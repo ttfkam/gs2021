@@ -1,7 +1,9 @@
 -- Verify geekspeak:geekspeak_role on pg
 
-BEGIN;
+BEGIN
+;
 
 -- XXX Add verifications here.
 
-ROLLBACK;
+ROLLBACK
+;

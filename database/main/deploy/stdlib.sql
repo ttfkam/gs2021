@@ -16,10 +16,11 @@ CREATE SCHEMA stdlib;
  GRANT USAGE
     ON SCHEMA stdlib
     TO public
-     ;
+;
 
 -- Make sure everything we create here is put into the stdlib namespace
-SET search_path = stdlib, public;
+SET search_path = stdlib, public
+;
 
 --    __ _ _ __  _ __    _   _ ___  ___ _ __
 --   / _` | '_ \| '_ \  | | | / __|/ _ \ '__|
@@ -32,24 +33,25 @@ CREATE FUNCTION set_app_user(p_app_user text)
         RETURNS void LANGUAGE sql VOLATILE AS $$
   SELECT set_config('jwt.claims.email', p_app_user, true)
    WHERE p_app_user IS NOT NULL
-       ;
+  ;
 
   SELECT NULL::void
-       ;
+  ;
 $$; COMMENT ON FUNCTION set_app_user(text) IS
 'Sets the current application-level user. This avoids the proliferation of
-database cluster roles.';
+database cluster roles.'
+;
 
 CREATE FUNCTION current_app_user()
         RETURNS text LANGUAGE sql STABLE PARALLEL SAFE AS $$
-  SELECT coalesce(
-           nullif( current_setting('jwt.claims.email', true), '')
-                 , concat('%', SESSION_USER, '%')
+  SELECT coalesce( nullif( current_setting( 'jwt.claims.email', true), '' )
+                 , concat( '%', SESSION_USER, '%' )
                  )
-       ;
+  ;
 $$; COMMENT ON FUNCTION current_app_user() IS
 'Returns the current application-level user. If there is no app user defined,
-return the database cluster role enclosed with ''%'' characters.';
+return the database cluster role enclosed with ''%'' characters.'
+;
 
 --   _                  _   _       _
 --  | |                | | | |     (_)
@@ -62,7 +64,8 @@ return the database cluster role enclosed with ''%'' characters.';
 
 CREATE FUNCTION length_in(val text, min int4, max int4)
         RETURNS bool LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
-    SELECT length(trim(val)) <= max AND length(trim(val)) >= min;
+    SELECT length(trim(val)) <= max AND length(trim(val)) >= min
+    ;
 $$;
 
 --               _              _     _
@@ -86,13 +89,15 @@ CREATE FUNCTION not_exists( p_type text
     ELSEIF lower(p_type) IN ('role', 'user') THEN
       RETURN to_regrole(p_name) IS NULL;
     ELSEIF lower(p_type) = 'temporary table' THEN
-      RETURN NOT EXISTS (SELECT true
-                           FROM pg_class AS c
-                          WHERE c.oid = to_regclass(p_name) AND relpersistence = 't');
+      RETURN NOT EXISTS ( SELECT true
+                            FROM pg_class AS c
+                           WHERE c.oid = to_regclass(p_name) AND relpersistence = 't'
+                        );
     ELSEIF lower(p_type) = 'event trigger' THEN
-      RETURN NOT EXISTS (SELECT true
-                           FROM pg_event_trigger
-                          WHERE evtname = p_name);
+      RETURN NOT EXISTS ( SELECT true
+                            FROM pg_event_trigger
+                           WHERE evtname = p_name
+                        );
     END IF;
     RETURN false;
   END;

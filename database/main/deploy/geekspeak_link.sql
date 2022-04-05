@@ -3,11 +3,12 @@
 -- requires: stdlib_internet
 -- requires: stdlib_full_text_search
 
-BEGIN;
+BEGIN
+;
 
 -- Everything owned by this user
 SET ROLE geekspeak_admin
-       ;
+;
 
 CREATE TABLE link (
           id uuid PRIMARY KEY
@@ -35,7 +36,7 @@ CREATE FUNCTION fts(rec link)
     SELECT stdlib.weighted_tsvector(rec.title,   'A')
            || stdlib.weighted_tsvector(rec.summary, 'B')
            || stdlib.weighted_tsvector(rec.scrape,  'D')
-           ;
+    ;
 $$;
 
 CREATE TRIGGER fts_update
@@ -43,22 +44,24 @@ CREATE TRIGGER fts_update
             ON link
       FOR EACH ROW
        EXECUTE PROCEDURE stdlib.fts_trigger()
-             ;
+;
 
- GRANT SELECT
-    ON TABLE link
-    TO geekspeak_api
-     , geekspeak_analysis
-     ;
+GRANT SELECT
+   ON TABLE link
+   TO geekspeak_api
+    , geekspeak_analysis
+;
 
- GRANT SELECT
-     , INSERT
-     , UPDATE
-     , DELETE
-    ON TABLE link
-    TO geekspeak_user
-     ;
+GRANT SELECT
+    , INSERT
+    , UPDATE
+    , DELETE
+   ON TABLE link
+   TO geekspeak_user
+;
 
-RESET ROLE;
+RESET ROLE
+;
 
-COMMIT;
+COMMIT
+;

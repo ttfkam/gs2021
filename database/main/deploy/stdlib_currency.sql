@@ -24,21 +24,28 @@ CREATE TABLE currency (
 ,              LIKE stdlib.SYSTEM_VERSIONED
                     INCLUDING COMMENTS
 ); COMMENT ON TABLE currency IS
-'ISO-4217 currencies.';
+'ISO-4217 currencies.'
+;
 COMMENT ON COLUMN currency.alpha_3_code IS
-'ISO-4217 3-character currency code.';
+'ISO-4217 3-character currency code.'
+;
 COMMENT ON COLUMN currency.numeric_code IS
 'ISO-4217 3-digit numeric currency code. Prefer the 3-character code
-in alpha_3_code when possible.';
+in alpha_3_code when possible.'
+;
 COMMENT ON COLUMN currency.name IS
-'ISO-4217 currency name.';
+'ISO-4217 currency name.'
+;
 COMMENT ON COLUMN currency.fractional_digits IS
-'How many digits should appear after the decimal separator for the currency.';
+'How many digits should appear after the decimal separator for the currency.'
+;
 COMMENT ON COLUMN currency.active IS
-'When this currency was in use.';
+'When this currency was in use.'
+;
 COMMENT ON COLUMN currency.replaced_by IS
 'If this currency is no longer in use, a reference to the currency that
-supplanted it.';
+supplanted it.'
+;
 
 INSERT INTO currency( alpha_3_code
                     , numeric_code
@@ -230,7 +237,7 @@ INSERT INTO currency( alpha_3_code
                      , name              = EXCLUDED.name
                      , active            = '(-infinity, infinity)'
                      , replaced_by       = NULL
-          ;
+;
 
 -- Discontinued currencies
 INSERT INTO currency( alpha_3_code
@@ -353,13 +360,15 @@ INSERT INTO currency( alpha_3_code
                      , name              = EXCLUDED.name
                      , active            = EXCLUDED.active
                      , replaced_by       = EXCLUDED.replaced_by
-          ;
+;
 
 GRANT SELECT
    ON TABLE currency
    TO public
-    ;
+;
 
-RESET search_path;
+RESET search_path
+;
 
-COMMIT;
+COMMIT
+;

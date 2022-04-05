@@ -3,11 +3,12 @@
 -- requires: stdlib_internet
 -- requires: stdlib_full_text_search
 
-BEGIN;
+BEGIN
+;
 
 -- Everything owned by this user
 SET ROLE geekspeak_admin
-       ;
+;
 
 CREATE TABLE account (
           id uuid PRIMARY KEY
@@ -24,10 +25,17 @@ CREATE TABLE account (
              INCLUDING COMMENTS
              INCLUDING INDEXES
 ); COMMENT ON TABLE account IS
-'User accounts';
-COMMENT ON COLUMN account.name   IS 'Account''s name to be displayed';
-COMMENT ON COLUMN account.bio    IS 'Account holder''s short biography';
-COMMENT ON COLUMN account.roles  IS 'Roles within the application, eg. admin, geek, guest';
+'User accounts'
+;
+COMMENT ON COLUMN account.name IS
+'Account''s name to be displayed'
+;
+COMMENT ON COLUMN account.bio IS
+'Account holder''s short biography'
+;
+COMMENT ON COLUMN account.roles IS
+'Roles within the application, eg. admin, geek, guest'
+;
 
 CREATE TABLE account_email (
        email stdlib.email PRIMARY KEY
@@ -37,12 +45,14 @@ CREATE TABLE account_email (
                      ON DELETE CASCADE
 ,       LIKE stdlib.SYSTEM_VERSIONED
              INCLUDING COMMENTS
-);
+); COMMENT ON TABLE account_email IS
+'GeekSpeak account email contact'
+;
 
 CREATE INDEX account_id_idx
           ON account_email
        USING BTREE (account_id)
-           ;
+;
 
 --    __ _  ___ ___ ___  ___ ___
 --   / _` |/ __/ __/ _ \/ __/ __|
@@ -56,12 +66,12 @@ CREATE INDEX account_id_idx
 
 ALTER TABLE account
      ENABLE ROW LEVEL SECURITY
-          ;
+;
 
 CREATE FUNCTION is_admin()
         RETURNS boolean LANGUAGE sql STABLE PARALLEL SAFE AS $$
     SELECT nullif(current_setting('jwt.claims.admin', true), '')::boolean
-         ;
+    ;
 $$;
 
 CREATE FUNCTION admin_or_same_account(p_id uuid)
@@ -70,7 +80,7 @@ CREATE FUNCTION admin_or_same_account(p_id uuid)
       FROM account_email e
      WHERE is_admin()
            OR p_id = e.account_id
-         ;
+    ;
 $$;
 
 CREATE POLICY account_select
@@ -78,14 +88,14 @@ CREATE POLICY account_select
           FOR SELECT
            TO geekspeak_api
         USING (true) -- Anyone can view
-            ;
+;
 
 CREATE POLICY account_insert
            ON account
           FOR INSERT
            TO geekspeak_api
    WITH CHECK (is_admin())
-            ;
+;
 
 CREATE POLICY account_update
            ON account
@@ -93,20 +103,20 @@ CREATE POLICY account_update
            TO geekspeak_api
         USING (admin_or_same_account(id))
    WITH CHECK (admin_or_same_account(id))
-            ;
+;
 
 CREATE POLICY account_delete
            ON account
           FOR DELETE
            TO geekspeak_api
         USING (admin_or_same_account(id))
-            ;
+;
 
 CREATE FUNCTION fts(a account)
         RETURNS tsvector LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
     SELECT stdlib.weighted_tsvector(a.name, 'A')
            || stdlib.weighted_tsvector(a.bio, 'B')
-         ;
+    ;
 $$;
 
 CREATE TRIGGER fts_update
@@ -114,22 +124,24 @@ CREATE TRIGGER fts_update
             ON account
       FOR EACH ROW
        EXECUTE PROCEDURE stdlib.fts_trigger()
-             ;
+;
 
- GRANT SELECT
-    ON TABLE account
-    TO geekspeak_api
-     , geekspeak_analysis
-     ;
+GRANT SELECT
+   ON TABLE account
+   TO geekspeak_api
+    , geekspeak_analysis
+;
 
- GRANT SELECT
-     , INSERT
-     , UPDATE
-     , DELETE
-    ON TABLE account
-    TO geekspeak_user
-     ;
+GRANT SELECT
+    , INSERT
+    , UPDATE
+    , DELETE
+   ON TABLE account
+   TO geekspeak_user
+;
 
-RESET ROLE;
+RESET ROLE
+;
 
-COMMIT;
+COMMIT
+;

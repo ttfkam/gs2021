@@ -1,12 +1,14 @@
 -- Revert geekspeak:stdlib_internet from pg
 
-BEGIN;
+BEGIN
+;
 
 -- Make sure everything we drop here is from the stdlib namespace
-SET search_path = stdlib;
+SET search_path = stdlib
+;
 
 DROP FUNCTION name_from_email(email)
-            ;
+;
 
 DROP DOMAIN media_type
           , domain_name
@@ -14,7 +16,7 @@ DROP DOMAIN media_type
           , tcpip_port
           , email
           , uri
-          ;
+;
 
 DROP FUNCTION jsonb_media_type_parameters(text)
             , media_type(text)
@@ -24,8 +26,10 @@ DROP FUNCTION jsonb_media_type_parameters(text)
             , uri_decode(text, text)
             , query_string_to_jsonb(text)
             , uri_expanded(varchar)
-            ;
+;
 
-RESET search_path;
+RESET search_path
+;
 
-COMMIT;
+COMMIT
+;

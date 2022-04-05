@@ -2,32 +2,35 @@
 -- requires: geekspeak_account
 -- requires: geekspeak_episode
 
-BEGIN;
+BEGIN
+;
 
 -- Everything owned by this user
 SET ROLE geekspeak_admin
-       ;
+;
 
-CREATE TABLE episode_role ( name text PRIMARY KEY );
-COMMENT ON TABLE episode_role IS 'User role in the production of an episode';
+CREATE TABLE episode_role (
+        name text PRIMARY KEY
+); COMMENT ON TABLE episode_role IS
+'User role in the production of an episode';
 
 CREATE TABLE participant (
-            id uuid PRIMARY KEY
-               DEFAULT gen_random_uuid()
-,   episode_id uuid NOT NULL
-               REFERENCES episode
-                       ON UPDATE CASCADE
-                       ON DELETE CASCADE
-,   account_id uuid NOT NULL
-               REFERENCES account
-                       ON UPDATE CASCADE
-                       ON DELETE RESTRICT
-, episode_role text NOT NULL
-               REFERENCES episode_role
-                       ON UPDATE CASCADE
-                       ON DELETE RESTRICT
-,      created timestamptz NOT NULL
-               DEFAULT CURRENT_TIMESTAMP
+          id uuid PRIMARY KEY
+             DEFAULT gen_random_uuid()
+, episode_id uuid NOT NULL
+             REFERENCES episode
+                     ON UPDATE CASCADE
+                     ON DELETE CASCADE
+, account_id uuid NOT NULL
+             REFERENCES account
+                     ON UPDATE CASCADE
+                     ON DELETE RESTRICT
+,     "role" text NOT NULL
+             REFERENCES episode_role
+                     ON UPDATE CASCADE
+                     ON DELETE RESTRICT
+,    created timestamptz NOT NULL
+             DEFAULT CURRENT_TIMESTAMP
 ,       LIKE stdlib.SYSTEM_VERSIONED
              INCLUDING COMMENTS
 ); COMMENT ON TABLE participant IS
@@ -36,21 +39,21 @@ CREATE TABLE participant (
 CREATE INDEX participant_episode_id_idx
           ON participant
        USING BTREE (episode_id)
-           ;
+;
 CREATE INDEX participant_account_id_idx
           ON participant
        USING BTREE (account_id)
-           ;
+;
 CREATE INDEX participant_episode_role_idx
           ON participant
-       USING BTREE (episode_role)
-           ;
+       USING BTREE ("role")
+;
 
 GRANT SELECT
    ON TABLE episode_role
    TO geekspeak_api
     , geekspeak_user
-    ;
+;
 
 GRANT SELECT
     , INSERT
@@ -59,8 +62,10 @@ GRANT SELECT
    ON TABLE participant
    TO geekspeak_api
     , geekspeak_user
-    ;
+;
 
-RESET ROLE;
+RESET ROLE
+;
 
-COMMIT;
+COMMIT
+;

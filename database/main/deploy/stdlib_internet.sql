@@ -1,10 +1,12 @@
 -- Deploy geekspeak:stdlib_internet to pg
 -- requires: stdlib
 
-BEGIN;
+BEGIN
+;
 
 -- Make sure everything we create here is put into the stdlib namespace
-SET search_path = stdlib, public;
+SET search_path = stdlib, public
+;
 
 --                      _ _         _
 --                     | (_)       | |
@@ -24,9 +26,10 @@ CREATE FUNCTION jsonb_media_type_parameters(p_parameters text)
                              , '' -- removing empty strings from the array
                              )
                ) AS params( param )
-       ;
+  ;
 $$; COMMENT ON FUNCTION jsonb_media_type_parameters(text) IS
-'Parse the key-value pairs from media type parameters into JSON.';
+'Parse the key-value pairs from media type parameters into JSON.'
+;
 
 CREATE FUNCTION media_type( IN  p_media_type      text
                           , OUT media_type        text
@@ -71,7 +74,7 @@ CREATE FUNCTION media_type( IN  p_media_type      text
          END
     FROM matched
    WHERE matched.parts IS NOT NULL
-       ;
+  ;
 $$; COMMENT ON FUNCTION media_type(text) IS
 'Checks if the provided string matches a valid media type by whether it
 follows the established rules according to RFC specifications.
@@ -108,12 +111,12 @@ CREATE DOMAIN media_type
         CHECK ( length_in(VALUE, 1, 126)
                 AND NOT media_type(VALUE) IS NULL
               )
-            ;
-COMMENT ON DOMAIN media_type IS
+; COMMENT ON DOMAIN media_type IS
 'Accepts valid media types (formerly known as MIME types).
 
 Length limited to 126 characters simply for internal PostgreSQL storage
-efficiency.';
+efficiency.'
+;
 
 --       _                       _
 --      | |                     (_)
@@ -145,17 +148,17 @@ CREATE FUNCTION domain_name_expanded( IN  p_domain      text
        , ( regexp_match( fqdn.parts[2], '\.([^.]+)$' ) )[1] AS tld
     FROM fqdn
    WHERE fqdn.parts IS NOT NULL
-       ;
+  ;
 $$; COMMENT ON FUNCTION domain_name_expanded(text) IS
-'RFC-1123-compliant domain validation and introspection.';
+'RFC-1123-compliant domain validation and introspection.'
+;
 
 CREATE DOMAIN domain_name
            AS text
         CHECK ( length_in(VALUE, 1, 255)
                 AND NOT domain_name_expanded(VALUE) IS NULL
               )
-            ;
-COMMENT ON DOMAIN domain_name IS
+; COMMENT ON DOMAIN domain_name IS
 'Accepts valid domain names.
 
 "URI producers should use names that conform to the DNS syntax, even when use
@@ -168,7 +171,8 @@ be used to identify resource records. That one restriction relates to the
 length of the label and the full name. The length of any one label is limited
 to between 1 and 63 octets. A full domain name is limited to 255 octets
 (including the separators)."
-http://tools.ietf.org/html/rfc2181';
+http://tools.ietf.org/html/rfc2181'
+;
 
 --    __       _ _                               _ _  __ _          _
 --   / _|     | | |                             | (_)/ _(_)        | |
@@ -186,8 +190,7 @@ http://tools.ietf.org/html/rfc2181';
 CREATE DOMAIN fqdn
            AS text
         CHECK (length_in(VALUE, 1, 255) AND (domain_name_expanded(VALUE)).parent_domain IS NOT NULL)
-            ;
-COMMENT ON DOMAIN fqdn IS
+; COMMENT ON DOMAIN fqdn IS
 'Accepts valid fully-qualified domain names (FQDN), which are domain names that
 include both a hostname and a parent domain.
 
@@ -201,7 +204,8 @@ be used to identify resource records. That one restriction relates to the
 length of the label and the full name. The length of any one label is limited
 to between 1 and 63 octets. A full domain name is limited to 255 octets
 (including the separators)."
-http://tools.ietf.org/html/rfc2181';
+http://tools.ietf.org/html/rfc2181'
+;
 
 --   _                ___                          _
 --  | |              / (_)                        | |
@@ -216,14 +220,15 @@ CREATE FUNCTION is_tcpip_port(p_port int4)
         RETURNS bool LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
   SELECT p_port BETWEEN 1 AND 65535;
 $$; COMMENT ON FUNCTION is_tcpip_port(int4) IS
-'TCP/IP port as specified in RFC-1700.';
+'TCP/IP port as specified in RFC-1700.'
+;
 
 CREATE DOMAIN tcpip_port
            AS int4
         CHECK (is_tcpip_port(VALUE))
-            ;
-COMMENT ON DOMAIN tcpip_port IS
-'TCP/IP ports range from 1 to 65535 (unsigned 16-bit integer, excluding zero).';
+; COMMENT ON DOMAIN tcpip_port IS
+'TCP/IP ports range from 1 to 65535 (unsigned 16-bit integer, excluding zero).'
+;
 
 --                        _ _
 --                       (_) |
@@ -250,12 +255,13 @@ CREATE FUNCTION email_expanded( p_email varchar(254)
        , a.parts[3]
     FROM address a
    WHERE a.parts IS NOT NULL
-       ;
+  ;
 $$; COMMENT ON FUNCTION email_expanded(varchar) IS
 'HTML5 spec compliant email pattern (same as <input type="email"> for most browsers)
 Must be at least 3 characters, eg., ''a@b''
 
-Length limited to 254 characters (https://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690)';
+Length limited to 254 characters (https://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690)'
+;
 
 CREATE DOMAIN email
            AS text
@@ -264,16 +270,16 @@ CREATE DOMAIN email
                      AND NOT email_expanded(VALUE) IS NULL
                    )
               )
-            ;
-COMMENT ON DOMAIN email IS
+; COMMENT ON DOMAIN email IS
 'Accepts valid email addresses.
 
-Length limited to 254 characters (https://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690)';
+Length limited to 254 characters (https://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690)'
+;
 
 CREATE FUNCTION name_from_email(p_email email)
         RETURNS text LANGUAGE sql STRICT IMMUTABLE PARALLEL SAFE AS $$
     SELECT initcap(regexp_replace((email_expanded(p_email)).username, '[^a-zA-Z]', ' '))
-         ;
+    ;
 $$;
 
 --              _

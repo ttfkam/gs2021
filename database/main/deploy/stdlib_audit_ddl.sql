@@ -1,9 +1,11 @@
 -- Deploy geekspeak:stdlib_audit_ddl to pg
 
-BEGIN;
+BEGIN
+;
 
 -- Make sure everything we create here is put into the stdlib namespace
-SET search_path = stdlib, public;
+SET search_path = stdlib, public
+;
 
 CREATE TABLE ddl_info (
          app_user name
@@ -67,7 +69,7 @@ CREATE FUNCTION ddl_drop_log()
               , address_names
               , address_args
            FROM pg_event_trigger_dropped_objects()
-              ;
+    ;
   END;
 $$; COMMENT ON FUNCTION ddl_drop_log() IS
 'Debug tracking of DDL DROPs.';
@@ -97,7 +99,7 @@ CREATE FUNCTION ddl_log()
               , object_identity
               , in_extension
            FROM pg_event_trigger_ddl_commands()
-              ;
+    ;
   END;
 $$; COMMENT ON FUNCTION ddl_log() IS
 'Debug tracking of DDL changes.';
@@ -116,8 +118,10 @@ GRANT SELECT
     , INSERT
    ON TABLE ddl_info
    TO public
-    ;
+;
 
-RESET search_path;
+RESET search_path
+;
 
-COMMIT;
+COMMIT
+;

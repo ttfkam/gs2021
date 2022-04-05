@@ -490,7 +490,7 @@ CREATE FUNCTION lint_level( p_tag           text
          END
     FROM ( VALUES ( 'LINT_' || upper(p_tag) ) ) input(option_name)
     LEFT JOIN config AS conf USING (option_name)
-       ;
+  ;
 $$;
 
 CREATE FUNCTION lint_relation( p_default_level text
@@ -1054,21 +1054,17 @@ BEGIN
   --
   --        TYPE LINT
   --
-  PERFORM
-    lint_type(
-      p_default_level,
-      jsonb_strip_nulls(
-        jsonb_build_object(
-          'schema', t.typnamespace::regnamespace::text,
-          'name', t.typname,
-          'isDomain', NULLIF(t.typtype = 'd', false),
-          'isEnum', NULLIF(t.typtype = 'e', false),
-          'default', t.typdefault,
-          'check', c.consrc,
-          'comment', d.description
-        )
-      )
-    )
+  PERFORM lint_type( p_default_level
+                   , jsonb_strip_nulls( jsonb_build_object( 'schema', t.typnamespace::regnamespace::text
+                                                          , 'name', t.typname
+                                                          , 'isDomain', nullif( t.typtype = 'd', false )
+                                                          , 'isEnum', nullif( t.typtype = 'e', false )
+                                                          , 'default', t.typdefault
+                                                          , 'check', c.consrc
+                                                          , 'comment', d.description
+                                                          )
+                                      )
+                   )
   FROM pg_type AS t
     -- Type comments
     LEFT JOIN pg_description AS d ON (t.oid = d.objoid)
@@ -1079,36 +1075,33 @@ BEGIN
   --
   --        FUNCTION LINT
   --
-  PERFORM
-    lint_type(
-      p_default_level,
-      jsonb_strip_nulls(
-        jsonb_build_object(
-          'schema', func.pronamespace::regnamespace::text,
-          'name', func.oid::regprocedure::text,
-          'arguments', func.proargtypes::regtype[]::text[],
-          'returns', func.prorettype::regtype,
-          'language', lang.lanname,
-          'source', func.prosrc,
-          'isSetuid', NULLIF(func.prosecdef, false),
-          'volatility', func.provolatile,
-          'isStrict', NULLIF(func.proisstrict, false),
-          'comment', d.description
-        )
-      )
-    )
-  FROM pg_proc AS func
-    -- Part of an extension or is a system function
-    LEFT JOIN pg_depend AS dep ON ((func.oid = dep.objid AND dep.deptype = 'e') OR (func.oid = dep.refobjid AND dep.deptype = 'p'))
-    -- Function comments
-    LEFT JOIN pg_description AS d ON (func.oid = d.objoid AND d.objsubid = 0)
-    -- Programming language
-    LEFT JOIN pg_language AS lang ON (func.prolang = lang.oid)
-  -- Ignore built-in functions
-  WHERE func.pronamespace::regnamespace NOT IN ('pg_catalog', 'information_schema')
-    AND lang.lanname NOT IN ('c', 'internal') -- Exclude native functions
-    AND dep.objid IS NULL -- Exclude extension functions
-  ORDER BY func.oid::regprocedure::text;
+  PERFORM lint_type( p_default_level
+                   , jsonb_strip_nulls( jsonb_build_object( 'schema', func.pronamespace::regnamespace::text
+                                                          , 'name', func.oid::regprocedure::text
+                                                          , 'arguments', func.proargtypes::regtype[]::text[]
+                                                          , 'returns', func.prorettype::regtype
+                                                          , 'language', lang.lanname
+                                                          , 'source', func.prosrc
+                                                          , 'isSetuid', nullif( func.prosecdef, false )
+                                                          , 'volatility', func.provolatile
+                                                          , 'isStrict', nullif( func.proisstrict, false )
+                                                          , 'comment', d.description
+                                                          )
+                                      )
+                   )
+     FROM pg_proc AS func
+          -- Part of an extension or is a system function
+     LEFT JOIN pg_depend AS dep ON ((func.oid = dep.objid AND dep.deptype = 'e') OR (func.oid = dep.refobjid AND dep.deptype = 'p'))
+          -- Function comments
+     LEFT JOIN pg_description AS d ON (func.oid = d.objoid AND d.objsubid = 0)
+          -- Programming language
+     LEFT JOIN pg_language AS lang ON (func.prolang = lang.oid)
+          -- Ignore built-in functions
+    WHERE func.pronamespace::regnamespace NOT IN ('pg_catalog', 'information_schema')
+          AND lang.lanname NOT IN ('c', 'internal') -- Exclude native functions
+          AND dep.objid IS NULL -- Exclude extension functions
+    ORDER BY func.oid::regprocedure::text
+  ;
 END;
 $$;
 COMMENT ON FUNCTION lint(text) IS
@@ -1122,35 +1115,32 @@ BEGIN
   --
   --        COLUMN LINT
   --
-  PERFORM
-    lint_column(
-      p_default_level,
-      jsonb_strip_nulls(
-        jsonb_build_object(
-          'schema', rels.relnamespace::regnamespace::text,
-          'relation', rels.relname,
-          'name', a.attname,
-          'type', a.atttypid::regtype::text,
-          'isArray', a.attndims > 0,
-          'notNull', a.attnotnull,
-          'default', def.adsrc,
-          'isLocal', a.attislocal,
-          'inheritCount', nullif(a.attinhcount, 0),
-          'comment', coalesce(d.description, '')
-        )
-      )
-    )
-  FROM pg_event_trigger_ddl_commands() AS et
-    INNER JOIN pg_attribute AS a ON (a.attrelid = et.objid AND a.attnum = et.objsubid)
-    INNER JOIN pg_class AS rels ON (et.objid = rels.oid)
-    -- Column comments
-    LEFT JOIN pg_description AS d ON (et.objid = d.objoid AND et.objsubid = d.objsubid)
-    -- Column defaults
-    LEFT JOIN pg_attrdef AS def ON (a.atthasdef AND a.attrelid = def.adrelid AND a.attnum = def.adnum)
-  WHERE rels.relnamespace::regnamespace NOT IN ('pg_catalog', 'information_schema')
-    AND a.attnum > 0
-    AND NOT a.attisdropped
-  ORDER BY rels.relnamespace, a.attrelid::regclass::text, a.attnum;
+  PERFORM lint_column( p_default_level
+                     , jsonb_strip_nulls( jsonb_build_object( 'schema', rels.relnamespace::regnamespace::text
+                                                            , 'relation', rels.relname
+                                                            , 'name', a.attname
+                                                            , 'type', a.atttypid::regtype::text
+                                                            , 'isArray', a.attndims > 0
+                                                            , 'notNull', a.attnotnull
+                                                            , 'default', def.adsrc
+                                                            , 'isLocal', a.attislocal
+                                                            , 'inheritCount', nullif( a.attinhcount, 0 )
+                                                            , 'comment', coalesce( d.description, '' )
+                                                            )
+                                        )
+                    )
+     FROM pg_event_trigger_ddl_commands() AS et
+     JOIN pg_attribute AS a ON (a.attrelid = et.objid AND a.attnum = et.objsubid)
+     JOIN pg_class AS rels ON (et.objid = rels.oid)
+          -- Column comments
+     LEFT JOIN pg_description AS d ON (et.objid = d.objoid AND et.objsubid = d.objsubid)
+          -- Column defaults
+     LEFT JOIN pg_attrdef AS def ON (a.atthasdef AND a.attrelid = def.adrelid AND a.attnum = def.adnum)
+    WHERE rels.relnamespace::regnamespace NOT IN ('pg_catalog', 'information_schema')
+          AND a.attnum > 0
+          AND NOT a.attisdropped
+    ORDER BY rels.relnamespace, a.attrelid::regclass::text, a.attnum
+  ;
 END;
 $$;
 
@@ -1162,28 +1152,25 @@ BEGIN
   --
   --        TABLE LINT
   --
-  PERFORM
-    lint_column(
-      p_default_level,
-      jsonb_strip_nulls(
-        jsonb_build_object(
-          'schema', rels.relnamespace::regnamespace::text,
-          'name', rels.relname,
-          'comment', coalesce(d.description, '')
-        )
-      )
-    )
-  FROM pg_event_trigger_ddl_commands() AS et
-    INNER JOIN pg_attribute AS a ON (a.attrelid = et.objid AND a.attnum = et.objsubid)
-    INNER JOIN pg_class AS rels ON (et.objid = rels.oid)
-    -- Column comments
-    LEFT JOIN pg_description AS d ON (et.objid = d.objoid AND et.objsubid = d.objsubid)
-    -- Column defaults
-    LEFT JOIN pg_attrdef AS def ON (a.atthasdef AND a.attrelid = def.adrelid AND a.attnum = def.adnum)
-  WHERE rels.relnamespace::regnamespace NOT IN ('pg_catalog', 'information_schema')
-    AND a.attnum > 0
-    AND NOT a.attisdropped
-  ORDER BY rels.relnamespace, a.attrelid::regclass::text, a.attnum;
+  PERFORM lint_column( p_default_level
+                     , jsonb_strip_nulls( jsonb_build_object( 'schema', rels.relnamespace::regnamespace::text
+                                                            , 'name', rels.relname
+                                                            , 'comment', coalesce( d.description, '' )
+                                                            )
+                                        )
+                     )
+     FROM pg_event_trigger_ddl_commands() et
+     JOIN pg_attribute a ON (a.attrelid = et.objid AND a.attnum = et.objsubid)
+     JOIN pg_class rels ON (et.objid = rels.oid)
+          -- Column comments
+     LEFT JOIN pg_description d ON (et.objid = d.objoid AND et.objsubid = d.objsubid)
+          -- Column defaults
+     LEFT JOIN pg_attrdef def ON (a.atthasdef AND a.attrelid = def.adrelid AND a.attnum = def.adnum)
+    WHERE rels.relnamespace::regnamespace NOT IN ('pg_catalog', 'information_schema')
+          AND a.attnum > 0
+          AND NOT a.attisdropped
+    ORDER BY rels.relnamespace, a.attrelid::regclass::text, a.attnum
+  ;
 END;
 $$;
 
