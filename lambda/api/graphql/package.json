@@ -1,7 +1,8 @@
 {
-  "name": "graphql",
-  "version": "1.0.0",
-  "description": "",
+  "name": "gs-graphql",
+  "version": "1.0.1",
+  "description": "GeekSpeak GraphQL API",
+  "repository": "https://github.com/ttfkam/gs2021",
   "main": "lib/index.mjs",
   "scripts": {
     "start": "node lib/index.mjs",
@@ -13,16 +14,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "@aws-sdk/client-ssm": "^3.32.0",
+    "@aws-sdk/client-ssm": "^3.58.0",
     "@graphile-contrib/pg-many-to-many": "^1.0.1",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.0.0",
     "jwt-simple": "^0.5.6",
-    "koa": "^2.13.1",
-    "postgraphile": "^4.12.3",
-    "serverless-http": "^2.7.0"
+    "koa": "^2.13.4",
+    "postgraphile": "^4.12.9",
+    "serverless-http": "^3.0.1"
   }
 }
