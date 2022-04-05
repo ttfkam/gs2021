@@ -22,7 +22,6 @@ CREATE TABLE episode (
                      ON UPDATE CASCADE
                      ON DELETE RESTRICT
 ,    airdate date
-,       slug text
 ,       body text
 ,  bit_order uuid[]
 ,    publish timestamptz
@@ -37,7 +36,6 @@ CREATE TABLE episode (
 'Episodes of GeekSpeak';
 COMMENT ON COLUMN episode.promo     IS 'Episode promotional text';
 COMMENT ON COLUMN episode.airdate   IS 'When the episode was made available';
-COMMENT ON COLUMN episode.slug      IS 'Publishing ID';
 COMMENT ON COLUMN episode.body      IS 'Episode content';
 COMMENT ON COLUMN episode.bit_order IS 'Order that bits appear on the episode page';
 COMMENT ON COLUMN episode.publish   IS 'When the episode is to be made visible';
