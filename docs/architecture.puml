@@ -1,29 +1,32 @@
 @startuml GeekSpeak Architecture
 
-!include <awslib/AWSCommon>
-!include <awslib/AWSSimplified>
+' Define the main location (URL or local file path)
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v15.0/dist
+' Include main AWSCommon and then resource files
+!include AWSPuml/AWSCommon.puml
+!include AWSPuml/AWSSimplified.puml
 
-!include <awslib/Compute/Lambda>
-!include <awslib/Database/DynamoDB>
-!include <awslib/Database/RDS>
-!include <awslib/DeveloperTools/XRay>
-!include <awslib/General/Users>
-!include <awslib/ManagementAndGovernance/CloudWatch>
-!include <awslib/ManagementAndGovernance/SystemsManagerParameterStore>
-!include <awslib/Mobile/APIGateway>
-!include <awslib/NetworkingAndContentDelivery/CloudFront>
-!include <awslib/NetworkingAndContentDelivery/Route53>
-!include <awslib/SecurityIdentityAndCompliance/CertificateManager>
-!include <awslib/SecurityIdentityAndCompliance/Cognito>
-!include <awslib/SecurityIdentityAndCompliance/IAMPermissions>
-!include <awslib/Storage/SimpleStorageServiceBucket>
+!include AWSPuml/Compute/Lambda.puml
+!include AWSPuml/Database/DynamoDB.puml
+!include AWSPuml/Database/RDS.puml
+!include AWSPuml/DeveloperTools/XRay.puml
+!include AWSPuml/General/Users.puml
+!include AWSPuml/ManagementGovernance/CloudWatch.puml
+!include AWSPuml/ManagementGovernance/SystemsManagerParameterStore.puml
+!include AWSPuml/ApplicationIntegration/APIGateway.puml
+!include AWSPuml/NetworkingContentDelivery/CloudFront.puml
+!include AWSPuml/NetworkingContentDelivery/Route53.puml
+!include AWSPuml/SecurityIdentityCompliance/CertificateManager.puml
+!include AWSPuml/SecurityIdentityCompliance/Cognito.puml
+!include AWSPuml/SecurityIdentityCompliance/IdentityAccessManagementPermissions.puml
+!include AWSPuml/Storage/SimpleStorageServiceBucket.puml
 
 left to right direction
 
 package "VPC" {
   Lambda(graphql, "/graphql\n(Postgraphile)", "Postgraphile access to the database")
   Lambda(upload, "/upload", "Media file management")
-  IAMPermissions(iam, "IAM Permissions", "")
+  IdentityAccessManagementPermissions(iam, "IAM Permissions", "")
   package "Private Subnet" {
     RDS(gsDb, "Database\n(RDS Postgres)", "Main data store for GeekSpeak")
   }
